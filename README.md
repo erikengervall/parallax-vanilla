@@ -1,0 +1,2 @@
+# paralib
+JavaScript Parallax library
