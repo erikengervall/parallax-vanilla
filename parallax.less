@@ -1,0 +1,82 @@
+.para-container {
+	padding: 50px 0;
+  height: 600px;
+  min-height: 300px;
+  max-height: 50vh;
+  overflow: hidden;
+  position: relative;
+  background: #000;
+  
+  &.header-para {
+  	margin-top: 0;
+  }
+
+  .para-block {
+    // transition: transform 40ms ease-out;
+    transform: translate3d(0,0,0);
+    width: 100%;
+    padding-bottom: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+	  background-repeat: no-repeat;
+	  background-position: center center;
+	  background-size: cover;
+    background-image: url("http://www.anita-gelato.com/wp-content/uploads/2015/08/11.jpg");
+
+    &.no-bg {
+    	background-image: none;
+    }
+  }
+
+  .text-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    margin: 0;
+    padding: 20px;
+    // background-color: rgba(173, 250, 251, 0.58);
+    // border-radius: 8px;
+    text-align: center;
+    color: #fff;
+  }
+
+  &h2 {
+  	position: absolute;
+  	top: 50%;
+  	left: 50%;
+  	transform: translate3d(-50%, -50%, 0);
+  	margin: 0;
+  	padding: 20px;
+    background-color: rgba(173, 250, 251, 0.58);
+    border-radius: 8px;
+  }
+}
+
+.meet-container {
+	background-color: yellow;
+	padding: 50px 0;
+
+	.meet-block {
+		height: 100px;
+		color: #ccc;
+
+		&:nth-child(1) {
+			background-color: rgba(255,0,0,0.75);
+		}
+		&:nth-child(2) {
+			background-color: rgba(0,0,255,0.75);
+		}
+		&:nth-child(3) {
+			background-color: rgba(99,99,99,0.75);
+		}
+	}
+}
+
+
+
+
+
+
+

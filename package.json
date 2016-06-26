@@ -1,0 +1,17 @@
+{
+  "name": "paralib",
+  "version": "1.0.0",
+  "description": "Parallax vanilla JavaScript library",
+  "main": "parallax.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Parallax",
+    "library"
+  ],
+  "author": "Erik Engervall",
+  "license": "ISC"
+}
