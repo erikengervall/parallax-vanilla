@@ -4,8 +4,16 @@
   "description": "Parallax vanilla JavaScript library",
   "main": "parallax.js",
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-cssmin": "^1.0.1",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-contrib-less": "^1.3.0",
+    "grunt-contrib-uglify": "^1.0.1",
+    "grunt-contrib-watch": "^1.0.0"
+  },
   "scripts": {
+    "start": "grunt default",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
