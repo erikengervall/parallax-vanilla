@@ -27,6 +27,7 @@
 		// updates ParaLib.windowProps variables
 		ParaLib.updateWindowProps_OnRaf = function() {
 			ParaLib.windowProps.scrollTop = window.scrollY;
+			console.log(ParaLib.windowProps.scrollTop);
 		}
 
 		// update windowprops on resize
@@ -37,15 +38,9 @@
 		}
 
 		// calculte child padding
-		ParaLib.calcChildPadding = function(containerObj, child) {
-			var el 					= child.el;
-			var paraFactor 	= child.paraFactor;
-			var calc = ParaLib.windowProps.windowHeight - containerObj.offset + ParaLib.windowProps.scrollTop;
-	    var y = calc / paraFactor;
-			console.log(el, paraFactor, calc, y);
-
-			return 1;
-		}
+		// ParaLib.calcChildPadding = function(child) {
+		// 	return ParaLib.windowProps.windowHeight + child.height;
+		// }
 
 		// init paraArr
 		ParaLib.init = function(settings) {
@@ -98,8 +93,8 @@
 
 				var container = {};
 				container.el = containers[i];
-				container.offset = containers[i].offsetTop;
-				container.height = containers[i].clientHeight;
+				container.offset = container.el.offsetTop;
+				container.height = container.el.clientHeight;
 				obj.container = container;
 
 				obj.children = [];
@@ -109,8 +104,12 @@
 
 					var child = {};
 					child.el = children[j];
-					child.paraFactor = children[j].getAttribute("paraFactor");
-					child.paddingBottom = ParaLib.calcChildPadding(container, child);
+					child.paraFactor = child.el.getAttribute("paraFactor");
+					// child.height = child.el.clientHeight;
+					// child.paddingBottom = ParaLib.calcChildPadding(child);
+					child.paddingBottom = (ParaLib.windowProps.windowHeight + (container.height * 2)) / Math.abs(child.paraFactor);
+					pp("child", child);
+					child.el.style.paddingBottom = child.paddingBottom + "px";
 
 					obj.children.push(child);
 
@@ -120,6 +119,7 @@
 			} // loop container
 
 		}
+
 
 		// checks if the parallax image is in viewport.
 		// @PARAM typeVar , the type, e.g. "paraVar" or "meetVar"
@@ -134,6 +134,7 @@
 						ParaLib.windowProps.scrollTop < offset + height
 						);
 		}
+
 
 		// translates the parallax blocks, creating the effect
 		ParaLib.translate = function() {
@@ -171,10 +172,12 @@
 			} // end of for container
 	  } // translate
 
+
 	  // window resize event
 	  window.onresize = function(e) {
 	  	ParaLib.updateWindowProps_OnResize();
 	  }
+
 
 		// binds a function "raf" to window
 		window.raf = (function() {
@@ -186,16 +189,20 @@
 		    };
 		})();
 
+
 		function updateLoop() {
 			ParaLib.updateWindowProps_OnRaf();
 			ParaLib.translate();
 			raf(updateLoop);
 		}
 
+
 		raf(updateLoop);
+
 
     return ParaLib;
   } // end of define_ParaLib()
+
 
   //define globally if it doesn't already exist
   if (typeof(ParaLib) === 'undefined') {

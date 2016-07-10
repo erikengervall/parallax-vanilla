@@ -12,6 +12,7 @@
 }
 
 .para-container {
+  position: relative;
   height: 500px;
   overflow: hidden;
   background: #000;
@@ -23,9 +24,16 @@
 	  background-position: center center;
 	  background-size: cover;
     background-image: url("https://goo.gl/g2B2Yz");
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
 
-    &.double {
-      
+    &.half-width {
+      width: 50%;
+    }
+    &.right-item {
+      left: 50%;
     }
   }
 }
