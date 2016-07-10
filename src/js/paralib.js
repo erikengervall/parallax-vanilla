@@ -169,7 +169,7 @@
 				} // end of if
 
 			} // end of for container
-	  }
+	  } // translate
 
 	  // window resize event
 	  window.onresize = function(e) {
