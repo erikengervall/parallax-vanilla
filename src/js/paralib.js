@@ -44,10 +44,6 @@
 	    var y = calc / paraFactor;
 			console.log(el, paraFactor, calc, y);
 
-
-			
-
-
 			return 1;
 		}
 
