@@ -2,28 +2,40 @@
 <html>
 <head>
   <title>Parallax demo</title>
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="dist/css/paralib.css">
   <style type="text/css">
-    .filler {
+    .demo-filler {
       height: 500px;
+      background-color: rgb(222,222,222);
     }
   </style>
 </head>
 <body>
 
-<div class="filler"></div>
-<div class="filler"></div>
-<div class="filler"></div>
+<div class="demo-filler"></div>
+<div class="demo-filler"></div>
+<div class="demo-filler"></div>
 
 <div class="para-container">
   <div paraFactor=-1 class="para-block"></div>
 </div>
 
-<div class="filler"></div>
-<div class="filler"></div>
-<div class="filler"></div>
+<div class="demo-filler"></div>
+<div class="demo-filler"></div>
+<div class="demo-filler"></div>
 
+<div class="para-container">
+  <div paraFactor=-1 class="para-block col-xs-6"></div>
+  <div paraFactor=-3.14 class="para-block col-xs-6"></div>
+</div>
 
+<div class="demo-filler"></div>
+<div class="demo-filler"></div>
+<div class="demo-filler"></div>
+
+<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="dist/js/dev.js"></script>
 <!-- <script type="text/javascript" src="dist/js/paralib.min.js"></script> -->
 <script type="text/javascript" src="src/js/paralib.js"></script>
