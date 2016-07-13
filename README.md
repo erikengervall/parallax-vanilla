@@ -14,12 +14,20 @@ Download package and include `paralib.min.css` at the top of your page and `para
 
 ## Usage
 
-### Via data attributes
+### Simplest
 
-Simply wrap a `para-block` with a `para-container` and add a `para-speed`.
+Simply wrap a `para-block` with a `para-container`.
 
 ```html
-<div class="para-container" para-height>
+<div class="para-container">
+	<div class="para-block"></div>
+</div>
+```
+
+### Via data attributes
+
+```html
+<div class="para-container" para-height=500>
 	<div class="para-block" para-speed=1></div>
 </div>
 ```
@@ -47,7 +55,10 @@ ParaLib.init({
 </div>
 ```
 
-### Default
+### Default settings
+
+These settings will be used if no others are given.
+
 ```javascript
 {
 	paraSpeed : -1,
