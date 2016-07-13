@@ -1,11 +1,30 @@
 (function(window) {
   'use strict';
 
+  /**
+   * Defines ParaLib
+   * @return {Object} ParaLib object
+   */
   function define_ParaLib() {
-  	// awesome library variable
+  	/**
+  	 * Controls environment settings
+  	 * @type {Boolean}
+  	 */
+  	var dev = true;
+
+
+  	/**
+  	 * [Library object]
+  	 * @type {Object}
+  	 */
   	var ParaLib = {};
 
-		// transform prefixes
+
+		/**
+		 * Transform prefixes for CSS
+		 * @param  {HTML-element} element A para-block element
+		 * @param  {CSS-style} style   E.g. 'transform3d(x, y, z)'
+		 */
 		ParaLib.transform = function(element, style) {
 		  element.style.webkitTransform = style;
 		  element.style.MozTransform = style;
@@ -14,104 +33,170 @@
 		  element.style.transform = style;
 		}
 
-		// main data arr
+
+		/**
+		 * Primary data handler for containers and blocks.
+		 * @type {Array}
+		 * @structure
+		 * paraArr = [
+		 * 	obj : {
+		 * 		container : {
+		 * 			el : HTML-element,
+		 * 			offset : offsetTop,
+		 * 			height : clientHeight
+		 * 		},
+		 * 		children : [
+		 * 			child : {
+		 * 				el : HTML-element,
+		 * 				paraFactor : getAttr('paraFactor')
+		 * 			}
+		 * 		]
+		 * 	}
+		 * ]
+		 */
 		ParaLib.paraArr = [];
 
-  	// window properties
+
+  	/**
+  	 * Window properties
+  	 * @type {Object}
+  	 */
   	ParaLib.windowProps = {
 			scrollTop    		: window.scrollY,
 			windowHeight 		: window.innerHeight,
 			windowMidHeight : window.innerHeight / 2,
   	}
 
-		// updates ParaLib.windowProps variables
+
+		/**
+		 * Update selected attributes in windowProps on window raf event
+		 */
 		ParaLib.updateWindowProps_OnRaf = function() {
 			ParaLib.windowProps.scrollTop = window.scrollY;
-			console.log(ParaLib.windowProps.scrollTop);
 		}
 
-		// update windowprops on resize
+
+		/**
+		 * Update selected attributes in ParaLib.windowProps on window resize event
+		 */
 		ParaLib.updateWindowProps_OnResize = function() {
 			ParaLib.windowProps.scrollTop 			= window.scrollY;
 			ParaLib.windowProps.windowHeight 		= window.innerHeight;
 			ParaLib.windowProps.windowMidHeight = window.innerHeight / 2;
 		}
 
-		// calculte child padding
-		// ParaLib.calcChildPadding = function(child) {
-		// 	return ParaLib.windowProps.windowHeight + child.height;
-		// }
 
-		// init paraArr
+		/**
+		 * Calculates the top offset from an element to the window's || document's top
+		 * @param  {HTML-element} el A para-block element
+		 * @return {Int}    The element's top offset to document.
+		 * Link: https://plainjs.com/javascript/styles/get-the-position-of-an-element-relative-to-the-document-24/
+		 */
+		ParaLib.offsetTop = function(el) {
+	    var rectTop = el.getBoundingClientRect().top,
+	    scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+	    return (rectTop + scrollTop);
+		}
+
+
+		/**
+		 * Initialize ParaLib.paraArr
+		 * @param  {Object} settings User settings
+		 */
 		ParaLib.init = function(settings) {
-			/*
-				paraArr = [
-					obj1 : {
-						container: {
-							el : element,
-							offset : offsetTop,
-							height : clientHeight
-						},
-						children : [
-							child1 : {
-								el 												: element,
-								paraFactor : getAttr("paraFactor"),
-							},
-							child2 : {
-								...
-							}
-						]
-					},
+			var settingsDefault = {
+				container : {
+					class : 'para-container',
+					height : 500
+				},
+				child : {
+					class : 'para-container'
+				}
+			};
 
-					obj2 : {
-						...
-					}
-				]
-			*/
-
-			if (settings === 'undefined') {
-				var container_class = "para-container";
-				var child_class 		= "para-block";
+			if (settings === undefined) {
+				settings = settingsDefault;
 			} else {
-				var container_class = settings.container;
-				var child_class 		= settings.child;
+				// check container & container properties
+				if (settings.container === undefined) 			settings.container 				= settingsDefault.container;
+				if (settings.container.class == undefined) 	settings.container.class 	= settingsDefault.container.class;
+				if (settings.container.height == undefined) settings.container.height = settingsDefault.container.height;
 
-				if (settings.container === 'undefined') {
-					var container_class = "para-container";
-				}
-				if (settings.child === 'undefined') {
-					var child_class = "para-block";
-				}
+				// check child & child properties
+				if (settings.child == undefined) 				settings.child 				= settingsDefault.child;
+				if (settings.child.class == undefined) 	settings.child.class 	= settingsDefault.child.class;
 			}
 
-			var containers = document.getElementsByClassName(container_class);
+			var containers = document.getElementsByClassName(settings.container.class);
 
-			for (var i = 0; containers[i]; i++) {
+			// loop containers
+			for (var i = 0; i < containers.length; i++) {
 				var obj = {};
-				
-				var containerId = containers[i].id;
-
 				var container = {};
+
 				container.el = containers[i];
-				container.offset = container.el.offsetTop;
+				container.offset = ParaLib.offsetTop(container.el);
 				container.height = container.el.clientHeight;
 				obj.container = container;
 
 				obj.children = [];
-				var children = containers[i].getElementsByClassName(child_class);
+				var children = containers[i].getElementsByClassName(settings.child.class);
 
-				for (var j = 0; children[j]; j++) {
+					for (var j = 0; children[j]; j++) {
 
-					var child = {};
-					child.el = children[j];
-					child.paraFactor = child.el.getAttribute("paraFactor");
-					// child.height = child.el.clientHeight;
-					// child.paddingBottom = ParaLib.calcChildPadding(child);
-					child.paddingBottom = (ParaLib.windowProps.windowHeight + (container.height * 2)) / Math.abs(child.paraFactor);
-					pp("child", child);
-					child.el.style.paddingBottom = child.paddingBottom + "px";
+						var child = {};
+						child.el = children[j];
+						if (child.el.innerHTML == "") child.el.innerHTML = "&nbsp;"; // resolve bootstrap issue with empty content..
+						child.paraFactor = child.el.getAttribute("paraFactor");
+						window.getComputedStyle(child.el).getPropertyValue("background-image") == 'none' ? child.hasImage = false : child.hasImage = true;
+						pp("child", child);
 
-					obj.children.push(child);
+						if (child.paraFactor !== null) {
+							var bgImg = window.getComputedStyle(child.el).getPropertyValue("background-image");
+
+							// if the para-block has a background image
+							if (bgImg != "" && bgImg != "none") {
+
+								// calculates the negative top property
+								// negative scroll distance
+								// plus container height / factor, because whenever we pass the element we'll always scroll the window faster then the animation (if factor < 1 it'll be increased to all is good)
+								var top = 0;
+								var scrollDist = 0;
+								var paddingBottom = 0;
+
+								// if the para-block offset is less than the windowheight, then the scrolldist will have to be recalculated
+								if (container.offset < ParaLib.windowProps.windowHeight) {
+									scrollDist = (container.height + container.offset) / Math.abs(child.paraFactor);
+
+									if (child.paraFactor > 0) {
+										top = - Math.abs(container.offset);
+										paddingBottom = container.height + container.offset;
+									} else {
+										paddingBottom = scrollDist + (container.height);
+									}
+									
+
+									// the para-block is below the initial windowheight
+								} else {
+									scrollDist = (container.height + ParaLib.windowProps.windowHeight) / Math.abs(child.paraFactor);
+									paddingBottom = scrollDist + container.height;
+
+									if (child.paraFactor > 0) {
+										top = - scrollDist;
+										paddingBottom = container.height + (ParaLib.windowProps.windowHeight / Math.abs(child.paraFactor));
+									} else {
+										paddingBottom = scrollDist + container.height;
+									}
+								}
+
+								child.el.style.setProperty("padding-bottom", paddingBottom + "px", null);
+								// child.el.style.setProperty("top", top + "px", null);
+								child.el.style.setProperty("margin-top", top + "px", null);
+							}
+						}
+
+						obj.children.push(child);
+						// pp("child", child);
 
 				} // end of for children
 
@@ -201,13 +286,16 @@
 
 
     return ParaLib;
+
   } // end of define_ParaLib()
 
 
-  //define globally if it doesn't already exist
+  /**
+   * Define ParaLib to window if not already done
+   */
   if (typeof(ParaLib) === 'undefined') {
-  	console.log("%c ParaLib defined.", "color: green");
     window.ParaLib = define_ParaLib();
+  	console.log("%c ParaLib defined.", "color: green");
   } else {
     console.log("%c ParaLib already defined.", "color: red");
   }
@@ -215,8 +303,40 @@
 })(window);
 
 
-ParaLib.init({
-	container : "para-container",
-	child 		: "para-block"
-});
+
+/**
+ * Settings for customizing the parallax
+ * @type {Object}
+ * @structure
+ * settings = {
+ * 	container : {
+ * 		class : String,
+ * 		height : Int
+ * 	},
+ * 	child : {
+ * 		class : String
+ * 	}
+ * }
+ */
+var settings = {
+	container : {
+		class : 'para-container',
+		height : 500
+	},
+	child : {
+		class : 'para-block'
+	}
+};
+
+ParaLib.init(settings);
+
+
+
+
+
+
+
+
+
+
 

@@ -5,7 +5,7 @@ function pp(source, obj) {
       m     = date.getMinutes(),
       s     = date.getSeconds(),
       now   = h+":"+m+":"+s+" <- "+source
-  console.log("%c "+now, "color:blue;font-size:15px;");
+  console.log("%c " + now, "color:blue;font-size:15px;");
   if (obj instanceof HTMLElement) {
   	console.log(obj);
   } else {
