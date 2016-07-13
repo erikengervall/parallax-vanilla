@@ -1,16 +1,11 @@
 .para-container {
-  position: relative;
-  height: 500px;
   overflow: hidden;
-  background: #000;
+  height: 500px;
 }
 .para-container .para-block {
-  transform: translate3d(0, 0, 0);
-  transform: translateZ(0);
   will-change: transform;
   background-image: url('https://pixabay.com/static/uploads/photo/2015/06/03/14/24/ladybug-796481_960_720.jpg');
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
-  background-color: #000;
 }

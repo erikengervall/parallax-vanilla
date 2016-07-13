@@ -45,10 +45,10 @@
 		 * 			offset : offsetTop,
 		 * 			height : clientHeight
 		 * 		},
-		 * 		children : [
-		 * 			child : {
+		 * 		blocks : [
+		 * 			block : {
 		 * 				el : HTML-element,
-		 * 				paraFactor : getAttr('paraFactor')
+		 * 				paraSpeed : getAttr('paraSpeed')
 		 * 			}
 		 * 		]
 		 * 	}
@@ -105,26 +105,45 @@
 		 */
 		ParaLib.init = function(settings) {
 			var settingsDefault = {
+				paraSpeed : -Math.PI,
 				container : {
 					class : 'para-container',
-					height : 500
+					height : 600
 				},
-				child : {
+				block : {
 					class : 'para-container'
 				}
 			};
 
+			// check if any settings are defined
 			if (settings === undefined) {
 				settings = settingsDefault;
 			} else {
-				// check container & container properties
-				if (settings.container === undefined) 			settings.container 				= settingsDefault.container;
-				if (settings.container.class == undefined) 	settings.container.class 	= settingsDefault.container.class;
-				if (settings.container.height == undefined) settings.container.height = settingsDefault.container.height;
+				// check paraSpeed
+				if (settings.paraSpeed === undefined) {
+					settings.paraSpeed = settingsDefault.paraSpeed;
+				}
 
-				// check child & child properties
-				if (settings.child == undefined) 				settings.child 				= settingsDefault.child;
-				if (settings.child.class == undefined) 	settings.child.class 	= settingsDefault.child.class;
+				// check container & container properties
+				if (settings.container === undefined) {
+		 			settings.container = settingsDefault.container;
+				} else {
+					if (settings.container.class === undefined) {
+						settings.container.class 	= settingsDefault.container.class;
+					} 	
+					if (settings.container.height === undefined) {
+						settings.container.height = settingsDefault.container.height;
+					}
+				}
+
+				// check block & block properties
+				if (settings.block === undefined) {
+ 					settings.block = settingsDefault.block;
+	 			} else {
+					if (settings.block.class === undefined) {
+						settings.block.class = settingsDefault.block.class;
+					}
+	 			}
 			}
 
 			var containers = document.getElementsByClassName(settings.container.class);
@@ -136,73 +155,82 @@
 
 				container.el = containers[i];
 				container.offset = ParaLib.offsetTop(container.el);
+
+				var height = container.el.getAttribute('para-height');
+				if (height === null) {
+					container.el.style.height = settings.container.height + "px";
+				} else {
+					container.el.style.height = height + "px";
+				}
 				container.height = container.el.clientHeight;
+
 				obj.container = container;
 
-				obj.children = [];
-				var children = containers[i].getElementsByClassName(settings.child.class);
+				obj.blocks = [];
+				var blocks = containers[i].getElementsByClassName(settings.block.class);
 
-					for (var j = 0; children[j]; j++) {
+					for (var j = 0; j < blocks.length; j++) {
 
-						var child = {};
-						child.el = children[j];
-						if (child.el.innerHTML == "") child.el.innerHTML = "&nbsp;"; // resolve bootstrap issue with empty content..
-						child.paraFactor = child.el.getAttribute("paraFactor");
-						window.getComputedStyle(child.el).getPropertyValue("background-image") == 'none' ? child.hasImage = false : child.hasImage = true;
-						pp("child", child);
+						var block = {};
+						block.el = blocks[j];
 
-						if (child.paraFactor !== null) {
-							var bgImg = window.getComputedStyle(child.el).getPropertyValue("background-image");
+						if (block.el.innerHTML == "") block.el.innerHTML = "&nbsp;"; // resolve bootstrap issue with empty content..
 
-							// if the para-block has a background image
-							if (bgImg != "" && bgImg != "none") {
-
-								// calculates the negative top property
-								// negative scroll distance
-								// plus container height / factor, because whenever we pass the element we'll always scroll the window faster then the animation (if factor < 1 it'll be increased to all is good)
-								var top = 0;
-								var scrollDist = 0;
-								var paddingBottom = 0;
-
-								// if the para-block offset is less than the windowheight, then the scrolldist will have to be recalculated
-								if (container.offset < ParaLib.windowProps.windowHeight) {
-									scrollDist = (container.height + container.offset) / Math.abs(child.paraFactor);
-
-									if (child.paraFactor > 0) {
-										top = - Math.abs(container.offset);
-										paddingBottom = container.height + container.offset;
-									} else {
-										paddingBottom = scrollDist + (container.height);
-									}
-									
-
-									// the para-block is below the initial windowheight
-								} else {
-									scrollDist = (container.height + ParaLib.windowProps.windowHeight) / Math.abs(child.paraFactor);
-									paddingBottom = scrollDist + container.height;
-
-									if (child.paraFactor > 0) {
-										top = - scrollDist;
-										paddingBottom = container.height + (ParaLib.windowProps.windowHeight / Math.abs(child.paraFactor));
-									} else {
-										paddingBottom = scrollDist + container.height;
-									}
-								}
-
-								child.el.style.setProperty("padding-bottom", paddingBottom + "px", null);
-								// child.el.style.setProperty("top", top + "px", null);
-								child.el.style.setProperty("margin-top", top + "px", null);
-							}
+						var paraSpeed = block.el.getAttribute("para-speed");
+						if (paraSpeed === null) {
+							block.paraSpeed = settings.paraSpeed;
+						} else {
+							block.paraSpeed = paraSpeed;
 						}
 
-						obj.children.push(child);
-						// pp("child", child);
+						// if the para-block has a background image
+						if (window.getComputedStyle(block.el).getPropertyValue("background-image") != 'none') {
 
-				} // end of for children
+							// calculates the negative top property
+							// negative scroll distance
+							// plus container height / factor, because whenever we pass the element we'll always scroll the window faster then the animation (if factor < 1 it'll be increased to all is good)
+							var top = 0;
+							var scrollDist = 0;
+							var paddingBottom = 0;
+
+							// if the para-block offset is less than the windowheight, then the scrolldist will have to be recalculated
+							if (container.offset < ParaLib.windowProps.windowHeight) {
+								scrollDist = (container.height + container.offset) / Math.abs(block.paraSpeed);
+
+								if (block.paraSpeed > 0) {
+									top = - Math.abs(container.offset);
+									paddingBottom = container.height + container.offset;
+								} else {
+									paddingBottom = scrollDist + (container.height);
+								}
+								
+
+								// the para-block is below the initial windowheight
+							} else {
+								scrollDist = (container.height + ParaLib.windowProps.windowHeight) / Math.abs(block.paraSpeed);
+								paddingBottom = scrollDist + container.height;
+
+								if (block.paraSpeed > 0) {
+									top = - scrollDist;
+									paddingBottom = container.height + (ParaLib.windowProps.windowHeight / Math.abs(block.paraSpeed));
+								} else {
+									paddingBottom = scrollDist + container.height;
+								}
+							}
+
+							block.el.style.setProperty("padding-bottom", paddingBottom + "px", null);
+							// block.el.style.setProperty("top", top + "px", null);
+							block.el.style.setProperty("margin-top", top + "px", null);
+						}
+
+						obj.blocks.push(block);
+						// pp("block", block);
+
+				} // end of for blocks
 
 				ParaLib.paraArr.push(obj);
 			} // loop container
-
+			pp("ParaLib.paraArr", ParaLib.paraArr);
 		}
 
 
@@ -241,16 +269,16 @@
 						var calc = ParaLib.windowProps.windowHeight - containerObj.offset + ParaLib.windowProps.scrollTop;
 					}
 
-					for (var j = 0; j < ParaLib.paraArr[i].children.length; j++) {
-						var childObj = ParaLib.paraArr[i].children[j];
+					for (var j = 0; j < ParaLib.paraArr[i].blocks.length; j++) {
+						var block = ParaLib.paraArr[i].blocks[j];
 
 						// perform the transform
 						ParaLib.transform(
-				    	childObj.el,
-				    	"translate3d(0," + (calc / childObj.paraFactor) + "px, 0)"
+				    	block.el,
+				    	"translate3d(0," + (calc / block.paraSpeed) + "px, 0)"
 				    );
 
-					} // end of for children
+					} // end of for blocks
 
 				} // end of if
 
@@ -259,12 +287,18 @@
 
 
 	  // window resize event
-	  window.onresize = function(e) {
+	  /**
+	   * Window on resize event, updates ParaLib.windowProps
+	   */
+	  window.onresize = function() {
 	  	ParaLib.updateWindowProps_OnResize();
 	  }
 
 
-		// binds a function "raf" to window
+		/**
+		 * Request animation frame
+		 * Binds function to window
+		 */
 		window.raf = (function() {
 		  return window.requestAnimationFrame  ||
 		    window.webkitRequestAnimationFrame ||
@@ -275,6 +309,9 @@
 		})();
 
 
+		/**
+		 * Main loop for updating variables and performing translates
+		 */
 		function updateLoop() {
 			ParaLib.updateWindowProps_OnRaf();
 			ParaLib.translate();
@@ -282,9 +319,15 @@
 		}
 
 
+		/**
+		 * Initialize main loop
+		 */
 		raf(updateLoop);
 
 
+		/**
+		 * Returns the library
+		 */
     return ParaLib;
 
   } // end of define_ParaLib()
@@ -303,7 +346,6 @@
 })(window);
 
 
-
 /**
  * Settings for customizing the parallax
  * @type {Object}
@@ -318,17 +360,15 @@
  * 	}
  * }
  */
-var settings = {
-	container : {
-		class : 'para-container',
-		height : 500
-	},
-	child : {
-		class : 'para-block'
-	}
-};
-
-ParaLib.init(settings);
+// ParaLib.init({
+// 	container : {
+// 		class : 'para-container',
+// 		height : 650
+// 	},
+// 	block : {
+// 		class : 'para-block'
+// 	}
+// });
 
 
 
