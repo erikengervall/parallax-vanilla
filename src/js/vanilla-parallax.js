@@ -2,10 +2,10 @@
   'use strict';
 
   /**
-   * Defines ParaLib
-   * @return {Object} ParaLib object
+   * Defines vp
+   * @return {Object} vp object
    */
-  function define_ParaLib() {
+  function define_vanilla_parallax() {
   	/**
   	 * Controls environment settings
   	 * @type {Boolean}
@@ -17,7 +17,7 @@
   	 * [Library object]
   	 * @type {Object}
   	 */
-  	var ParaLib = {};
+  	var vp = {};
 
 
   	/**
@@ -25,7 +25,7 @@
   	 * @param  {String}  arg String to check
   	 * @return {Boolean}     True if String consists exclusively of numbers
   	 */
-  	ParaLib.stringOfIntegers = function(arg) {
+  	vp.stringOfIntegers = function(arg) {
   		return (/^[0-9]+$/.test(arg));
   	}
 
@@ -35,7 +35,7 @@
 		 * @param  {HTML-element} element A para-block element
 		 * @param  {CSS-style} style   E.g. 'transform3d(x, y, z)'
 		 */
-		ParaLib.transform = function(element, style) {
+		vp.transform = function(element, style) {
 		  element.style.webkitTransform = style;
 		  element.style.MozTransform = style;
 		  element.style.msTransform = style;
@@ -64,14 +64,14 @@
 		 * 	}
 		 * ]
 		 */
-		ParaLib.paraArr = [];
+		vp.paraArr = [];
 
 
   	/**
   	 * Window properties
   	 * @type {Object}
   	 */
-  	ParaLib.windowProps = {
+  	vp.windowProps = {
 			scrollTop    		: window.scrollY,
 			windowHeight 		: window.innerHeight,
 			windowMidHeight : window.innerHeight / 2,
@@ -81,18 +81,18 @@
 		/**
 		 * Update selected attributes in windowProps on window raf event
 		 */
-		ParaLib.updateWindowProps_OnRaf = function() {
-			ParaLib.windowProps.scrollTop = window.scrollY;
+		vp.updateWindowProps_OnRaf = function() {
+			vp.windowProps.scrollTop = window.scrollY;
 		}
 
 
 		/**
-		 * Update selected attributes in ParaLib.windowProps on window resize event
+		 * Update selected attributes in vp.windowProps on window resize event
 		 */
-		ParaLib.updateWindowProps_OnResize = function() {
-			ParaLib.windowProps.scrollTop 			= window.scrollY;
-			ParaLib.windowProps.windowHeight 		= window.innerHeight;
-			ParaLib.windowProps.windowMidHeight = window.innerHeight / 2;
+		vp.updateWindowProps_OnResize = function() {
+			vp.windowProps.scrollTop 			= window.scrollY;
+			vp.windowProps.windowHeight 		= window.innerHeight;
+			vp.windowProps.windowMidHeight = window.innerHeight / 2;
 		}
 
 
@@ -102,7 +102,7 @@
 		 * @return {Int}    The element's top offset to document.
 		 * Link: https://plainjs.com/javascript/styles/get-the-position-of-an-element-relative-to-the-document-24/
 		 */
-		ParaLib.offsetTop = function(el) {
+		vp.offsetTop = function(el) {
 	    var rectTop = el.getBoundingClientRect().top,
 	    scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 	    return (rectTop + scrollTop);
@@ -110,10 +110,10 @@
 
 
 		/**
-		 * Initialize ParaLib.paraArr
+		 * Initialize vp.paraArr
 		 * @param  {Object} settings User settings
 		 */
-		ParaLib.init = function(settings) {
+		vp.init = function(settings) {
 			var settingsDefault = {
 				container : {
 					class 				: 'para-container',
@@ -173,14 +173,14 @@
 				var container = {};
 
 				container.el = containers[i];
-				container.offset = ParaLib.offsetTop(container.el);
+				container.offset = vp.offsetTop(container.el);
 
 				var height = container.el.getAttribute('para-height');
 				var heightSuffix = container.el.getAttribute('para-height-suffix');
 				if (height == null) {
 					container.el.style.height = settings.container.height;
 				} else {
-					if (ParaLib.stringOfIntegers(height)) {
+					if (vp.stringOfIntegers(height)) {
 						if (heightSuffix == null) {
 							container.el.style.height = height + "px";
 						} else {
@@ -236,7 +236,7 @@
 							var paddingBottom = 0;
 
 							// if the para-block offset is less than the windowheight, then the scrolldist will have to be recalculated
-							if (container.offset < ParaLib.windowProps.windowHeight) {
+							if (container.offset < vp.windowProps.windowHeight) {
 								scrollDist = (container.height + container.offset) / Math.abs(block.speed);
 
 								if (block.speed > 0) {
@@ -249,12 +249,12 @@
 
 								// the para-block is below the initial windowheight
 							} else {
-								scrollDist = (container.height + ParaLib.windowProps.windowHeight) / Math.abs(block.speed);
+								scrollDist = (container.height + vp.windowProps.windowHeight) / Math.abs(block.speed);
 								paddingBottom = scrollDist + container.height;
 
 								if (block.speed > 0) {
 									top = - scrollDist;
-									paddingBottom = container.height + (ParaLib.windowProps.windowHeight / Math.abs(block.speed));
+									paddingBottom = container.height + (vp.windowProps.windowHeight / Math.abs(block.speed));
 								} else {
 									paddingBottom = scrollDist + container.height;
 								}
@@ -273,9 +273,9 @@
 
 				} // end of for blocks
 
-				ParaLib.paraArr.push(obj);
+				vp.paraArr.push(obj);
 			} // loop container
-			// pp("ParaLib.paraArr", ParaLib.paraArr);
+			// pp("vp.paraArr", vp.paraArr);
 		}
 
 
@@ -283,42 +283,42 @@
 		// @PARAM typeVar , the type, e.g. "paraVar" or "meetVar"
 		// @PARAM i 			, index of the element that will match against variable arrays
 		// @RETURN bool 	, true/false
-		ParaLib.isInViewport = function(offset, height) {
-			// console.log("scrollTop: ", ParaLib.windowProps.scrollTop, " wHeight: ", ParaLib.windowProps.windowHeight);
+		vp.isInViewport = function(offset, height) {
+			// console.log("scrollTop: ", vp.windowProps.scrollTop, " wHeight: ", vp.windowProps.windowHeight);
 			// console.log("offset: ", offset, " height: ", height);
 			return (
-						ParaLib.windowProps.scrollTop + ParaLib.windowProps.windowHeight - offset > 0
+						vp.windowProps.scrollTop + vp.windowProps.windowHeight - offset > 0
 							&&
-						ParaLib.windowProps.scrollTop < offset + height
+						vp.windowProps.scrollTop < offset + height
 						);
 		}
 
 
 		// translates the parallax blocks, creating the effect
-		ParaLib.translate = function() {
+		vp.translate = function() {
 
 			// loop parallax blocks
-			for (var i = 0; i < ParaLib.paraArr.length; i++) {
-				var containerObj = ParaLib.paraArr[i].container;
+			for (var i = 0; i < vp.paraArr.length; i++) {
+				var containerObj = vp.paraArr[i].container;
 
 				// check if parallax block is in viewport
-				if (ParaLib.isInViewport(containerObj.offset, containerObj.height)) {
+				if (vp.isInViewport(containerObj.offset, containerObj.height)) {
 
-					// if any parallax is within the first windowheight, transform from 0 (ParaLib.scrollTop)
-					if (containerObj.offset < ParaLib.windowProps.windowHeight) {
-						var calc = ParaLib.windowProps.scrollTop;
+					// if any parallax is within the first windowheight, transform from 0 (vp.scrollTop)
+					if (containerObj.offset < vp.windowProps.windowHeight) {
+						var calc = vp.windowProps.scrollTop;
 
 						// if the parallax is further down on the page
 						// calculate windowheight - parallax offset + scrollTop to start from 0 whereever it appears
 					} else {
-						var calc = ParaLib.windowProps.windowHeight - containerObj.offset + ParaLib.windowProps.scrollTop;
+						var calc = vp.windowProps.windowHeight - containerObj.offset + vp.windowProps.scrollTop;
 					}
 
-					for (var j = 0; j < ParaLib.paraArr[i].blocks.length; j++) {
-						var block = ParaLib.paraArr[i].blocks[j];
+					for (var j = 0; j < vp.paraArr[i].blocks.length; j++) {
+						var block = vp.paraArr[i].blocks[j];
 
 						// perform the transform
-						ParaLib.transform(
+						vp.transform(
 				    	block.el,
 				    	"translate3d(0," + (calc / block.speed) + "px, 0)"
 				    );
@@ -333,11 +333,11 @@
 
 	  // window resize event
 	  /**
-	   * Window on resize event, updates ParaLib.windowProps
+	   * Window on resize event, updates vp.windowProps
 	   */
 	  window.onresize = function() {
-	  	ParaLib.updateWindowProps_OnResize();
-	  	ParaLib.init();
+	  	vp.updateWindowProps_OnResize();
+	  	vp.init();
 	  }
 
 
@@ -359,8 +359,8 @@
 		 * Main loop for updating variables and performing translates
 		 */
 		function updateLoop() {
-			ParaLib.updateWindowProps_OnRaf();
-			ParaLib.translate();
+			vp.updateWindowProps_OnRaf();
+			vp.translate();
 			raf(updateLoop);
 		}
 
@@ -374,19 +374,19 @@
 		/**
 		 * Returns the library
 		 */
-    return ParaLib;
+    return vp;
 
-  } // end of define_ParaLib()
+  } // end of define_vp()
 
 
   /**
-   * Define ParaLib to window if not already done
+   * Define vp to window if not already done
    */
-  if (typeof(ParaLib) === 'undefined') {
-    window.ParaLib = define_ParaLib();
-  	console.log("%c ParaLib defined.", "color: green");
+  if (typeof(vp) === 'undefined') {
+    window.vp = define_vanilla_parallax();
+  	console.log("%c vp defined.", "color: green");
   } else {
-    console.log("%c ParaLib already defined.", "color: red");
+    console.log("%c vp already defined.", "color: red");
   }
 
 })(window);
@@ -406,7 +406,7 @@
  * 	}
  * }
  */
-// ParaLib.init({
+// vp.init({
 // 	container : {
 // 		class : 'para-container',
 // 		height : 650

@@ -1,20 +1,20 @@
-ParaLib.js
+Vanilla-Parallax.js
 ===========
 
 Seamless and simple parallax scrolling library implemented in pure JavaScript utilizing Hardware acceleration for extra performance.
 
 ## Installation
 
-Download package and include `paralib.min.css` at the top of your page and `paralib.min.js` at the bottom.
+Download package and include `vanilla-parallax.min.css` at the top of your page and `vanilla-parallax.min.js` at the bottom.
 
 ```html
-<link href="/path/to/paralib.min.css">
-<script src="/path/to/paralib.min.js"></script>
+<link href="/path/to/vanilla-parallax.min.css">
+<script src="/path/to/vanilla-parallax.min.js"></script>
 ```
 
 ## Usage
 
-### Simplest
+### Simple usage
 
 Simply wrap a `para-block` with a `para-container`.
 
@@ -24,7 +24,33 @@ Simply wrap a `para-block` with a `para-container`.
 </div>
 ```
 
-### Via data attributes
+Initialize using `vp.init()`.
+```javascript
+vp.init();
+```
+
+### Adding JavaScript settings
+
+Following settings can be set for all container and block elements.
+
+```javascript
+vp.init({
+	container : {
+		class : String,
+		height : Float || Number || String,
+		heightSuffix : String
+	},
+	block : {
+		class : String
+		speed : Float,
+		image : Url
+	}
+});
+```
+
+### Adding data attributes
+
+Data attributes allows for fine control over each individual parallax effect.
 
 ```html
 <div class="para-container" para-height=500>
@@ -32,51 +58,91 @@ Simply wrap a `para-block` with a `para-container`.
 </div>
 ```
 
-### Via JavaScript
-
-In order to call the library manually, simply call `ParaLib.init()` with desired settings. These settings will be applied for all elements with the selected classes. It's strongly recommended to follow the structure with container and block. Ignored settings will fallback to a pre defined value.
-
-```javascript
-ParaLib.init({
-	paraSpeed : Int,
-	container : {
-		class : String,
-		height : Int
-	},
-	block : {
-		class : String
-	}
-});
-```
-
-```html
-<div class="container.class">
-	<div class="block.class" para-speed=1></div>
-</div>
-```
-
 ### Default settings
 
-These settings will be used if no others are given.
+These settings will be used if no others are provided.
 
 ```javascript
 {
-	paraSpeed : -1,
 	container : {
-		class : 'para-container',
-		height : 500
+		class 				: 'para-container',
+		height 				: '250px',
+		heightSuffix 	: 'px'
 	},
 	block : {
-		class : 'para-block'
+		class : 'para-block',
+		speed : -Math.PI,
+		image : undefined
 	}
 }
 ```
 
+### Options
 
+<table class="table table-bordered table-striped">
+	<thead>
+		<tr>
+			<th style="width: 100px;">Name</th>
+			<th style="width: 100px;">Type</th>
+			<th style="width: 50px;">Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>settings</td>
+			<td>Object</td>
+			<td>container, block objects</td>
+			<td>Settings object. These settings will be applied to each container and block. Can be individually overwritten by data attributes.</td>
+		</tr>
+		<tr>
+			<td>settings.container</td>
+			<td>Object</td>
+			<td>class, height, heightSuffix properties</td>
+			<td>The container object's properties helps ensure that the parallax effect is triggered at the right time and goes on for the right amount of pixels scrolled.</td>
+		</tr>
+		<tr>
+			<td>settings.container.class</td>
+			<td>String</td>
+			<td>'para-container'</td>
+			<td>The class of the container element.</td>
+		</tr>
+		<tr>
+			<td>settings.container.height</td>
+			<td>Float || Number || String</td>
+			<td>'250px'</td>
+			<td>container height.</td>
+		</tr>
+		<tr>
+			<td>settings.block</td>
+			<td>Object</td>
+			<td>class, speed, image properties</td>
+			<td>The block object.</td>
+		</tr>
+		<tr>
+			<td>settings.block.class</td>
+			<td>String</td>
+			<td>'para-block'</td>
+			<td>The class of the block element.</td>
+		</tr>
+		<tr>
+			<td>settings.block.speed</td>
+			<td>Float || Number</td>
+			<td>-Math.PI</td>
+			<td>The speed and direction at which the parallax moves.</td>
+		</tr>
+		<tr>
+			<td>settings.container.image</td>
+			<td>Path</td>
+			<td>undefined</td>
+			<td>If no path is given, it is set to undefined. It is then crucial that you include your background through data attributes, CSS or other means.</td>
+		</tr>
+	</tbody>
+</table>
 
 ### Notes
 
-ParaLib will use the container's top offset relative to the document, it's height and the window's innerheight to determine whether or not the container is in viewport. Depending if the container is visible in the viewport or not, ParaLib will perform the parallax effect, thus saving enormous performance.
+Vanilla-Parallax will use the container's top offset relative to the document, it's height and the window's innerheight to determine whether or not the container is in viewport. Depending if the container is visible in the viewport or not, Vanilla-Parallax will perform the parallax effect, thus saving enormous performance.
 
 This is the CSS that comes out of the box.
 
@@ -86,7 +152,6 @@ This is the CSS that comes out of the box.
 
   .para-block {
     will-change: transform;
-    background-image: url('https://pixabay.com/static/uploads/photo/2015/06/03/14/24/ladybug-796481_960_720.jpg');
 	  background-repeat: no-repeat;
 	  background-position: center center;
 	  background-size: cover;
@@ -94,7 +159,6 @@ This is the CSS that comes out of the box.
   }
 }
 ```
-
 
 LICENSE
 =======
