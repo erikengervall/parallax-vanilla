@@ -117,8 +117,7 @@
 			var settingsDefault = {
 				container : {
 					class 				: 'para-container',
-					height 				: '250px',
-					heightSuffix 	: 'px',
+					height 				: '250px'
 				},
 				block : {
 					class 				: 'para-container',
@@ -176,16 +175,11 @@
 				container.offset = vp.offsetTop(container.el);
 
 				var height = container.el.getAttribute('para-height');
-				var heightSuffix = container.el.getAttribute('para-height-suffix');
 				if (height == null) {
 					container.el.style.height = settings.container.height;
 				} else {
 					if (vp.stringOfIntegers(height)) {
-						if (heightSuffix == null) {
-							container.el.style.height = height + "px";
-						} else {
-							container.el.style.height = height + heightSuffix;
-						}
+						container.el.style.height = height + "px";
 					} else {
 						container.el.style.height = height;
 					}
