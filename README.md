@@ -90,7 +90,7 @@ These settings will be used if no others are provided.
 	</thead>
 	<tbody>
 		<tr>
-			<td><b><u>settings</u></b></td>
+			<td style="font-weight: 900;">settings</td>
 			<td>Object</td>
 			<td>container, block objects</td>
 			<td>Settings object. These settings will be applied to each container and block. Can be individually overwritten by data attributes.</td>
