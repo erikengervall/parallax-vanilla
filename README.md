@@ -90,15 +90,21 @@ These settings will be used if no others are provided.
 	</thead>
 	<tbody>
 		<tr>
-			<td style="font-weight: 900;">settings</td>
+			<td><b>settings</b></td>
 			<td>Object</td>
-			<td>container, block objects</td>
+			<td>container, block</td>
 			<td>Settings object. These settings will be applied to each container and block. Can be individually overwritten by data attributes.</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
 		</tr>
 		<tr>
 			<td><b>settings.container</b></td>
 			<td>Object</td>
-			<td>class, height, heightSuffix properties</td>
+			<td>class, height, heightSuffix</td>
 			<td>The container object's properties helps ensure that the parallax effect is triggered at the right time and goes on for the right amount of pixels scrolled.</td>
 		</tr>
 		<tr>
@@ -116,7 +122,7 @@ These settings will be used if no others are provided.
 		<tr>
 			<td><b>settings.block</b></td>
 			<td>Object</td>
-			<td>class, speed, image properties</td>
+			<td>class, speed, image</td>
 			<td>The block object.</td>
 		</tr>
 		<tr>
