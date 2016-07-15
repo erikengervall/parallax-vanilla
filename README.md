@@ -3,6 +3,18 @@ Vanilla-Parallax.js
 
 Seamless and simple parallax scrolling library implemented in pure JavaScript utilizing Hardware acceleration for extra performance.
 
+### Super lightweight without dependencies
+Less than 5KB pure JavaScript
+
+### Viewport-only animations
+Parallax elements are only animated within the current viewport, thus saving enormous resources.
+
+### Dynamic sizing
+Elements are dynamically sized and adjusted relative to the para-speed.
+
+### Performance is key
+Vanilla Parallax maximizes your parallax effects with hardware acceleration and no external libraries.
+
 ## Installation
 
 Download package and include `vanilla-parallax.min.css` at the top of your page and `vanilla-parallax.min.js` at the bottom.
@@ -31,7 +43,7 @@ Download package and include `vanilla-parallax.min.css` at the top of your page 
 vp.init();
 ```
 
-### Adding JavaScript settings
+### JavaScript settings: Customize everything
 
 Settings can be set for all container and block elements.
 
@@ -50,7 +62,7 @@ vp.init({
 });
 ```
 
-### Adding data attributes
+### Data attributes: Customize individual elements
 
 Data attributes allows for fine control over each individual parallax effect. You can define settings through JavaScript and then apply data attributes to selected elements.
 
@@ -145,9 +157,7 @@ This code will produce a `para-container` with height `100vh` (viewport height) 
 
 ### Notes
 
-Vanilla-Parallax will use the container's top offset relative to the document, it's height and the window's innerheight to determine whether or not the container is in viewport. Depending if the container is visible in the viewport or not, Vanilla-Parallax will perform the parallax effect, thus saving enormous performance.
-
-This is the CSS that comes out of the box.
+The following is the CSS included.
 
 ```css
 .para-container {
@@ -158,7 +168,6 @@ This is the CSS that comes out of the box.
 	  background-repeat: no-repeat;
 	  background-position: center center;
 	  background-size: cover;
-    background-color: #000;
   }
 }
 ```
