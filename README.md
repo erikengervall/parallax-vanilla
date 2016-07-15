@@ -16,8 +16,7 @@ Download package and include `vanilla-parallax.min.css` at the top of your page 
 
 ### Simple usage
 
-####1.
-Simply wrap a `para-block` with a `para-container`.
+####1. Wrap a `para-block` with a `para-container`.
 
 ```html
 <div class="para-container">
@@ -25,11 +24,9 @@ Simply wrap a `para-block` with a `para-container`.
 </div>
 ```
 
-####2.
-Add an image to `para-block` either through CSS (file or inline-styling) or with data attributes (see below).
+####2. Add an image to `para-block` either through CSS (file or inline-styling) or with data attributes (see below).
 
-####3.
-Initialize using `vp.init()`.
+####3. Initialize using `vp.init()`.
 ```javascript
 vp.init();
 ```
