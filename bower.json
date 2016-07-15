@@ -1,0 +1,29 @@
+{
+  "name": "vanilla-parallax",
+  "description": "Parallax effect optimized with vanilla javascript",
+  "main": [
+    "dist/js/vanilla-parallax.js",
+    "dist/js/vanilla-parallax.min.js",
+    "dist/css/vanilla-parallax.css",
+    "dist/css/vanilla-parallax.min.css"
+  ],
+  "authors": [
+    "Erik Engervall"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "parallax",
+    "javascript",
+    "library",
+    "vanilla",
+    "animation"
+  ],
+  "homepage": "https://github.com/erikengervall/paralib",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "src",
+    "examples",
+    "_loc"
+  ]
+}

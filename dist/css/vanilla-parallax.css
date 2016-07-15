@@ -1,0 +1,9 @@
+.para-container {
+  overflow: hidden;
+}
+.para-container .para-block {
+  will-change: transform;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
