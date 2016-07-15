@@ -31,53 +31,36 @@ vp.init();
 
 ### Adding JavaScript settings
 
-Following settings can be set for all container and block elements.
+Settings can be set for all container and block elements.
 
 ```javascript
 vp.init({
 	container : {
 		class : String,
 		height : Float || Number || String,
-		heightSuffix : String
+		heightSuffix: String
 	},
 	block : {
-		class : String
-		speed : Float,
-		image : Url
+		class: String
+		speed: Float,
+		image: Url
 	}
 });
 ```
 
 ### Adding data attributes
 
-Data attributes allows for fine control over each individual parallax effect.
+Data attributes allows for fine control over each individual parallax effect. You can define settings through JavaScript and then apply data attributes to selected elements.
+
+####Example
 
 ```html
-<div class="para-container" para-height=500>
-	<div class="para-block" para-speed=1></div>
+<div class="para-container" para-height="100" para-height-suffix='vh'>
+	<div class="para-block" para-speed=1 para-image='path/to/image.extension'></div>
 </div>
 ```
 
-### Default settings
-
-These settings will be used if no others are provided.
-
-```javascript
-{
-	container : {
-		class 				: 'para-container',
-		height 				: '250px',
-		heightSuffix 	: 'px'
-	},
-	block : {
-		class : 'para-block',
-		speed : -Math.PI,
-		image : undefined
-	}
-}
-```
-
-### Options
+### Settings
 
 <table class="table table-bordered table-striped">
 	<thead>
@@ -118,6 +101,12 @@ These settings will be used if no others are provided.
 			<td>Float || Number || String</td>
 			<td>'250px'</td>
 			<td>container height.</td>
+		</tr>
+		<tr>
+			<td><i>settings.container.heightSuffix</i></td>
+			<td>String</td>
+			<td>'px'</td>
+			<td>container height suffix. E.g. 'px' or 'vh'.</td>
 		</tr>
 		<tr>
 			<td></td>
