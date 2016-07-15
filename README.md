@@ -90,49 +90,49 @@ These settings will be used if no others are provided.
 	</thead>
 	<tbody>
 		<tr>
-			<td>settings</td>
+			<td><b><u>settings</u></b></td>
 			<td>Object</td>
 			<td>container, block objects</td>
 			<td>Settings object. These settings will be applied to each container and block. Can be individually overwritten by data attributes.</td>
 		</tr>
 		<tr>
-			<td>- settings.container</td>
+			<td><b>settings.container</b></td>
 			<td>Object</td>
 			<td>class, height, heightSuffix properties</td>
 			<td>The container object's properties helps ensure that the parallax effect is triggered at the right time and goes on for the right amount of pixels scrolled.</td>
 		</tr>
 		<tr>
-			<td>- - settings.container.class</td>
+			<td><i>settings.container.class</i></td>
 			<td>String</td>
 			<td>'para-container'</td>
 			<td>The class of the container element.</td>
 		</tr>
 		<tr>
-			<td>- - settings.container.height</td>
+			<td><i>settings.container.height</i></td>
 			<td>Float || Number || String</td>
 			<td>'250px'</td>
 			<td>container height.</td>
 		</tr>
 		<tr>
-			<td>- settings.block</td>
+			<td><b>settings.block</b></td>
 			<td>Object</td>
 			<td>class, speed, image properties</td>
 			<td>The block object.</td>
 		</tr>
 		<tr>
-			<td>- - settings.block.class</td>
+			<td><i>settings.block.class</i></td>
 			<td>String</td>
 			<td>'para-block'</td>
 			<td>The class of the block element.</td>
 		</tr>
 		<tr>
-			<td>- - settings.block.speed</td>
+			<td><i>settings.block.speed</i></td>
 			<td>Float || Number</td>
 			<td>-Math.PI</td>
 			<td>The speed and direction at which the parallax moves.</td>
 		</tr>
 		<tr>
-			<td>- - settings.container.image</td>
+			<td><i>settings.container.image</i></td>
 			<td>Path</td>
 			<td>undefined</td>
 			<td>If no path is given, it is set to undefined. It is then crucial that you include your background through data attributes, CSS or other means.</td>
