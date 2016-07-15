@@ -175,4 +175,4 @@ The following is the CSS included.
 LICENSE
 =======
 
-TBA
+MIT
