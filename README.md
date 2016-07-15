@@ -102,7 +102,7 @@ These settings will be used if no others are provided.
 			<td></td>
 		</tr>
 		<tr>
-			<td><b>settings.container</b></td>
+			<td><b><i>settings.container</i></b></td>
 			<td>Object</td>
 			<td>class, height, heightSuffix</td>
 			<td>The container object's properties helps ensure that the parallax effect is triggered at the right time and goes on for the right amount of pixels scrolled.</td>
@@ -120,7 +120,13 @@ These settings will be used if no others are provided.
 			<td>container height.</td>
 		</tr>
 		<tr>
-			<td><b>settings.block</b></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><b><i>settings.block</i></b></td>
 			<td>Object</td>
 			<td>class, speed, image</td>
 			<td>The block object.</td>
