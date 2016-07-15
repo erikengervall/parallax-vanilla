@@ -54,13 +54,13 @@ vp.init({
 
 Data attributes allows for fine control over each individual parallax effect. You can define settings through JavaScript and then apply data attributes to selected elements.
 
-####Example
-
 ```html
 <div class="para-container" para-height="100" para-height-suffix='vh'>
 	<div class="para-block" para-speed=1 para-image='path/to/image.extension'></div>
 </div>
 ```
+
+This code will produce a `para-container` with height `100vh` (viewport height) containing a `para-block` with a parallax speed of `1` displaying the image `image.extension`.
 
 ### Settings
 
@@ -132,7 +132,7 @@ Data attributes allows for fine control over each individual parallax effect. Yo
 			<td><i>settings.block.speed</i></td>
 			<td>Float || Number</td>
 			<td>-Math.PI</td>
-			<td>The speed and direction at which the parallax moves.</td>
+			<td>The speed and direction at which the parallax animated. Negative values will animate the `block` upwards when scrolling downwards on the page. The inverse apply for positive values. All values are allowed except 0. If 0 is picked, the default value will be applied.</td>
 		</tr>
 		<tr>
 			<td><i>settings.container.image</i></td>
