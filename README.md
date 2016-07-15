@@ -16,17 +16,17 @@ Download package and include `vanilla-parallax.min.css` at the top of your page 
 
 ### Simple usage
 
-####1. Wrap a `para-block` with a `para-container`.
+1. Wrap a `para-block` with a `para-container`.
+
+2. Add a background-image to `para-block` (see data attributes section for alternative solution).
 
 ```html
 <div class="para-container">
-	<div class="para-block"></div>
+	<div class="para-block" style="background-image:url('path/to/image.extension');"></div>
 </div>
 ```
 
-####2. Add an image to `para-block` either through CSS (file or inline-styling) or with data attributes (see below).
-
-####3. Initialize using `vp.init()`.
+3. Initialize library.
 ```javascript
 vp.init();
 ```
