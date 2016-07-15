@@ -51,8 +51,7 @@ Settings can be set for all container and block elements.
 vp.init({
 	container : {
 		class : String,
-		height : Float || Number || String,
-		heightSuffix: String
+		height : String || Float || Number,
 	},
 	block : {
 		class: String
@@ -67,7 +66,7 @@ vp.init({
 Data attributes allows for fine control over each individual parallax effect. You can define settings through JavaScript and then apply data attributes to selected elements.
 
 ```html
-<div class="para-container" para-height="100" para-height-suffix='vh'>
+<div class="para-container" para-height="100vh">
 	<div class="para-block" para-speed=1 para-image='path/to/image.extension'></div>
 </div>
 ```
@@ -101,7 +100,7 @@ This code will produce a `para-container` with height `100vh` (viewport height) 
 		<tr>
 			<td><b><i>settings.container</i></b></td>
 			<td>Object</td>
-			<td>class, height, heightSuffix</td>
+			<td>class, height</td>
 			<td>The container object's properties helps ensure that the parallax effect is triggered at the right time and goes on for the right amount of pixels scrolled.</td>
 		</tr>
 		<tr>
@@ -112,15 +111,9 @@ This code will produce a `para-container` with height `100vh` (viewport height) 
 		</tr>
 		<tr>
 			<td><i>settings.container.height</i></td>
-			<td>Float || Number || String</td>
+			<td>String || Float || Number</td>
 			<td>'250px'</td>
-			<td>container height.</td>
-		</tr>
-		<tr>
-			<td><i>settings.container.heightSuffix</i></td>
-			<td>String</td>
-			<td>'px'</td>
-			<td>container height suffix. E.g. 'px' or 'vh'.</td>
+			<td>container height. String argument with Number and Suffix, e.g. '100px' or '100vh'. Float or Number input will recieve 'px' suffix.</td>
 		</tr>
 		<tr>
 			<td></td>
