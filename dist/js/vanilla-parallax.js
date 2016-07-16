@@ -199,12 +199,13 @@
 
 						var speed = block.el.getAttribute("para-speed");
 						if (speed == null) {
-							block.speed = settings.speed;
+							block.speed = settings.block.speed;
 						} else {
 							if (speed == 0 || speed == 0.0 || speed == 0.00) {
-								block.speed = settings.speed;
+								block.speed = settings.block.speed;
+							} else {
+								block.speed = speed;
 							}
-							block.speed = speed;
 						}
 
 						var paraImage = block.el.getAttribute("para-image");
