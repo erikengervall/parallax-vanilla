@@ -2,10 +2,10 @@
   'use strict';
 
   /**
-   * Defines vp
-   * @return {Object} vp object
+   * Defines pv
+   * @return {Object} pv object
    */
-  function define_vanilla_parallax() {
+  function define_parallax_vanilla() {
   	/**
   	 * Controls environment settings
   	 * @type {Boolean}
@@ -17,7 +17,7 @@
   	 * [Library object]
   	 * @type {Object}
   	 */
-  	var vp = {};
+  	var pv = {};
 
 
   	/**
@@ -25,7 +25,7 @@
   	 * @param  {String}  arg String to check
   	 * @return {Boolean}     True if String consists exclusively of numbers
   	 */
-  	vp.stringOfIntegers = function(arg) {
+  	pv.stringOfIntegers = function(arg) {
   		return (/^[0-9]+$/.test(arg));
   	}
 
@@ -35,7 +35,7 @@
 		 * @param  {HTML-element} element A para-block element
 		 * @param  {CSS-style} style   E.g. 'transform3d(x, y, z)'
 		 */
-		vp.transform = function(element, style) {
+		pv.transform = function(element, style) {
 		  element.style.webkitTransform = style;
 		  element.style.MozTransform = style;
 		  element.style.msTransform = style;
@@ -64,14 +64,14 @@
 		 * 	}
 		 * ]
 		 */
-		vp.paraArr = [];
+		pv.paraArr = [];
 
 
   	/**
   	 * Window properties
   	 * @type {Object}
   	 */
-  	vp.windowProps = {
+  	pv.windowProps = {
 			scrollTop    		: window.scrollY,
 			windowHeight 		: window.innerHeight,
 			windowMidHeight : window.innerHeight / 2,
@@ -81,18 +81,18 @@
 		/**
 		 * Update selected attributes in windowProps on window raf event
 		 */
-		vp.updateWindowProps_OnRaf = function() {
-			vp.windowProps.scrollTop = window.scrollY;
+		pv.updateWindowProps_OnRaf = function() {
+			pv.windowProps.scrollTop = window.scrollY;
 		}
 
 
 		/**
-		 * Update selected attributes in vp.windowProps on window resize event
+		 * Update selected attributes in pv.windowProps on window resize event
 		 */
-		vp.updateWindowProps_OnResize = function() {
-			vp.windowProps.scrollTop 			= window.scrollY;
-			vp.windowProps.windowHeight 		= window.innerHeight;
-			vp.windowProps.windowMidHeight = window.innerHeight / 2;
+		pv.updateWindowProps_OnResize = function() {
+			pv.windowProps.scrollTop 			= window.scrollY;
+			pv.windowProps.windowHeight 		= window.innerHeight;
+			pv.windowProps.windowMidHeight = window.innerHeight / 2;
 		}
 
 
@@ -102,7 +102,7 @@
 		 * @return {Int}    The element's top offset to document.
 		 * Link: https://plainjs.com/javascript/styles/get-the-position-of-an-element-relative-to-the-document-24/
 		 */
-		vp.offsetTop = function(el) {
+		pv.offsetTop = function(el) {
 	    var rectTop = el.getBoundingClientRect().top,
 	    scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 	    return (rectTop + scrollTop);
@@ -110,10 +110,10 @@
 
 
 		/**
-		 * Initialize vp.paraArr
+		 * Initialize pv.paraArr
 		 * @param  {Object} settings User settings
 		 */
-		vp.init = function(settings) {
+		pv.init = function(settings) {
 			var settingsDefault = {
 				container : {
 					class 				: 'para-container',
@@ -172,13 +172,13 @@
 				var container = {};
 
 				container.el = containers[i];
-				container.offset = vp.offsetTop(container.el);
+				container.offset = pv.offsetTop(container.el);
 
 				var height = container.el.getAttribute('para-height');
 				if (height == null) {
 					container.el.style.height = settings.container.height;
 				} else {
-					if (vp.stringOfIntegers(height)) {
+					if (pv.stringOfIntegers(height)) {
 						container.el.style.height = height + "px";
 					} else {
 						container.el.style.height = height;
@@ -231,7 +231,7 @@
 							var paddingBottom = 0;
 
 							// if the para-block offset is less than the windowheight, then the scrolldist will have to be recalculated
-							if (container.offset < vp.windowProps.windowHeight) {
+							if (container.offset < pv.windowProps.windowHeight) {
 								scrollDist = (container.height + container.offset) / Math.abs(block.speed);
 
 								if (block.speed > 0) {
@@ -244,12 +244,12 @@
 
 								// the para-block is below the initial windowheight
 							} else {
-								scrollDist = (container.height + vp.windowProps.windowHeight) / Math.abs(block.speed);
+								scrollDist = (container.height + pv.windowProps.windowHeight) / Math.abs(block.speed);
 								paddingBottom = scrollDist + container.height;
 
 								if (block.speed > 0) {
 									top = - scrollDist;
-									paddingBottom = container.height + (vp.windowProps.windowHeight / Math.abs(block.speed));
+									paddingBottom = container.height + (pv.windowProps.windowHeight / Math.abs(block.speed));
 								} else {
 									paddingBottom = scrollDist + container.height;
 								}
@@ -268,9 +268,9 @@
 
 				} // end of for blocks
 
-				vp.paraArr.push(obj);
+				pv.paraArr.push(obj);
 			} // loop container
-			// pp("vp.paraArr", vp.paraArr);
+			// pp("pv.paraArr", pv.paraArr);
 		}
 
 
@@ -278,42 +278,42 @@
 		// @PARAM typeVar , the type, e.g. "paraVar" or "meetVar"
 		// @PARAM i 			, index of the element that will match against variable arrays
 		// @RETURN bool 	, true/false
-		vp.isInViewport = function(offset, height) {
-			// console.log("scrollTop: ", vp.windowProps.scrollTop, " wHeight: ", vp.windowProps.windowHeight);
+		pv.isInViewport = function(offset, height) {
+			// console.log("scrollTop: ", pv.windowProps.scrollTop, " wHeight: ", pv.windowProps.windowHeight);
 			// console.log("offset: ", offset, " height: ", height);
 			return (
-						vp.windowProps.scrollTop + vp.windowProps.windowHeight - offset > 0
+						pv.windowProps.scrollTop + pv.windowProps.windowHeight - offset > 0
 							&&
-						vp.windowProps.scrollTop < offset + height
+						pv.windowProps.scrollTop < offset + height
 						);
 		}
 
 
 		// translates the parallax blocks, creating the effect
-		vp.translate = function() {
+		pv.translate = function() {
 
 			// loop parallax blocks
-			for (var i = 0; i < vp.paraArr.length; i++) {
-				var containerObj = vp.paraArr[i].container;
+			for (var i = 0; i < pv.paraArr.length; i++) {
+				var containerObj = pv.paraArr[i].container;
 
 				// check if parallax block is in viewport
-				if (vp.isInViewport(containerObj.offset, containerObj.height)) {
+				if (pv.isInViewport(containerObj.offset, containerObj.height)) {
 
-					// if any parallax is within the first windowheight, transform from 0 (vp.scrollTop)
-					if (containerObj.offset < vp.windowProps.windowHeight) {
-						var calc = vp.windowProps.scrollTop;
+					// if any parallax is within the first windowheight, transform from 0 (pv.scrollTop)
+					if (containerObj.offset < pv.windowProps.windowHeight) {
+						var calc = pv.windowProps.scrollTop;
 
 						// if the parallax is further down on the page
 						// calculate windowheight - parallax offset + scrollTop to start from 0 whereever it appears
 					} else {
-						var calc = vp.windowProps.windowHeight - containerObj.offset + vp.windowProps.scrollTop;
+						var calc = pv.windowProps.windowHeight - containerObj.offset + pv.windowProps.scrollTop;
 					}
 
-					for (var j = 0; j < vp.paraArr[i].blocks.length; j++) {
-						var block = vp.paraArr[i].blocks[j];
+					for (var j = 0; j < pv.paraArr[i].blocks.length; j++) {
+						var block = pv.paraArr[i].blocks[j];
 
 						// perform the transform
-						vp.transform(
+						pv.transform(
 				    	block.el,
 				    	"translate3d(0," + (calc / block.speed) + "px, 0)"
 				    );
@@ -328,11 +328,11 @@
 
 	  // window resize event
 	  /**
-	   * Window on resize event, updates vp.windowProps
+	   * Window on resize event, updates pv.windowProps
 	   */
 	  window.onresize = function() {
-	  	vp.updateWindowProps_OnResize();
-	  	vp.init();
+	  	pv.updateWindowProps_OnResize();
+	  	pv.init();
 	  }
 
 
@@ -354,8 +354,8 @@
 		 * Main loop for updating variables and performing translates
 		 */
 		function updateLoop() {
-			vp.updateWindowProps_OnRaf();
-			vp.translate();
+			pv.updateWindowProps_OnRaf();
+			pv.translate();
 			raf(updateLoop);
 		}
 
@@ -369,19 +369,19 @@
 		/**
 		 * Returns the library
 		 */
-    return vp;
+    return pv;
 
-  } // end of define_vp()
+  } // end of define_pv()
 
 
   /**
-   * Define vp to window if not already done
+   * Define pv to window if not already done
    */
-  if (typeof(vp) === 'undefined') {
-    window.vp = define_vanilla_parallax();
-  	console.log("%c vp defined.", "color: green");
+  if (typeof(pv) === 'undefined') {
+    window.pv = define_parallax_vanilla();
+  	console.log("%c pv defined.", "color: green");
   } else {
-    console.log("%c vp already defined.", "color: red");
+    console.log("%c pv already defined.", "color: red");
   }
 
 })(window);
@@ -401,7 +401,7 @@
  * 	}
  * }
  */
-// vp.init({
+// pv.init({
 // 	container : {
 // 		class : 'para-container',
 // 		height : 650
