@@ -1,6 +1,8 @@
 parallax-vanilla.js
 ===========
 
+#[DEMO](https://erikengervall.github.io/parallax-vanilla/examples/)
+
 Seamless and simple parallax scrolling library implemented in pure JavaScript utilizing Hardware acceleration for extra performance.
 
 #### Super lightweight without dependencies
