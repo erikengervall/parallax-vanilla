@@ -177,14 +177,14 @@
 				container.el = containers[i];
 				container.offset = pv.offsetTop(container.el);
 
-				var height = container.el.getAttribute('para-height');
-				if (height == null) {
+				var pvHeight = container.el.getAttribute('pv-height');
+				if (pvHeight == null) {
 					container.el.style.height = settings.container.height;
 				} else {
-					if (pv.stringOfIntegers(height)) {
-						container.el.style.height = height + "px";
+					if (pv.stringOfIntegers(pvHeight)) {
+						container.el.style.height = pvHeight + "px";
 					} else {
-						container.el.style.height = height;
+						container.el.style.height = pvHeight;
 					}
 				}
 
@@ -200,7 +200,7 @@
 						var block = {};
 						block.el = blocks[j];
 
-						var speed = block.el.getAttribute("para-speed");
+						var speed = block.el.getAttribute("pv-speed");
 						if (speed == null) {
 							block.speed = settings.block.speed;
 						} else {
@@ -211,14 +211,14 @@
 							}
 						}
 
-						var paraImage = block.el.getAttribute("para-image");
+						var pvImage = block.el.getAttribute("pv-image");
 
-						if (paraImage == null) {
+						if (pvImage == null) {
 							if (settings.block.image !== undefined) {
 								block.el.style.backgroundImage = "url('" + settings.block.image + "')";
 							}
 						} else {
-							block.el.style.backgroundImage = "url('" + paraImage + "')";
+							block.el.style.backgroundImage = "url('" + pvImage + "')";
 						}
 
 						var image = window.getComputedStyle(block.el).getPropertyValue("background-image");
@@ -382,41 +382,12 @@
    */
   if (typeof(pv) === 'undefined') {
     window.pv = define_parallax_vanilla();
-  	console.log("%c pv defined.", "color: green");
+  	console.log("%c parallax-vanilla defined.", "color: green");
   } else {
-    console.log("%c pv already defined.", "color: red");
+    console.log("%c parallax-vanilla already defined.", "color: red");
   }
 
 })(window);
-
-
-/**
- * Settings for customizing the parallax
- * @type {Object}
- * @structure
- * settings = {
- * 	container : {
- * 		class : String,
- * 		height : Int
- * 	},
- * 	child : {
- * 		class : String
- * 	}
- * }
- */
-// pv.init({
-// 	container : {
-// 		class : 'para-container',
-// 		height : 650
-// 	},
-// 	block : {
-// 		class : 'para-block'
-// 	}
-// });
-
-
-
-
 
 
 

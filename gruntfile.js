@@ -29,6 +29,11 @@ module.exports = function(grunt) {
      * @type {Object}
      */
     uglify: {
+      options: {
+        compress: {
+          drop_console: true
+        }
+      },
       build: {
         src: 
           'src/js/<%= pkg.name %>.js'

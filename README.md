@@ -44,7 +44,13 @@ Download package and include `parallax-vanilla.min.css` at the top of your page 
 
 **1** Wrap a `para-block` with a `para-container`.
 
-**2** Add a background-image to `para-block` (see data attributes section for alternative solution).
+```html
+<div class="para-container">
+	<div class="para-block"></div>
+</div>
+```
+
+**2** Add a background-image to `para-block` (can also be achieved using data-attributes or CSS).
 
 ```html
 <div class="para-container">
@@ -53,8 +59,13 @@ Download package and include `parallax-vanilla.min.css` at the top of your page 
 ```
 
 **3** Initialize library.
-```javascript
-pv.init();
+```html
+<div class="para-container">
+	<div class="para-block" style="background-image:url('path/to/image.extension');"></div>
+</div>
+<script>
+	pv.init();
+</script>
 ```
 
 ### JavaScript settings: Customize everything
