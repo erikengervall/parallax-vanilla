@@ -1,6 +1,6 @@
 {
   "name": "parallax-vanilla",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Parallax effect optimized with vanilla javascript",
   "main": "dist/js/parallax-vanilla.js",
   "dependencies": {},
@@ -23,6 +23,11 @@
     "vanilla",
     "animation"
   ],
-  "author": "Erik Engervall",
-  "license": "MIT"
+  "author": "Erik Engervall erik.engervall@gmail.com http://engervall.com/",
+  "license": "MIT",
+  "homepage": "https://erikengervall.github.io/parallax-vanilla/examples/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/erikengervall/parallax-vanilla"
+  }
 }
