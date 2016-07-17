@@ -30,5 +30,6 @@
     ".DS_Store",
     ".npmignore",
     "npm-debug.log"
-  ]
+  ],
+  "version": "1.0.4"
 }
