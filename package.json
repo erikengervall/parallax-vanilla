@@ -2,7 +2,7 @@
   "name": "parallax-vanilla",
   "version": "1.0.0",
   "description": "Parallax effect optimized with vanilla javascript",
-  "main": "parallax.js",
+  "main": "dist/js/parallax-vanilla.js",
   "dependencies": {},
   "devDependencies": {
     "grunt": "^1.0.1",

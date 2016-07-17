@@ -1,5 +1,5 @@
 {
-  "name": "parallax-pure-js",
+  "name": "parallax-vanilla",
   "description": "Parallax effect optimized with vanilla javascript",
   "main": [
     "dist/js/vanilla-parallax.js",
