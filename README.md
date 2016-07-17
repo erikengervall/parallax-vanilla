@@ -2,6 +2,7 @@ parallax-vanilla.js
 ===========
 
 #[DEMO](https://erikengervall.github.io/parallax-vanilla/examples/){:target='_blank'}
+<a href="example.com" target="_blank">New Tab</a>
 
 Seamless and simple parallax scrolling library implemented in pure JavaScript utilizing Hardware acceleration for extra performance.
 
