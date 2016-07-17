@@ -1,4 +1,4 @@
-Vanilla-Parallax.js
+parallax-vanilla.js
 ===========
 
 Seamless and simple parallax scrolling library implemented in pure JavaScript utilizing Hardware acceleration for extra performance.
@@ -10,18 +10,18 @@ Less than 5KB pure JavaScript.
 Parallax elements are only animated within the current viewport, thus saving enormous resources.
 
 #### Dynamic sizing
-Elements are dynamically sized and adjusted relative to the para-speed.
+Image-elements are dynamically sized and adjusted relative to the para-speed.
 
 #### Performance is key
 Vanilla Parallax maximizes your parallax effects with hardware acceleration and no external libraries.
 
 ## Installation
 
-Download package and include `vanilla-parallax.min.css` at the top of your page and `vanilla-parallax.min.js` at the bottom.
+Download package and include `parallax-vanilla.min.css` at the top of your page and `parallax-vanilla.min.js` at the bottom.
 
 ```html
-<link href="/path/to/vanilla-parallax.min.css">
-<script src="/path/to/vanilla-parallax.min.js"></script>
+<link href="/path/to/parallax-vanilla.min.css">
+<script src="/path/to/parallax-vanilla.min.js"></script>
 ```
 
 ## Usage

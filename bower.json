@@ -1,5 +1,5 @@
 {
-  "name": "vanilla-parallax",
+  "name": "parallax-pure-js",
   "description": "Parallax effect optimized with vanilla javascript",
   "main": [
     "dist/js/vanilla-parallax.js",
@@ -18,7 +18,7 @@
     "vanilla",
     "animation"
   ],
-  "homepage": "https://github.com/erikengervall/paralib",
+  "homepage": "https://github.com/erikengervall/parallax-vanilla",
   "ignore": [
     "**/.*",
     "node_modules",
