@@ -1,7 +1,7 @@
 {
   "name": "parallax-vanilla",
   "version": "1.0.4",
-  "description": "Parallax effect optimized with vanilla javascript",
+  "description": "Simple parallax in pure JavaScript designed for performance and dynamic sizing.",
   "main": "dist/js/parallax-vanilla.js",
   "dependencies": {},
   "devDependencies": {

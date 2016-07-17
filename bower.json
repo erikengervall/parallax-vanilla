@@ -1,6 +1,6 @@
 {
   "name": "parallax-vanilla",
-  "description": "Parallax effect optimized with vanilla javascript",
+  "description": "Simple parallax in pure JavaScript designed for performance and dynamic sizing.",
   "main": [
     "dist/js/vanilla-parallax.js",
     "dist/css/vanilla-parallax.css"
