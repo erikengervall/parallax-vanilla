@@ -42,9 +42,9 @@ Download package and include `parallax-vanilla.min.css` at the top of your page 
 
 ### Simple usage
 
-1. Wrap a `para-block` with a `para-container`.
+1 Wrap a `para-block` with a `para-container`.
 
-2. Add a background-image to `para-block` (see data attributes section for alternative solution).
+2 Add a background-image to `para-block` (see data attributes section for alternative solution).
 
 ```html
 <div class="para-container">
@@ -52,7 +52,7 @@ Download package and include `parallax-vanilla.min.css` at the top of your page 
 </div>
 ```
 
-3. Initialize library.
+3 Initialize library.
 ```javascript
 pv.init();
 ```
