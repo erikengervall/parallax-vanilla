@@ -19,6 +19,18 @@ Vanilla Parallax maximizes your parallax effects with hardware acceleration and 
 
 ## Installation
 
+### bower
+```sh
+bower i --save parallax-vanilla
+```
+
+### npm
+```sh
+npm i --save parallax-vanilla
+```
+
+### Manual
+
 Download package and include `parallax-vanilla.min.css` at the top of your page and `parallax-vanilla.min.js` at the bottom.
 
 ```html

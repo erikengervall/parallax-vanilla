@@ -382,37 +382,12 @@
    */
   if (typeof(pv) === 'undefined') {
     window.pv = define_parallax_vanilla();
-  	console.log("%c pv defined.", "color: green");
+  	console.log("%c parallax-vanilla defined.", "color: green");
   } else {
-    console.log("%c pv already defined.", "color: red");
+    console.log("%c parallax-vanilla already defined.", "color: red");
   }
 
 })(window);
-
-
-/**
- * Settings for customizing the parallax
- * @type {Object}
- * @structure
- * settings = {
- * 	container : {
- * 		class : String,
- * 		height : Int
- * 	},
- * 	child : {
- * 		class : String
- * 	}
- * }
- */
-// pv.init({
-// 	container : {
-// 		class : 'para-container',
-// 		height : 650
-// 	},
-// 	block : {
-// 		class : 'para-block'
-// 	}
-// });
 
 
 
