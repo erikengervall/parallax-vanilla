@@ -1,5 +1,8 @@
 (function(window) {
+
+	
   'use strict';
+
 
   /**
    * Defines pv
