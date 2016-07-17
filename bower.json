@@ -3,9 +3,7 @@
   "description": "Parallax effect optimized with vanilla javascript",
   "main": [
     "dist/js/vanilla-parallax.js",
-    "dist/js/vanilla-parallax.min.js",
-    "dist/css/vanilla-parallax.css",
-    "dist/css/vanilla-parallax.min.css"
+    "dist/css/vanilla-parallax.css"
   ],
   "authors": [
     "Erik Engervall"
