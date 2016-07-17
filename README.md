@@ -42,7 +42,7 @@ Download package and include `parallax-vanilla.min.css` at the top of your page 
 
 3. Initialize library.
 ```javascript
-vp.init();
+pv.init();
 ```
 
 ### JavaScript settings: Customize everything
@@ -50,7 +50,7 @@ vp.init();
 Settings can be set for all container and block elements.
 
 ```javascript
-vp.init({
+pv.init({
 	container : {
 		class : String,
 		height : String || Float || Number,
