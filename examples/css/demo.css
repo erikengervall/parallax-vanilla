@@ -36,6 +36,7 @@ pre {
   z-index: 1;
   padding: 5px;
   background-color: rgba(245, 245, 245, 0.5);
+  white-space: pre-wrap;
 }
 /**
  * Various filler sized
