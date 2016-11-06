@@ -1,7 +1,7 @@
-.para-container {
+.pv-container {
   overflow: hidden;
 }
-.para-container .para-block {
+.pv-container .pv-block {
   will-change: transform;
   background-repeat: no-repeat;
   background-position: center center;

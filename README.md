@@ -42,26 +42,26 @@ Download package and include `parallax-vanilla.min.css` at the top of your page 
 
 ### Simple usage
 
-**1** Wrap a `para-block` with a `para-container`.
+**1** Wrap a `pv-block` with a `pv-container`.
 
 ```html
-<div class="para-container">
-	<div class="para-block"></div>
+<div class="pv-container">
+	<div class="pv-block"></div>
 </div>
 ```
 
-**2** Add a background-image to `para-block` (can also be achieved using data-attributes or CSS).
+**2** Add a background-image to `pv-block` (can also be achieved using data-attributes or CSS).
 
 ```html
-<div class="para-container">
-	<div class="para-block" style="background-image:url('path/to/image.extension');"></div>
+<div class="pv-container">
+	<div class="pv-block" style="background-image:url('path/to/image.extension');"></div>
 </div>
 ```
 
 **3** Initialize library.
 ```html
-<div class="para-container">
-	<div class="para-block" style="background-image:url('path/to/image.extension');"></div>
+<div class="pv-container">
+	<div class="pv-block" style="background-image:url('path/to/image.extension');"></div>
 </div>
 <script>
 	pv.init();
@@ -91,12 +91,12 @@ pv.init({
 Data attributes allows for fine control over each individual parallax effect. You can define settings through JavaScript and then apply data attributes to selected elements.
 
 ```html
-<div class="para-container" para-height="100vh">
-	<div class="para-block" para-speed=1 para-image='path/to/image.extension'></div>
+<div class="pv-container" para-height="100vh">
+	<div class="pv-block" para-speed=1 para-image='path/to/image.extension'></div>
 </div>
 ```
 
-This code will produce a `para-container` with height `100vh` (viewport height) containing a `para-block` with a parallax speed of `1` displaying the image `image.extension`.
+This code will produce a `pv-container` with height `100vh` (viewport height) containing a `pv-block` with a parallax speed of `1` displaying the image `image.extension`.
 
 ### Settings
 
@@ -131,7 +131,7 @@ This code will produce a `para-container` with height `100vh` (viewport height) 
 		<tr>
 			<td><i>settings.container.class</i></td>
 			<td>String</td>
-			<td>'para-container'</td>
+			<td>'pv-container'</td>
 			<td>The class of the container element.</td>
 		</tr>
 		<tr>
@@ -155,7 +155,7 @@ This code will produce a `para-container` with height `100vh` (viewport height) 
 		<tr>
 			<td><i>settings.block.class</i></td>
 			<td>String</td>
-			<td>'para-block'</td>
+			<td>'pv-block'</td>
 			<td>The class of the block element.</td>
 		</tr>
 		<tr>
@@ -178,10 +178,10 @@ This code will produce a `para-container` with height `100vh` (viewport height) 
 The following is the CSS included.
 
 ```css
-.para-container {
+.pv-container {
   overflow: hidden;
 
-  .para-block {
+  .pv-block {
     will-change: transform;
 	  background-repeat: no-repeat;
 	  background-position: center center;
