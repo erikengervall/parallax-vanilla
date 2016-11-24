@@ -12,7 +12,7 @@ Less than 5KB pure JavaScript.
 Parallax elements are only animated within the current viewport, thus saving enormous resources.
 
 #### Dynamic sizing
-Image-elements are dynamically sized and adjusted relative to the para-speed.
+Image-elements are dynamically sized and adjusted relative to the pv-speed.
 
 #### Performance is key
 Vanilla Parallax maximizes your parallax effects with hardware acceleration and no external libraries.
@@ -91,8 +91,8 @@ pv.init({
 Data attributes allows for fine control over each individual parallax effect. You can define settings through JavaScript and then apply data attributes to selected elements.
 
 ```html
-<div class="pv-container" para-height="100vh">
-	<div class="pv-block" para-speed=1 para-image='path/to/image.extension'></div>
+<div class="pv-container" pv-height="100vh">
+	<div class="pv-block" pv-speed=1 pv-image='path/to/image.extension'></div>
 </div>
 ```
 

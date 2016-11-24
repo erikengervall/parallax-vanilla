@@ -101,7 +101,7 @@
 
 		/**
 		 * Calculates the top offset from an element to the window's || document's top
-		 * @param  {HTML-element} el A para-block element
+		 * @param  {HTML-element} el A pv-block element
 		 * @return {Int}    The element's top offset to document.
 		 * Link: https://plainjs.com/javascript/styles/get-the-position-of-an-element-relative-to-the-document-24/
 		 */
@@ -119,11 +119,11 @@
 		pv.init = function(settings) {
 			var settingsDefault = {
 				container : {
-					class 				: 'para-container',
+					class 				: 'pv-container',
 					height 				: '250px'
 				},
 				block : {
-					class 				: 'para-container',
+					class 				: 'pv-container',
 					speed 				: -Math.PI,
 					image 				: undefined
 				}
@@ -223,7 +223,7 @@
 
 						var image = window.getComputedStyle(block.el).getPropertyValue("background-image");
 
-						// if the para-block has a background image
+						// if the pv-block has a background image
 						if (image != "none") {
 
 							// calculates the negative top property
@@ -233,7 +233,7 @@
 							var scrollDist = 0;
 							var paddingBottom = 0;
 
-							// if the para-block offset is less than the windowheight, then the scrolldist will have to be recalculated
+							// if the pv-block offset is less than the windowheight, then the scrolldist will have to be recalculated
 							if (container.offset < pv.windowProps.windowHeight) {
 								scrollDist = (container.height + container.offset) / Math.abs(block.speed);
 
@@ -245,7 +245,7 @@
 								}
 								
 
-								// the para-block is below the initial windowheight
+								// the pv-block is below the initial windowheight
 							} else {
 								scrollDist = (container.height + pv.windowProps.windowHeight) / Math.abs(block.speed);
 								paddingBottom = scrollDist + container.height;
