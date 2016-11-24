@@ -123,7 +123,7 @@
 					height 				: '250px'
 				},
 				block : {
-					class 				: 'pv-container',
+					class 				: 'pv-block',
 					speed 				: -Math.PI,
 					image 				: undefined
 				}
