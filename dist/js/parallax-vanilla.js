@@ -1,6 +1,6 @@
 (function(window) {
 
-	
+
   'use strict';
 
 
@@ -85,7 +85,7 @@
 		 * Update selected attributes in windowProps on window raf event
 		 */
 		pv.updateWindowProps_OnRaf = function() {
-			pv.windowProps.scrollTop = window.scrollY;
+			pv.windowProps.scrollTop = window.scrollY || document.documentElement.scrollTop;
 		}
 
 
@@ -93,7 +93,7 @@
 		 * Update selected attributes in pv.windowProps on window resize event
 		 */
 		pv.updateWindowProps_OnResize = function() {
-			pv.windowProps.scrollTop 			= window.scrollY;
+			pv.windowProps.scrollTop 			= window.scrollY || document.documentElement.scrollTop;
 			pv.windowProps.windowHeight 		= window.innerHeight;
 			pv.windowProps.windowMidHeight = window.innerHeight / 2;
 		}
@@ -140,7 +140,7 @@
 				} else {
 					if (settings.container.class === undefined) {
 						settings.container.class 	= settingsDefault.container.class;
-					} 	
+					}
 					if (settings.container.height === undefined) {
 						settings.container.height = settingsDefault.container.height;
 					}
@@ -243,7 +243,7 @@
 								} else {
 									paddingBottom = scrollDist + (container.height);
 								}
-								
+
 
 								// the pv-block is below the initial windowheight
 							} else {
@@ -388,10 +388,3 @@
   }
 
 })(window);
-
-
-
-
-
-
-
