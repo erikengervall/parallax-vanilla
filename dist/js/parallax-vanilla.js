@@ -318,7 +318,7 @@
 						// perform the transform
 						pv.transform(
 				    	block.el,
-				    	"translate3d(0," + (calc / block.speed) + "px, 0)"
+				    	"translate3d(0," + Math.round(calc / block.speed) + "px, 0)"
 				    );
 
 					} // end of for blocks
