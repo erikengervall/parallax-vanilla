@@ -1,5 +1,7 @@
 module.exports = function(grunt) {
 
+  require('load-grunt-tasks')(grunt); // npm install --save-dev load-grunt-tasks
+
   grunt.initConfig({
 
     /**
@@ -35,12 +37,12 @@ module.exports = function(grunt) {
         }
       },
       build: {
-        src: 
-          'src/js/<%= pkg.name %>.js'
+        src:
+          'dist/js/<%= pkg.name %>.js'
         ,
-        dest: 
+        dest:
           'dist/js/<%= pkg.name %>.min.js'
-        
+
       }
     },
 
@@ -69,18 +71,34 @@ module.exports = function(grunt) {
      * Copy JS source
      * @type {Object}
      */
-    copy: {
-      main: {
-        files: [
-          {
-            expand: true,
-            cwd: "./src/js/",
-            src: "<%= pkg.name %>.js",
-            dest: "./dist/js/"
-          }
-        ]
-      }
-    },
+    // copy: {
+    //   main: {
+    //     files: [
+    //       {
+    //         expand: true,
+    //         cwd: "./src/js/",
+    //         src: "<%= pkg.name %>.js",
+    //         dest: "./dist/js/"
+    //       }
+    //     ]
+    //   }
+    // },
+
+    /**
+     * Compile ES6 code
+     * @type {Object}
+     */
+    babel: {
+  		options: {
+  			sourceMap: true,
+  			presets: ['env']
+  		},
+  		dist: {
+  			files: {
+  				'dist/js/<%= pkg.name %>.js': 'src/js/<%= pkg.name %>.js'
+  			}
+  		}
+  	},
 
     /**
      * Watch tasks array for changes
@@ -92,10 +110,10 @@ module.exports = function(grunt) {
         "./src/js/*"
       ],
       tasks: [
+        "babel",
         "less",
-        "uglify",
         "cssmin",
-        "copy"
+        "uglify"
       ]
     },
 
@@ -106,8 +124,8 @@ module.exports = function(grunt) {
    */
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
+  // grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   /**
@@ -116,9 +134,3 @@ module.exports = function(grunt) {
   grunt.registerTask('default', 'watch');
 
 };
-
-
-
-
-
-
