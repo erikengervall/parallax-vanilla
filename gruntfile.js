@@ -1,14 +1,12 @@
 module.exports = function(grunt) {
-
-  require('load-grunt-tasks')(grunt); // npm install --save-dev load-grunt-tasks
+  require('load-grunt-tasks')(grunt) // npm install --save-dev load-grunt-tasks
 
   grunt.initConfig({
-
     /**
      * Define our package
      * @type {Object}
      */
-    pkg : grunt.file.readJSON('package.json'),
+    pkg: grunt.file.readJSON('package.json'),
 
     /**
      * Compile LESS into CSS
@@ -17,13 +15,13 @@ module.exports = function(grunt) {
     less: {
       build: {
         options: {
-          paths: ["css"]
+          paths: ['css'],
         },
         files: {
-          "dist/css/<%= pkg.name %>.css" : "src/less/<%= pkg.name %>.less",
-          "examples/css/demo.css" : "src/less/demo.less"
-        }
-      }
+          'dist/css/<%= pkg.name %>.css': 'src/less/<%= pkg.name %>.less',
+          'examples/css/demo.css': 'src/less/demo.less',
+        },
+      },
     },
 
     /**
@@ -33,17 +31,13 @@ module.exports = function(grunt) {
     uglify: {
       options: {
         compress: {
-          drop_console: true
-        }
+          drop_console: true,
+        },
       },
       build: {
-        src:
-          'dist/js/<%= pkg.name %>.js'
-        ,
-        dest:
-          'dist/js/<%= pkg.name %>.min.js'
-
-      }
+        src: 'dist/js/<%= pkg.name %>.js',
+        dest: 'dist/js/<%= pkg.name %>.min.js',
+      },
     },
 
     /**
@@ -56,15 +50,12 @@ module.exports = function(grunt) {
           {
             expand: true,
             cwd: 'dist/css',
-            src: [
-              '*.css',
-              '!*.min.css'
-            ],
+            src: ['*.css', '!*.min.css'],
             dest: 'dist/css',
-            ext: '.min.css'
-          }
-        ]
-      }
+            ext: '.min.css',
+          },
+        ],
+      },
     },
 
     /**
@@ -89,48 +80,51 @@ module.exports = function(grunt) {
      * @type {Object}
      */
     babel: {
-  		options: {
-  			sourceMap: true,
-  			presets: ['env']
-  		},
-  		dist: {
-  			files: {
-  				'dist/js/<%= pkg.name %>.js': 'src/js/<%= pkg.name %>.js'
-  			}
-  		}
-  	},
+      options: {
+        sourceMap: true,
+        presets: ['env'],
+      },
+      dist: {
+        files: {
+          'dist/js/<%= pkg.name %>.js': 'dist/js/<%= pkg.name %>.js',
+        },
+      },
+    },
+
+    /**
+     * Compile all source files into one
+     * @type {Object}
+     */
+    browserify: {
+      dist: {
+        files: {
+          'dist/js/<%= pkg.name %>.js': ['src/js/*.js'],
+        },
+      },
+    },
 
     /**
      * Watch tasks array for changes
      * @type {Object}
      */
     watch: {
-      files: [
-        "./src/less/*",
-        "./src/js/*"
-      ],
-      tasks: [
-        "babel",
-        "less",
-        "cssmin",
-        "uglify"
-      ]
+      files: ['./src/less/*', './src/js/*'],
+      tasks: ['browserify', 'babel', 'less', 'cssmin', 'uglify'],
     },
-
-  });
+  })
 
   /**
    * Load npm tasks
    */
-  grunt.loadNpmTasks('grunt-contrib-less');
-  grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-browserify')
+  grunt.loadNpmTasks('grunt-contrib-less')
+  grunt.loadNpmTasks('grunt-contrib-cssmin')
   // grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-uglify')
+  grunt.loadNpmTasks('grunt-contrib-watch')
 
   /**
    * Register task
    */
-  grunt.registerTask('default', 'watch');
-
-};
+  grunt.registerTask('default', 'watch')
+}

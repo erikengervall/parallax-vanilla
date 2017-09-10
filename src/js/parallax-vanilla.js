@@ -1,6 +1,6 @@
-const test = require('./test')
-test()
 ;(window => {
+  const init = require('./init')
+  init()
   /**
    * Defines pv
    * @return {Object} pv object

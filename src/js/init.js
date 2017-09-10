@@ -1,3 +1,5 @@
-export const test = () => {
-  console.log('require test')
+const init = () => {
+  console.log('module init saying hello')
 }
+
+module.exports = init
