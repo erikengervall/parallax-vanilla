@@ -6,7 +6,7 @@ parallax-vanilla.js
 Seamless and simple parallax scrolling library implemented in pure JavaScript utilizing Hardware acceleration for extra performance.
 
 #### Super lightweight without dependencies
-Less than 5KB pure JavaScript.
+5KB pure JavaScript.
 
 #### Viewport-only animations
 Parallax elements are only animated within the current viewport, thus saving enormous resources.
@@ -88,7 +88,7 @@ pv.init({
 
 ### Data attributes: Customize individual elements
 
-Data attributes allows for fine control over each individual parallax effect. You can define settings through JavaScript and then apply data attributes to selected elements.
+Data attributes allows for fine control over each individual parallax effect. Since JavaScript settings are set for all container and block elements, the data attributes simply overwrite the settings for the affected elements.
 
 ```html
 <div class="pv-container" pv-height="100vh">

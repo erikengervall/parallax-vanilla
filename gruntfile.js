@@ -82,7 +82,9 @@ module.exports = function(grunt) {
     babel: {
       options: {
         sourceMap: true,
-        presets: ['env'],
+        presets: ['babel-preset-es2015', 'babel-preset-es2016', 'babel-preset-es2017'].map(
+          require.resolve
+        ),
       },
       dist: {
         files: {
@@ -108,7 +110,7 @@ module.exports = function(grunt) {
      * @type {Object}
      */
     watch: {
-      files: ['./src/less/*', './src/js/*'],
+      files: ['./src/less/*', './src/js/*.js'],
       tasks: ['browserify', 'babel', 'less', 'cssmin', 'uglify'],
     },
   })

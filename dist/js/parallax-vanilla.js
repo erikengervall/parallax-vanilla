@@ -13,56 +13,255 @@
     s(r[o]);
   }return s;
 })({ 1: [function (require, module, exports) {
-    var init = function init() {
-      console.log('module init saying hello');
+    var videoExtensions = ['3g2', '3gp', 'asf', 'avi', 'flv', 'h264', 'm4v', 'mov', 'mp4', 'mpg', 'mpeg', 'rm', 'srt', 'swf', 'vow', 'vob', 'wmv'];
+
+    var defaultSettings = {
+      container: {
+        class: 'pv-container',
+        height: '250px'
+      },
+      block: {
+        class: 'pv-block',
+        speed: -Math.PI,
+        mediatype: 'image',
+        mediapath: undefined
+      }
     };
 
-    module.exports = init;
+    module.exports = { videoExtensions: videoExtensions, defaultSettings: defaultSettings };
   }, {}], 2: [function (require, module, exports) {
-    ;(function (window) {
-      var init = require('./init');
-      init();
-      /**
-       * Defines pv
-       * @return {Object} pv object
-       */
-      var defineParallaxVanilla = function defineParallaxVanilla() {
-        var videoExtensions = ['3g2', '3gp', 'asf', 'avi', 'flv', 'h264', 'm4v', 'mov', 'mp4', 'mpg', 'mpeg', 'rm', 'srt', 'swf', 'vow', 'vob', 'wmv'];
+    // Checks if String argument consists exclusively of numbers
+    var isStringOfIntegers = function isStringOfIntegers(arg) {
+      return (/^[0-9]+$/.test(arg)
+      );
+    };
 
-        /**
-        * [Library object]
-        * @type {Object}
-        */
+    // Calculates the top offset from an element to the window's || document's top, Link: https://plainjs.com/javascript/styles/get-the-position-of-an-element-relative-to-the-document-24/
+    var offsetTop = function offsetTop(el) {
+      var rectTop = el.getBoundingClientRect().top,
+          scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      return rectTop + scrollTop;
+    };
+
+    // checks if the parallax image is in viewport.
+    var isInViewport = function isInViewport(offset, height) {
+      return pv.windowProps.scrollTop + pv.windowProps.windowHeight - offset > 0 && pv.windowProps.scrollTop < offset + height;
+    };
+
+    // Returns the extension of a media path
+    var getExtension = function getExtension(attrMediapath) {
+      var extension = attrMediapath.substr(attrMediapath.lastIndexOf('.') + 1, attrMediapath.length).toLowerCase();
+      extension === -1 ? console.error('Invalid extension for media with media path: ' + attrMediapath) : extension;
+    };
+
+    // returns {true} if media is a video
+    var isVideo = function isVideo(attrMediatype, attrMediapath) {
+      return attrMediatype === 'video' || pv.videoExtensions.indexOf(pv.getExtension(attrMediapath)) !== -1;
+    };
+
+    module.exports = { isStringOfIntegers: isStringOfIntegers, offsetTop: offsetTop, isInViewport: isInViewport, getExtension: getExtension, isVideo: isVideo };
+  }, {}], 3: [function (require, module, exports) {
+    var _require = require('./initContainer'),
+        setContainerHeight = _require.setContainerHeight;
+
+    var _require2 = require('./initBlock'),
+        setBlockSpeed = _require2.setBlockSpeed,
+        setBlockMediatype = _require2.setBlockMediatype,
+        setBlockMediapath = _require2.setBlockMediapath,
+        setBlockVisual = _require2.setBlockVisual;
+
+    module.exports = function (settings) {
+      pv.windowProps = {
+        scrollTop: window.scrollY,
+        windowHeight: window.innerHeight,
+        windowMidHeight: window.innerHeight / 2
+      };
+
+      var _require3 = require('./constants'),
+          defaultSettings = _require3.defaultSettings;
+
+      settings ? settings = Object.assign(settings, defaultSettings) : settings = Object.assign({}, defaultSettings);
+      settings.container.class.toLowerCase();
+      settings.block.class.toLowerCase();
+      settings.block.mediatype.toLowerCase();
+
+      var containers = document.getElementsByClassName(settings.container.class);
+      for (var i = 0; i < containers.length; i++) {
+        var pvObj = {};
+        var container = {};
+
+        container.el = containers[i];
+        container.offset = pv.offsetTop(container.el);
+        container.el.style.height = setContainerHeight(container, settings);
+        container.height = container.el.clientHeight;
+
+        pvObj.container = container;
+        pvObj.blocks = [];
+
+        var blocks = containers[i].getElementsByClassName(settings.block.class);
+        for (var j = 0; j < blocks.length; j++) {
+          var block = {};
+
+          block.el = blocks[j];
+          block.speed = setBlockSpeed(block, settings);
+          block.mediatype = setBlockMediatype(block, settings);
+          block.mediapath = setBlockMediapath(block, settings);
+          var successful = setBlockVisual(block);
+          if (!successful) console.error('Did not successfully set media for block: ' + block);
+
+          // calculates the negative top property
+          // negative scroll distance
+          // plus container height / factor, because whenever we pass the element we'll always scroll the window faster then the animation (if factor < 1 it'll be increased to all is good)
+          var top = 0;
+          var scrollDist = 0;
+          var paddingBottom = 0;
+
+          // if the pv-block offset is less than the windowheight, then the scrolldist will have to be recalculated
+          if (container.offset < pv.windowProps.windowHeight) {
+            scrollDist = (container.height + container.offset) / Math.abs(block.speed);
+
+            if (block.speed > 0) {
+              top = -Math.abs(container.offset);
+              paddingBottom = container.height + container.offset;
+            } else {
+              paddingBottom = scrollDist + container.height;
+            }
+
+            // the pv-block is below the initial windowheight
+          } else {
+            scrollDist = (container.height + pv.windowProps.windowHeight) / Math.abs(block.speed);
+            paddingBottom = scrollDist + container.height;
+
+            if (block.speed > 0) {
+              top = -scrollDist;
+              paddingBottom = container.height + pv.windowProps.windowHeight / Math.abs(block.speed);
+            } else {
+              paddingBottom = scrollDist + container.height;
+            }
+          }
+
+          if (Math.abs(top) >= Math.abs(paddingBottom)) paddingBottom = Math.abs(top) + 1;
+
+          block.el.style.setProperty('padding-bottom', paddingBottom + 'px', null);
+          block.el.style.setProperty('margin-top', top + 'px', null);
+
+          pvObj.blocks.push(block);
+        } // end of for blocks
+
+        pv.pvArr.push(pvObj);
+      } // loop container
+      // pp("pv.pvArr", pv.pvArr)
+    };
+  }, { "./constants": 1, "./initBlock": 4, "./initContainer": 5 }], 4: [function (require, module, exports) {
+    var setBlockSpeed = function setBlockSpeed(block, settings) {
+      var attrSpeed = block.el.getAttribute('pv-speed');
+
+      // No data attribute defined
+      if (!attrSpeed) return settings.block.speed;
+
+      // Speed is set to 0 (fall back on block speed)
+      if (attrSpeed == 0) return settings.block.speed;
+
+      return attrSpeed;
+    };
+
+    var setBlockMediatype = function setBlockMediatype(block, settings) {
+      var attrMediatype = block.el.getAttribute('pv-mediatype');
+      var attrMediapath = block.el.getAttribute('pv-mediapath');
+
+      // Data attribute defined
+      if (attrMediatype) return attrMediatype;
+
+      // Media type set to video
+      if (pv.isVideo(attrMediatype, attrMediapath)) return 'video';
+
+      // Default
+      return settings.block.mediatype;
+    };
+
+    var setBlockMediapath = function setBlockMediapath(block, settings) {
+      var attrMediapath = block.el.getAttribute('pv-mediapath');
+
+      // No data attribute defined
+      if (!attrMediapath) return console.error('Media path not defined for block: ' + block.el);
+
+      return attrMediapath;
+    };
+
+    var setBlockImage = function setBlockImage(block) {
+      var mediatype = block.mediatype,
+          mediapath = block.mediapath;
+
+
+      block.el.style.backgroundImage = "url('" + mediapath + "')";
+
+      // Check if the background image did not get set
+      var backgroundImageFromDOM = window.getComputedStyle(block.el).getPropertyValue('background-image');
+      if (backgroundImageFromDOM == 'none') return false;
+
+      return true;
+    };
+    var setBlockVideo = function setBlockVideo(block) {
+      var mediatype = block.mediatype,
+          mediapath = block.mediapath;
+
+
+      var videoEl = document.createElement('video');
+      videoEl.src = mediapath;
+      videoEl.autoplay = true;
+      // videoEl.type = 'video/' + extension
+      videoEl.loop = true;
+      videoEl.defaultMuted = true;
+      videoEl.muted = true;
+      block.el.appendChild(videoEl);
+      block.isPlaying = true;
+      // videoEl.play()
+
+      return true;
+    };
+
+    var setBlockVisual = function setBlockVisual(block) {
+      var mediatype = block.mediatype;
+
+
+      if (mediatype === 'image') return setBlockImage(block);
+      if (mediatype === 'video') return setBlockVideo(block);
+
+      return false;
+    };
+
+    module.exports = { setBlockSpeed: setBlockSpeed, setBlockMediatype: setBlockMediatype, setBlockMediapath: setBlockMediapath, setBlockVisual: setBlockVisual };
+  }, {}], 5: [function (require, module, exports) {
+    var setContainerHeight = function setContainerHeight(container, settings) {
+      var attrHeight = container.el.getAttribute('pv-height');
+
+      // No data attribute
+      if (!attrHeight) return settings.container.height;
+
+      // String only consists of integers, add px
+      if (pv.isStringOfIntegers(attrHeight)) return attrHeight + 'px';
+
+      // String has more than integers, assume suffix is either px or vh
+      var suffix = attrHeight.substr(attrHeight.length - 2, attrHeight.length);
+      if (suffix == 'px' || suffix == 'vh') return attrHeight;
+
+      throw new Error('Invalid height suffix, expected "px" or "vh" but got: ' + suffix);
+    };
+
+    module.exports = { setContainerHeight: setContainerHeight };
+  }, {}], 6: [function (require, module, exports) {
+    ;(function (window) {
+      var defineParallaxVanilla = function defineParallaxVanilla() {
         var pv = {};
 
-        /**
-        * Checks if String argument consists exclusively of numbers
-        * @param  {String}  arg String to check
-        * @return {Boolean}     True if String consists exclusively of numbers
-        */
-        pv.stringOfIntegers = function (arg) {
-          return (/^[0-9]+$/.test(arg)
-          );
-        };
-
-        /**
-        * Transform prefixes for CSS
-        * @param  {HTML-element} element A para-block element
-        * @param  {CSS-style} style   E.g. 'transform3d(x, y, z)'
-        */
-        pv.transform = function (element, style) {
-          element.style.webkitTransform = style;
-          element.style.MozTransform = style;
-          element.style.msTransform = style;
-          element.style.OTransform = style;
-          element.style.transform = style;
-        };
+        Object.assign(pv, require('./help-functions'));
+        Object.assign(pv, require('./constants'));
 
         /**
         * Primary data handler for containers and blocks.
         * @type {Array}
         * @structure
-        * paraArr = [
+        * pvArr = [
         * 	obj : {
         * 		container : {
         * 			el : HTML-element,
@@ -80,287 +279,36 @@
         * 	}
         * ]
         */
-        pv.paraArr = [];
+        pv.pvArr = [];
+        pv.windowProps = {};
+        pv.init = require('./init');
+        pv.translate = require('./translate');
+        pv.resize = require('./resize');
 
-        /**
-        * Window properties
-        * @type {Object}
-        */
-        pv.windowProps = {
-          scrollTop: window.scrollY,
-          windowHeight: window.innerHeight,
-          windowMidHeight: window.innerHeight / 2
-
-          /**
-          * Update selected attributes in windowProps on window raf event
-          */
-        };pv.updateWindowProps_OnRaf = function () {
-          pv.windowProps.scrollTop = window.scrollY || document.documentElement.scrollTop;
-        };
-
-        /**
-        * Update selected attributes in pv.windowProps on window resize event
-        */
-        pv.updateWindowProps_OnResize = function () {
-          pv.windowProps.scrollTop = window.scrollY || document.documentElement.scrollTop;
-          pv.windowProps.windowHeight = window.innerHeight;
-          pv.windowProps.windowMidHeight = window.innerHeight / 2;
-        };
-
-        /**
-        * Calculates the top offset from an element to the window's || document's top
-        * @param  {HTML-element} el A pv-block element
-        * @return {Int}    The element's top offset to document.
-        * Link: https://plainjs.com/javascript/styles/get-the-position-of-an-element-relative-to-the-document-24/
-        */
-        pv.offsetTop = function (el) {
-          var rectTop = el.getBoundingClientRect().top,
-              scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-          return rectTop + scrollTop;
-        };
-
-        /**
-        * Initialize pv.paraArr
-        * @param  {Object} settings User settings
-        */
-        pv.init = function (settings) {
-          var defaultSettings = {
-            container: {
-              class: 'pv-container',
-              height: '250px'
-            },
-            block: {
-              class: 'pv-block',
-              speed: -Math.PI,
-              mediatype: 'image',
-              mediapath: undefined
-            }
-          };
-
-          settings = settings || defaultSettings;
-          settings.container = settings.container || defaultSettings.container;
-          settings.container.class = settings.container.class ? settings.container.class.toLowerCase() : defaultSettings.container.class;
-          settings.container.height = settings.container.height || defaultSettings.container.height;
-          settings.block = settings.block || defaultSettings.block;
-          settings.block.class = settings.block.class ? settings.block.class.toLowerCase() : defaultSettings.block.class;
-          settings.block.speed = settings.block.speed || defaultSettings.block.speed;
-          settings.block.mediatype = settings.block.mediatype ? settings.block.mediatype.toLowerCase() : defaultSettings.block.mediatype;
-          settings.block.mediapath = settings.block.mediapath || defaultSettings.block.mediapath;
-
-          var containers = document.getElementsByClassName(settings.container.class);
-          for (var i = 0; i < containers.length; i++) {
-            var obj = {};
-            var container = {};
-
-            container.el = containers[i];
-            container.offset = pv.offsetTop(container.el);
-
-            var attrContainerHeight = container.el.getAttribute('pv-height');
-            if (attrContainerHeight == null) {
-              container.el.style.height = settings.container.height;
-            } else {
-              if (pv.stringOfIntegers(attrContainerHeight)) {
-                // string only consists of integers, add px
-                container.el.style.height = attrContainerHeight + 'px';
-              } else {
-                // string has more than integers, assume suffix is either px or vh
-                var suffix = attrContainerHeight.substr(attrContainerHeight.length - 2, attrContainerHeight.length);
-                if (suffix == 'px' || suffix == 'vh') {
-                  container.el.style.height = attrContainerHeight;
-                } else {
-                  throw new Error('Invalid height');
-                }
-              }
-            }
-
-            container.height = container.el.clientHeight;
-
-            obj.container = container;
-
-            obj.blocks = [];
-            var blocks = containers[i].getElementsByClassName(settings.block.class);
-            for (var j = 0; j < blocks.length; j++) {
-              var block = {};
-              block.el = blocks[j];
-
-              var attrSpeed = block.el.getAttribute('pv-speed');
-              if (attrSpeed == null) {
-                block.speed = settings.block.speed;
-              } else {
-                if (attrSpeed == 0 || attrSpeed == 0.0) {
-                  block.speed = settings.block.speed;
-                } else {
-                  block.speed = attrSpeed;
-                }
-              }
-
-              var attrMediaPath = block.el.getAttribute('pv-mediapath');
-
-              // if (extension === -1) return console.error('Media files must have an extension')
-
-              var attrMediaType = block.el.getAttribute('pv-mediatype');
-              if (attrMediaPath) {
-                block.mediapath = attrMediaPath;
-                if (attrMediaType) block.mediatype = attrMediaType;
-                if (pv.isVideo(attrMediaType, attrMediaPath)) {
-                  var videoEl = document.createElement('video');
-                  videoEl.src = attrMediaPath;
-                  videoEl.autoPlay = true;
-                  videoEl.type = 'video/' + extension;
-                  videoEl.loop = true;
-                  videoEl.muted = true;
-                  block.el.appendChild(videoEl);
-                  block.isPlaying = true;
-                  videoEl.play();
-                } else {
-                  block.el.style.backgroundImage = "url('" + attrMediaPath + "')";
-                }
-              } else {
-                console.error('Mediapath undefined for pv-block: ', block.el);
-              }
-
-              var backgroundImageFromDOM = window.getComputedStyle(block.el).getPropertyValue('background-image');
-
-              // if the pv-block for some reason does not have any image
-              if (block.mediatype === 'image' && backgroundImageFromDOM == 'none') return;
-
-              // calculates the negative top property
-              // negative scroll distance
-              // plus container height / factor, because whenever we pass the element we'll always scroll the window faster then the animation (if factor < 1 it'll be increased to all is good)
-              var top = 0;
-              var scrollDist = 0;
-              var paddingBottom = 0;
-
-              // if the pv-block offset is less than the windowheight, then the scrolldist will have to be recalculated
-              if (container.offset < pv.windowProps.windowHeight) {
-                scrollDist = (container.height + container.offset) / Math.abs(block.speed);
-
-                if (block.speed > 0) {
-                  top = -Math.abs(container.offset);
-                  paddingBottom = container.height + container.offset;
-                } else {
-                  paddingBottom = scrollDist + container.height;
-                }
-
-                // the pv-block is below the initial windowheight
-              } else {
-                scrollDist = (container.height + pv.windowProps.windowHeight) / Math.abs(block.speed);
-                paddingBottom = scrollDist + container.height;
-
-                if (block.speed > 0) {
-                  top = -scrollDist;
-                  paddingBottom = container.height + pv.windowProps.windowHeight / Math.abs(block.speed);
-                } else {
-                  paddingBottom = scrollDist + container.height;
-                }
-              }
-
-              if (Math.abs(top) >= Math.abs(paddingBottom)) paddingBottom = Math.abs(top) + 1;
-
-              block.el.style.setProperty('padding-bottom', paddingBottom + 'px', null);
-              block.el.style.setProperty('margin-top', top + 'px', null);
-
-              obj.blocks.push(block);
-            } // end of for blocks
-
-            pv.paraArr.push(obj);
-          } // loop container
-          // pp("pv.paraArr", pv.paraArr)
-        };
-
-        // checks if the parallax image is in viewport.
-        pv.isInViewport = function (offset, height) {
-          return pv.windowProps.scrollTop + pv.windowProps.windowHeight - offset > 0 && pv.windowProps.scrollTop < offset + height;
-        };
-
-        pv.getExtension = function (attrMediaPath) {
-          var extension = attrMediaPath.substr(attrMediaPath.lastIndexOf('.') + 1, attrMediaPath.length).toLowerCase();
-          extension === -1 ? console.log('Invalid extension') : extension;
-        };
-
-        // returns {true} if media is a video
-        pv.isVideo = function (attrMediaType, attrMediaPath) {
-          return attrMediaType === 'video' || videoExtensions.indexOf(pv.getExtension(attrMediaPath)) !== -1;
-        };
-
-        // translates the parallax blocks, creating the effect
-        pv.translate = function () {
-          // loop parallax blocks
-          for (var i = 0; i < pv.paraArr.length; i++) {
-            var containerObj = pv.paraArr[i].container;
-            var calc = void 0;
-
-            // check if parallax block is in viewport
-            if (pv.isInViewport(containerObj.offset, containerObj.height)) {
-              // if any parallax is within the first windowheight, transform from 0 (pv.scrollTop)
-              if (containerObj.offset < pv.windowProps.windowHeight) {
-                calc = pv.windowProps.scrollTop;
-
-                // if the parallax is further down on the page
-                // calculate windowheight - parallax offset + scrollTop to start from 0 whereever it appears
-              } else {
-                calc = pv.windowProps.windowHeight - containerObj.offset + pv.windowProps.scrollTop;
-              }
-
-              for (var j = 0; j < pv.paraArr[i].blocks.length; j++) {
-                var block = pv.paraArr[i].blocks[j];
-                // if (!block.isPlaying) block.el.firstChild.play() // IF IS VIDEO
-
-                // perform the transform
-                pv.transform(block.el, 'translate3d(0,' + Math.round(calc / block.speed) + 'px, 0)');
-              } // end of for blocks
-            } else {
-              // pause blocks with video
-              for (var _j = 0; _j < pv.paraArr[i].blocks.length; _j++) {
-                var _block = pv.paraArr[i].blocks[_j];
-                if (_block.isPlaying) _block.el.firstChild.pause();
-              }
-            } // end of isInViewport if
-          } // end of for container
-        }; // translate
-
-        // window resize event
-        /**
-        * Window on resize event, updates pv.windowProps
-        */
         window.onresize = function () {
-          pv.updateWindowProps_OnResize();
-          pv.init();
+          return pv.resize();
         };
 
-        /**
-        * Request animation frame
-        * Binds function to window
-        */
+        // Request animation frame, also binds function to window
         window.raf = function () {
           return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || function (callback) {
             window.setTimeout(callback, 1000 / 60); // 60 FPS
           };
         }();
 
-        /**
-        * Main loop for updating variables and performing translates
-        */
+        //Main loop for updating variables and performing translates
         var updateLoop = function updateLoop() {
-          pv.updateWindowProps_OnRaf();
           pv.translate();
           raf(updateLoop);
         };
 
-        /**
-        * Initialize main loop
-        */
+        // Initialize main loop
         raf(updateLoop);
 
-        /**
-        * Returns the library
-        */
         return pv;
-      }; // end of define_pv()
+      };
 
-      /**
-       * Define pv to window if not already done
-       */
+      // Define pv
       if (typeof pv === 'undefined') {
         window.pv = defineParallaxVanilla();
         console.log('%c parallax-vanilla defined.', 'color: green');
@@ -368,5 +316,59 @@
         console.log('%c parallax-vanilla already defined.', 'color: red');
       }
     })(window);
-  }, { "./init": 1 }] }, {}, [1, 2]);
+  }, { "./constants": 1, "./help-functions": 2, "./init": 3, "./resize": 7, "./translate": 8 }], 7: [function (require, module, exports) {
+    module.exports = function () {
+      pv.windowProps.scrollTop = window.scrollY || document.documentElement.scrollTop;
+      pv.windowProps.windowHeight = window.innerHeight;
+      pv.windowProps.windowMidHeight = window.innerHeight / 2;
+      pv.init();
+    };
+  }, {}], 8: [function (require, module, exports) {
+    //Transform prefixes for CSS
+    var transform = function transform(element, style) {
+      element.style.webkitTransform = style;
+      element.style.MozTransform = style;
+      element.style.msTransform = style;
+      element.style.OTransform = style;
+      element.style.transform = style;
+    };
+
+    module.exports = function () {
+      // Update selected attributes in windowProps on window raf event
+      pv.windowProps.scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+      // translate the parallax blocks, creating the parallax effect
+      for (var i = 0; i < pv.pvArr.length; i++) {
+        var containerObj = pv.pvArr[i].container;
+        var calc = void 0;
+
+        // check if parallax block is in viewport
+        if (pv.isInViewport(containerObj.offset, containerObj.height)) {
+          // if any parallax is within the first windowheight, transform from 0 (pv.scrollTop)
+          if (containerObj.offset < pv.windowProps.windowHeight) {
+            calc = pv.windowProps.scrollTop;
+
+            // if the parallax is further down on the page
+            // calculate windowheight - parallax offset + scrollTop to start from 0 whereever it appears
+          } else {
+            calc = pv.windowProps.windowHeight - containerObj.offset + pv.windowProps.scrollTop;
+          }
+
+          for (var j = 0; j < pv.pvArr[i].blocks.length; j++) {
+            var block = pv.pvArr[i].blocks[j];
+            // if (!block.isPlaying) block.el.firstChild.play() // IF IS VIDEO
+
+            // perform the transform
+            transform(block.el, 'translate3d(0,' + Math.round(calc / block.speed) + 'px, 0)');
+          } // end of for blocks
+        } else {
+          // pause blocks with video
+          for (var _j = 0; _j < pv.pvArr[i].blocks.length; _j++) {
+            var _block = pv.pvArr[i].blocks[_j];
+            if (_block.isPlaying) _block.el.firstChild.pause();
+          }
+        }
+      }
+    };
+  }, {}] }, {}, [1, 2, 3, 4, 5, 6, 7, 8]);
 //# sourceMappingURL=parallax-vanilla.js.map
