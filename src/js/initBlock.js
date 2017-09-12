@@ -10,6 +10,15 @@ const setBlockSpeed = (block, settings) => {
   return attrSpeed
 }
 
+const setBlockMediapath = (block, settings) => {
+  const attrMediapath = block.el.getAttribute('pv-mediapath')
+
+  // No data attribute defined
+  if (!attrMediapath) return console.error('Media path not defined for block: ' + block.el)
+
+  return attrMediapath
+}
+
 const setBlockMediatype = (block, settings) => {
   let mediatype = block.el.getAttribute('pv-mediatype')
   const attrMediapath = block.el.getAttribute('pv-mediapath')
@@ -22,15 +31,6 @@ const setBlockMediatype = (block, settings) => {
 
   // Default
   return mediatype
-}
-
-const setBlockMediapath = (block, settings) => {
-  const attrMediapath = block.el.getAttribute('pv-mediapath')
-
-  // No data attribute defined
-  if (!attrMediapath) return console.error('Media path not defined for block: ' + block.el)
-
-  return attrMediapath
 }
 
 const setBlockImage = block => {
@@ -52,14 +52,13 @@ const setBlockVideo = block => {
 
   let videoEl = document.createElement('video')
   videoEl.src = mediapath
-  videoEl.autoplay = true
-  // videoEl.type = 'video/' + extension
+  // videoEl.autoplay = true
   videoEl.loop = true
   videoEl.defaultMuted = true
   videoEl.muted = true
-  block.el.appendChild(videoEl)
   block.isPlaying = true
-  // videoEl.play()
+  block.videoEl = videoEl
+  block.el.appendChild(videoEl)
 
   return true
 }

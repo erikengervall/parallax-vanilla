@@ -41,16 +41,16 @@ module.exports = settings => {
 
       block.el = blocks[j]
       block.speed = setBlockSpeed(block, settings)
-      block.mediatype = setBlockMediatype(block, settings)
       block.mediapath = setBlockMediapath(block, settings)
-      console.log(block)
+      block.mediatype = setBlockMediatype(block, settings)
+
       const successful = setBlockVisual(block)
       if (!successful) console.error('Did not successfully set media for block: ' + block)
 
       // calculates the negative top property
       // negative scroll distance
       // plus container height / factor, because whenever we pass the element we'll always scroll the window faster then the animation (if factor < 1 it'll be increased to all is good)
-      let top = 0
+      let marginTop = 0
       let scrollDist = 0
       let paddingBottom = 0
 
@@ -59,29 +59,33 @@ module.exports = settings => {
         scrollDist = (container.height + container.offset) / Math.abs(block.speed)
 
         if (block.speed > 0) {
-          top = -Math.abs(container.offset)
+          marginTop = -Math.abs(container.offset)
           paddingBottom = container.height + container.offset
         } else {
           paddingBottom = scrollDist + container.height
         }
-
-        // the pv-block is below the initial windowheight
       } else {
+        // the pv-block is below the initial windowheight
         scrollDist = (container.height + pv.windowProps.windowHeight) / Math.abs(block.speed)
         paddingBottom = scrollDist + container.height
 
         if (block.speed > 0) {
-          top = -scrollDist
+          marginTop = -scrollDist
           paddingBottom = container.height + pv.windowProps.windowHeight / Math.abs(block.speed)
         } else {
           paddingBottom = scrollDist + container.height
         }
       }
 
-      if (Math.abs(top) >= Math.abs(paddingBottom)) paddingBottom = Math.abs(top) + 1
+      if (Math.abs(marginTop) >= Math.abs(paddingBottom)) paddingBottom = Math.abs(marginTop) + 1
 
-      block.el.style.setProperty('padding-bottom', paddingBottom + 'px', null)
-      block.el.style.setProperty('margin-top', top + 'px', null)
+      if (block.mediatype === 'video') {
+        block.videoEl.style.setProperty('height', paddingBottom + 'px', null)
+        block.videoEl.style.setProperty('margin-top', marginTop + 'px', null)
+      } else {
+        block.el.style.setProperty('padding-bottom', paddingBottom + 'px', null)
+        block.el.style.setProperty('margin-top', marginTop + 'px', null)
+      }
 
       pvObj.blocks.push(block)
     } // end of for blocks

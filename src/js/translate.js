@@ -18,6 +18,12 @@ module.exports = () => {
 
     // check if parallax block is in viewport
     if (pv.isInViewport(containerObj.offset, containerObj.height)) {
+      // // play blocks with paused video
+      // for (let j = 0; j < pv.pvArr[i].blocks.length; j++) {
+      //   let block = pv.pvArr[i].blocks[j]
+      //   if (!block.isPlaying) block.el.firstChild.play()
+      // }
+
       // if any parallax is within the first windowheight, transform from 0 (pv.scrollTop)
       if (containerObj.offset < pv.windowProps.windowHeight) {
         calc = pv.windowProps.scrollTop
@@ -36,7 +42,7 @@ module.exports = () => {
         transform(block.el, 'translate3d(0,' + Math.round(calc / block.speed) + 'px, 0)')
       } // end of for blocks
     } else {
-      // pause blocks with video
+      // pause blocks with playing video
       for (let j = 0; j < pv.pvArr[i].blocks.length; j++) {
         let block = pv.pvArr[i].blocks[j]
         if (block.isPlaying) block.el.firstChild.pause()

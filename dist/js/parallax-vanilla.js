@@ -30,6 +30,21 @@
 
     module.exports = { videoExtensions: videoExtensions, defaultSettings: defaultSettings };
   }, {}], 2: [function (require, module, exports) {
+    // pretty print
+    // function pp(source, obj) {
+    //   var date  = new Date(),
+    //       h     = date.getHours(),
+    //       m     = date.getMinutes(),
+    //       s     = date.getSeconds(),
+    //       now   = h+":"+m+":"+s+" <- "+source
+    //   console.log("%c " + now, "color:blue;font-size:15px;");
+    //   if (obj instanceof HTMLElement) {
+    //   	console.log(obj);
+    //   } else {
+    // 	  console.log(JSON.stringify(obj, null, 2));
+    //   }
+    // }
+
     // Checks if String argument consists exclusively of numbers
     var isStringOfIntegers = function isStringOfIntegers(arg) {
       return (/^[0-9]+$/.test(arg)
@@ -51,12 +66,11 @@
     // Returns the extension of a media path
     var getExtension = function getExtension(attrMediapath) {
       var extension = attrMediapath.substr(attrMediapath.lastIndexOf('.') + 1, attrMediapath.length).toLowerCase();
-      extension === -1 ? console.error('Invalid extension for media with media path: ' + attrMediapath) : extension;
+      return extension === -1 ? console.error('Invalid extension for media with media path: ' + attrMediapath) : extension;
     };
 
     // returns {true} if media is a video
     var isVideo = function isVideo(attrMediatype, attrMediapath) {
-      console.log(attrMediatype, attrMediapath);
       return attrMediatype === 'video' || pv.videoExtensions.indexOf(pv.getExtension(attrMediapath)) !== -1;
     };
 
@@ -105,16 +119,16 @@
 
           block.el = blocks[j];
           block.speed = setBlockSpeed(block, settings);
-          block.mediatype = setBlockMediatype(block, settings);
           block.mediapath = setBlockMediapath(block, settings);
-          console.log(block);
+          block.mediatype = setBlockMediatype(block, settings);
+
           var successful = setBlockVisual(block);
           if (!successful) console.error('Did not successfully set media for block: ' + block);
 
           // calculates the negative top property
           // negative scroll distance
           // plus container height / factor, because whenever we pass the element we'll always scroll the window faster then the animation (if factor < 1 it'll be increased to all is good)
-          var top = 0;
+          var marginTop = 0;
           var scrollDist = 0;
           var paddingBottom = 0;
 
@@ -123,29 +137,33 @@
             scrollDist = (container.height + container.offset) / Math.abs(block.speed);
 
             if (block.speed > 0) {
-              top = -Math.abs(container.offset);
+              marginTop = -Math.abs(container.offset);
               paddingBottom = container.height + container.offset;
             } else {
               paddingBottom = scrollDist + container.height;
             }
-
-            // the pv-block is below the initial windowheight
           } else {
+            // the pv-block is below the initial windowheight
             scrollDist = (container.height + pv.windowProps.windowHeight) / Math.abs(block.speed);
             paddingBottom = scrollDist + container.height;
 
             if (block.speed > 0) {
-              top = -scrollDist;
+              marginTop = -scrollDist;
               paddingBottom = container.height + pv.windowProps.windowHeight / Math.abs(block.speed);
             } else {
               paddingBottom = scrollDist + container.height;
             }
           }
 
-          if (Math.abs(top) >= Math.abs(paddingBottom)) paddingBottom = Math.abs(top) + 1;
+          if (Math.abs(marginTop) >= Math.abs(paddingBottom)) paddingBottom = Math.abs(marginTop) + 1;
 
-          block.el.style.setProperty('padding-bottom', paddingBottom + 'px', null);
-          block.el.style.setProperty('margin-top', top + 'px', null);
+          if (block.mediatype === 'video') {
+            block.videoEl.style.setProperty('height', paddingBottom + 'px', null);
+            block.videoEl.style.setProperty('margin-top', marginTop + 'px', null);
+          } else {
+            block.el.style.setProperty('padding-bottom', paddingBottom + 'px', null);
+            block.el.style.setProperty('margin-top', marginTop + 'px', null);
+          }
 
           pvObj.blocks.push(block);
         } // end of for blocks
@@ -167,6 +185,15 @@
       return attrSpeed;
     };
 
+    var setBlockMediapath = function setBlockMediapath(block, settings) {
+      var attrMediapath = block.el.getAttribute('pv-mediapath');
+
+      // No data attribute defined
+      if (!attrMediapath) return console.error('Media path not defined for block: ' + block.el);
+
+      return attrMediapath;
+    };
+
     var setBlockMediatype = function setBlockMediatype(block, settings) {
       var mediatype = block.el.getAttribute('pv-mediatype');
       var attrMediapath = block.el.getAttribute('pv-mediapath');
@@ -179,15 +206,6 @@
 
       // Default
       return mediatype;
-    };
-
-    var setBlockMediapath = function setBlockMediapath(block, settings) {
-      var attrMediapath = block.el.getAttribute('pv-mediapath');
-
-      // No data attribute defined
-      if (!attrMediapath) return console.error('Media path not defined for block: ' + block.el);
-
-      return attrMediapath;
     };
 
     var setBlockImage = function setBlockImage(block) {
@@ -211,14 +229,13 @@
 
       var videoEl = document.createElement('video');
       videoEl.src = mediapath;
-      videoEl.autoplay = true;
-      // videoEl.type = 'video/' + extension
+      // videoEl.autoplay = true
       videoEl.loop = true;
       videoEl.defaultMuted = true;
       videoEl.muted = true;
-      block.el.appendChild(videoEl);
       block.isPlaying = true;
-      // videoEl.play()
+      block.videoEl = videoEl;
+      block.el.appendChild(videoEl);
 
       return true;
     };
@@ -347,6 +364,12 @@
 
         // check if parallax block is in viewport
         if (pv.isInViewport(containerObj.offset, containerObj.height)) {
+          // // play blocks with paused video
+          // for (let j = 0; j < pv.pvArr[i].blocks.length; j++) {
+          //   let block = pv.pvArr[i].blocks[j]
+          //   if (!block.isPlaying) block.el.firstChild.play()
+          // }
+
           // if any parallax is within the first windowheight, transform from 0 (pv.scrollTop)
           if (containerObj.offset < pv.windowProps.windowHeight) {
             calc = pv.windowProps.scrollTop;
@@ -365,7 +388,7 @@
             transform(block.el, 'translate3d(0,' + Math.round(calc / block.speed) + 'px, 0)');
           } // end of for blocks
         } else {
-          // pause blocks with video
+          // pause blocks with playing video
           for (var _j = 0; _j < pv.pvArr[i].blocks.length; _j++) {
             var _block = pv.pvArr[i].blocks[_j];
             if (_block.isPlaying) _block.el.firstChild.pause();

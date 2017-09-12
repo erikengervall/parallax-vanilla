@@ -1,3 +1,18 @@
+// pretty print
+// function pp(source, obj) {
+//   var date  = new Date(),
+//       h     = date.getHours(),
+//       m     = date.getMinutes(),
+//       s     = date.getSeconds(),
+//       now   = h+":"+m+":"+s+" <- "+source
+//   console.log("%c " + now, "color:blue;font-size:15px;");
+//   if (obj instanceof HTMLElement) {
+//   	console.log(obj);
+//   } else {
+// 	  console.log(JSON.stringify(obj, null, 2));
+//   }
+// }
+
 // Checks if String argument consists exclusively of numbers
 const isStringOfIntegers = arg => {
   return /^[0-9]+$/.test(arg)
@@ -23,14 +38,13 @@ const getExtension = attrMediapath => {
   const extension = attrMediapath
     .substr(attrMediapath.lastIndexOf('.') + 1, attrMediapath.length)
     .toLowerCase()
-  extension === -1
+  return extension === -1
     ? console.error('Invalid extension for media with media path: ' + attrMediapath)
     : extension
 }
 
 // returns {true} if media is a video
 const isVideo = (attrMediatype, attrMediapath) => {
-  console.log(attrMediatype, attrMediapath)
   return (
     attrMediatype === 'video' || pv.videoExtensions.indexOf(pv.getExtension(attrMediapath)) !== -1
   )
