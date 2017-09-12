@@ -11,17 +11,17 @@ const setBlockSpeed = (block, settings) => {
 }
 
 const setBlockMediatype = (block, settings) => {
-  const attrMediatype = block.el.getAttribute('pv-mediatype')
+  let mediatype = block.el.getAttribute('pv-mediatype')
   const attrMediapath = block.el.getAttribute('pv-mediapath')
 
   // Data attribute defined
-  if (attrMediatype) return attrMediatype
+  if (!mediatype) mediatype = settings.block.mediatype
 
   // Media type set to video
-  if (pv.isVideo(attrMediatype, attrMediapath)) return 'video'
+  if (pv.isVideo(mediatype, attrMediapath)) mediatype = 'video'
 
   // Default
-  return settings.block.mediatype
+  return mediatype
 }
 
 const setBlockMediapath = (block, settings) => {
@@ -46,6 +46,7 @@ const setBlockImage = block => {
 
   return true
 }
+
 const setBlockVideo = block => {
   const { mediatype, mediapath } = block
 

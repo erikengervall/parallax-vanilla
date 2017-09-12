@@ -43,6 +43,7 @@ module.exports = settings => {
       block.speed = setBlockSpeed(block, settings)
       block.mediatype = setBlockMediatype(block, settings)
       block.mediapath = setBlockMediapath(block, settings)
+      console.log(block)
       const successful = setBlockVisual(block)
       if (!successful) console.error('Did not successfully set media for block: ' + block)
 

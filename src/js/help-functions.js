@@ -30,6 +30,7 @@ const getExtension = attrMediapath => {
 
 // returns {true} if media is a video
 const isVideo = (attrMediatype, attrMediapath) => {
+  console.log(attrMediatype, attrMediapath)
   return (
     attrMediatype === 'video' || pv.videoExtensions.indexOf(pv.getExtension(attrMediapath)) !== -1
   )

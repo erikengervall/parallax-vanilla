@@ -56,6 +56,7 @@
 
     // returns {true} if media is a video
     var isVideo = function isVideo(attrMediatype, attrMediapath) {
+      console.log(attrMediatype, attrMediapath);
       return attrMediatype === 'video' || pv.videoExtensions.indexOf(pv.getExtension(attrMediapath)) !== -1;
     };
 
@@ -106,6 +107,7 @@
           block.speed = setBlockSpeed(block, settings);
           block.mediatype = setBlockMediatype(block, settings);
           block.mediapath = setBlockMediapath(block, settings);
+          console.log(block);
           var successful = setBlockVisual(block);
           if (!successful) console.error('Did not successfully set media for block: ' + block);
 
@@ -166,17 +168,17 @@
     };
 
     var setBlockMediatype = function setBlockMediatype(block, settings) {
-      var attrMediatype = block.el.getAttribute('pv-mediatype');
+      var mediatype = block.el.getAttribute('pv-mediatype');
       var attrMediapath = block.el.getAttribute('pv-mediapath');
 
       // Data attribute defined
-      if (attrMediatype) return attrMediatype;
+      if (!mediatype) mediatype = settings.block.mediatype;
 
       // Media type set to video
-      if (pv.isVideo(attrMediatype, attrMediapath)) return 'video';
+      if (pv.isVideo(mediatype, attrMediapath)) mediatype = 'video';
 
       // Default
-      return settings.block.mediatype;
+      return mediatype;
     };
 
     var setBlockMediapath = function setBlockMediapath(block, settings) {
@@ -201,6 +203,7 @@
 
       return true;
     };
+
     var setBlockVideo = function setBlockVideo(block) {
       var mediatype = block.mediatype,
           mediapath = block.mediapath;
