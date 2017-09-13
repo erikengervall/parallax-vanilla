@@ -121,6 +121,7 @@
           block.speed = setBlockSpeed(block, settings);
           block.mediapath = setBlockMediapath(block, settings);
           block.mediatype = setBlockMediatype(block, settings);
+          if (block.mediatype === 'video') pvObj.container.hasVideoBlock = true;
 
           var successful = setBlockVisual(block);
           if (!successful) console.error('Did not successfully set media for block: ' + block);
@@ -157,13 +158,8 @@
 
           if (Math.abs(marginTop) >= Math.abs(paddingBottom)) paddingBottom = Math.abs(marginTop) + 1;
 
-          // if (block.mediatype === 'video') {
-          //   block.videoEl.style.setProperty('height', paddingBottom + 'px', null)
-          //   block.videoEl.style.setProperty('margin-top', marginTop + 'px', null)
-          // } else {
           block.el.style.setProperty('padding-bottom', paddingBottom + 'px', null);
           block.el.style.setProperty('margin-top', marginTop + 'px', null);
-          // }
 
           pvObj.blocks.push(block);
         } // end of for blocks
@@ -229,7 +225,7 @@
 
       var videoEl = document.createElement('video');
       videoEl.src = mediapath;
-      // videoEl.autoplay = true
+      videoEl.autoplay = true;
       videoEl.loop = true;
       videoEl.defaultMuted = true;
       videoEl.muted = true;
@@ -364,12 +360,6 @@
 
         // check if parallax block is in viewport
         if (pv.isInViewport(containerObj.offset, containerObj.height)) {
-          // // play blocks with paused video
-          // for (let j = 0; j < pv.pvArr[i].blocks.length; j++) {
-          //   let block = pv.pvArr[i].blocks[j]
-          //   if (!block.isPlaying) block.el.firstChild.play()
-          // }
-
           // if any parallax is within the first windowheight, transform from 0 (pv.scrollTop)
           if (containerObj.offset < pv.windowProps.windowHeight) {
             calc = pv.windowProps.scrollTop;
@@ -382,16 +372,23 @@
 
           for (var j = 0; j < pv.pvArr[i].blocks.length; j++) {
             var block = pv.pvArr[i].blocks[j];
-            // if (!block.isPlaying) block.el.firstChild.play() // IF IS VIDEO
-
-            // perform the transform
+            if (block.mediatype === 'video' && !block.isPlaying) {
+              block.videoEl.play();
+              block.isPlaying = true;
+            }
             transform(block.el, 'translate3d(0,' + Math.round(calc / block.speed) + 'px, 0)');
-          } // end of for blocks
+          }
         } else {
-          // pause blocks with playing video
-          for (var _j = 0; _j < pv.pvArr[i].blocks.length; _j++) {
-            var _block = pv.pvArr[i].blocks[_j];
-            if (_block.isPlaying) _block.el.firstChild.pause();
+          // check if container even has a video block
+          if (containerObj.hasVideoBlock) {
+            // pause blocks with playing video
+            for (var _j = 0; _j < pv.pvArr[i].blocks.length; _j++) {
+              var _block = pv.pvArr[i].blocks[_j];
+              if (_block.mediatype === 'video' && _block.isPlaying) {
+                _block.videoEl.pause();
+                _block.isPlaying = false;
+              }
+            }
           }
         }
       }

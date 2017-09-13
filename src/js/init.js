@@ -43,6 +43,7 @@ module.exports = settings => {
       block.speed = setBlockSpeed(block, settings)
       block.mediapath = setBlockMediapath(block, settings)
       block.mediatype = setBlockMediatype(block, settings)
+      if (block.mediatype === 'video') pvObj.container.hasVideoBlock = true
 
       const successful = setBlockVisual(block)
       if (!successful) console.error('Did not successfully set media for block: ' + block)
@@ -79,13 +80,8 @@ module.exports = settings => {
 
       if (Math.abs(marginTop) >= Math.abs(paddingBottom)) paddingBottom = Math.abs(marginTop) + 1
 
-      // if (block.mediatype === 'video') {
-      //   block.videoEl.style.setProperty('height', paddingBottom + 'px', null)
-      //   block.videoEl.style.setProperty('margin-top', marginTop + 'px', null)
-      // } else {
       block.el.style.setProperty('padding-bottom', paddingBottom + 'px', null)
       block.el.style.setProperty('margin-top', marginTop + 'px', null)
-      // }
 
       pvObj.blocks.push(block)
     } // end of for blocks

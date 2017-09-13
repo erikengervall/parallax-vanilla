@@ -52,7 +52,7 @@ const setBlockVideo = block => {
 
   let videoEl = document.createElement('video')
   videoEl.src = mediapath
-  // videoEl.autoplay = true
+  videoEl.autoplay = true
   videoEl.loop = true
   videoEl.defaultMuted = true
   videoEl.muted = true
