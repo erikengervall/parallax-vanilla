@@ -1,9 +1,12 @@
 parallax-vanilla.js
 ===========
 
-### [DEMO](http://engervall.com/projects/parallax-vanilla)
+Seamless and lightweight parallax scrolling library implemented in pure JavaScript utilizing Hardware acceleration for extra performance.
 
-Seamless and simple parallax scrolling library implemented in pure JavaScript utilizing Hardware acceleration for extra performance.
+### Demo
+[Feature tests](http://engervall.com/projects/parallax-vanilla)
+
+### Main features
 
 #### Super lightweight without dependencies
 5KB pure JavaScript.
@@ -16,6 +19,15 @@ Image-elements are dynamically sized and adjusted relative to the pv-speed.
 
 #### Performance is key
 Vanilla Parallax maximizes your parallax effects with hardware acceleration and no external libraries.
+
+#### Media type independance
+Animates not only images but also videos.
+
+### Browser support
+
+| Chrome | Safari | Firefox |
+| --- | --- | --- |
+| 60+ | 10+ | 44+ |
 
 ## Installation
 
@@ -31,7 +43,7 @@ npm i --save parallax-vanilla
 
 ### Manual
 
-Download package and include `parallax-vanilla.min.css` at the top of your page and `parallax-vanilla.min.js` at the bottom.
+Download package and include `parallax-vanilla.min.css` inside the <b>head</b> tag and `parallax-vanilla.min.js` just before closing the <b>body</b> tag.
 
 ```html
 <link href="/path/to/parallax-vanilla.min.css">
@@ -42,7 +54,7 @@ Download package and include `parallax-vanilla.min.css` at the top of your page 
 
 ### Simple usage
 
-**1** Wrap a `pv-block` with a `pv-container`.
+**1**. Wrap a `pv-block` with a `pv-container`.
 
 ```html
 <div class="pv-container">
@@ -50,27 +62,27 @@ Download package and include `parallax-vanilla.min.css` at the top of your page 
 </div>
 ```
 
-**2** Add a background-image to `pv-block` (can also be achieved using data-attributes or CSS).
+**2**. Attach a mediapath to `pv-block`
 
 ```html
 <div class="pv-container">
-	<div class="pv-block" style="background-image:url('path/to/image.extension');"></div>
+	<div class="pv-block" pv-mediapath="path/to/file.extension"></div>
 </div>
 ```
 
-**3** Initialize library.
+**3**. Initialize library.
 ```html
 <div class="pv-container">
-	<div class="pv-block" style="background-image:url('path/to/image.extension');"></div>
+	<div class="pv-block" pv-mediapath="path/to/file.extension"></div>></div>
 </div>
 <script>
 	pv.init();
 </script>
 ```
 
-### JavaScript settings: Customize everything
+### JavaScript initialization options
 
-Settings can be set for all container and block elements.
+Multiple optional settings can be configured upon initialization.
 
 ```javascript
 pv.init({
@@ -81,7 +93,8 @@ pv.init({
 	block : {
 		class: String
 		speed: Float,
-		image: Url
+		mediapath: String,
+		mediatype: String
 	}
 });
 ```
