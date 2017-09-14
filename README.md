@@ -23,6 +23,8 @@ Vanilla Parallax maximizes your parallax effects with hardware acceleration and 
 #### Media type independance
 Animates not only images but also videos.
 
+<img src="http://animejs.com/documentation/assets/img/readme/prop-css.gif" width="332" />
+
 ### Browser support
 
 | Chrome | Safari | Firefox |
@@ -58,7 +60,7 @@ Download package and include `parallax-vanilla.min.css` inside the <b>head</b> t
 
 ```html
 <div class="pv-container">
-	<div class="pv-block"></div>
+ <div class="pv-block"></div>
 </div>
 ```
 
