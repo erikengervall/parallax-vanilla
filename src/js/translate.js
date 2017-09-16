@@ -1,6 +1,12 @@
-const translate = () => {
+module.exports = () => {
   // Update selected attributes in windowProps on window raf event
   pv.windowProps.scrollTop = window.scrollY || document.documentElement.scrollTop
+  if (pv.windowProps.scrollTop === pv.prevScrollTop) {
+    return
+  } else {
+    pv.prevScrollTop = pv.windowProps.scrollTop
+  }
+
   // translate the parallax blocks, creating the parallax effect
   for (let i = 0; i < pv.containerArr.length; i++) {
     const container = pv.containerArr[i]
@@ -8,6 +14,7 @@ const translate = () => {
 
     // check if parallax block is in viewport
     if (isInViewport(container.offset, container.height)) {
+      pv.latestContainerInViewport = i
       // if any parallax is within the first windowheight, transform from 0 (pv.scrollTop)
       if (container.offset < pv.windowProps.windowHeight) {
         calc = pv.windowProps.scrollTop
@@ -33,11 +40,17 @@ const translate = () => {
           if (block.mediatype === 'video' && !block.videoEl.paused) block.videoEl.pause()
         }
       }
+      const nC = pv.containerArr[i + 1]
+      if (nC && !isInViewport(nC.offset, nC.height) && pv.latestContainerInViewport < i) {
+        break
+      } else {
+        if (nC && isInViewport(nC.offset, nC.height)) {
+          pv.latestContainerInViewport = i + 1 // @todo
+        }
+      }
     }
   }
 }
-
-module.exports = { translate }
 
 //Transform prefixes for CSS
 const transform = (element, style) => {
@@ -48,7 +61,7 @@ const transform = (element, style) => {
   element.style.transform = style
 }
 
-// checks if the parallax image is in viewport.
+// Check if the container is in view
 const isInViewport = (offset, height) => {
   return (
     pv.windowProps.scrollTop + pv.windowProps.windowHeight - offset > 0 &&

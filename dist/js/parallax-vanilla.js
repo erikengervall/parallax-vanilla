@@ -343,9 +343,15 @@
       }
     };
   }, { "./initblock": 6 }], 9: [function (require, module, exports) {
-    var translate = function translate() {
+    module.exports = function () {
       // Update selected attributes in windowProps on window raf event
       pv.windowProps.scrollTop = window.scrollY || document.documentElement.scrollTop;
+      if (pv.windowProps.scrollTop === pv.prevScrollTop) {
+        return;
+      } else {
+        pv.prevScrollTop = pv.windowProps.scrollTop;
+      }
+
       // translate the parallax blocks, creating the parallax effect
       for (var i = 0; i < pv.containerArr.length; i++) {
         var container = pv.containerArr[i];
@@ -353,6 +359,7 @@
 
         // check if parallax block is in viewport
         if (isInViewport(container.offset, container.height)) {
+          pv.latestContainerInViewport = i;
           // if any parallax is within the first windowheight, transform from 0 (pv.scrollTop)
           if (container.offset < pv.windowProps.windowHeight) {
             calc = pv.windowProps.scrollTop;
@@ -378,14 +385,20 @@
               if (_block.mediatype === 'video' && !_block.videoEl.paused) _block.videoEl.pause();
             }
           }
+          var nC = pv.containerArr[i + 1];
+          if (nC && !isInViewport(nC.offset, nC.height) && pv.latestContainerInViewport < i) {
+            break;
+          } else {
+            if (nC && isInViewport(nC.offset, nC.height)) {
+              pv.latestContainerInViewport = i + 1; // @todo
+            }
+          }
         }
       }
     };
 
-    module.exports = { translate: translate
-
-      //Transform prefixes for CSS
-    };var transform = function transform(element, style) {
+    //Transform prefixes for CSS
+    var transform = function transform(element, style) {
       element.style.webkitTransform = style;
       element.style.MozTransform = style;
       element.style.msTransform = style;
@@ -393,7 +406,7 @@
       element.style.transform = style;
     };
 
-    // checks if the parallax image is in viewport.
+    // Check if the container is in view
     var isInViewport = function isInViewport(offset, height) {
       return pv.windowProps.scrollTop + pv.windowProps.windowHeight - offset > 0 && pv.windowProps.scrollTop < offset + height;
     };
