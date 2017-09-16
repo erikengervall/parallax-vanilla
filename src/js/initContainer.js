@@ -1,5 +1,3 @@
-const { isStringOfIntegers } = require('./help-functions')
-
 const setContainerHeight = (container, settings) => {
   let attrHeight = container.el.getAttribute('pv-height')
 
@@ -17,3 +15,8 @@ const setContainerHeight = (container, settings) => {
 }
 
 module.exports = { setContainerHeight }
+
+// Checks if String argument consists exclusively of numbers
+const isStringOfIntegers = arg => {
+  return /^[0-9]+$/.test(arg)
+}

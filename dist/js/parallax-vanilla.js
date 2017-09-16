@@ -30,12 +30,7 @@
 
     module.exports = { videoExtensions: videoExtensions, defaultSettings: defaultSettings };
   }, {}], 2: [function (require, module, exports) {
-    var _require = require('./constants'),
-        videoExtensions = _require.videoExtensions;
-
     // pretty print
-
-
     var pp = function pp(source, obj) {
       var date = new Date(),
           h = date.getHours(),
@@ -50,70 +45,20 @@
       }
     };
 
-    // Checks if String argument consists exclusively of numbers
-    var isStringOfIntegers = function isStringOfIntegers(arg) {
-      return (/^[0-9]+$/.test(arg)
-      );
-    };
+    module.exports = {};
+  }, {}], 3: [function (require, module, exports) {
+    var _require = require('./initContainer'),
+        setContainerHeight = _require.setContainerHeight;
 
-    // Calculates the top offset from an element to the window's || document's top, Link: https://plainjs.com/javascript/styles/get-the-position-of-an-element-relative-to-the-document-24/
-    var offsetTop = function offsetTop(el) {
-      var rectTop = el.getBoundingClientRect().top,
-          scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      return rectTop + scrollTop;
-    };
+    var _require2 = require('./initBlock'),
+        setBlockSpeed = _require2.setBlockSpeed,
+        setBlockMediatype = _require2.setBlockMediatype,
+        setBlockMediapath = _require2.setBlockMediapath,
+        setBlockVisual = _require2.setBlockVisual,
+        setBlockAttributes = _require2.setBlockAttributes;
 
-    // checks if the parallax image is in viewport.
-    var isInViewport = function isInViewport(offset, height) {
-      return pv.windowProps.scrollTop + pv.windowProps.windowHeight - offset > 0 && pv.windowProps.scrollTop < offset + height;
-    };
-
-    // Returns the extension of a media path
-    var getExtension = function getExtension(attrMediapath) {
-      var extension = attrMediapath.substr(attrMediapath.lastIndexOf('.') + 1, attrMediapath.length).toLowerCase();
-      return extension === -1 ? console.error('Invalid extension for media with media path: ' + attrMediapath) : extension;
-    };
-
-    // returns {true} if media is a video
-    var isVideo = function isVideo(attrMediatype, attrMediapath) {
-      return attrMediatype === 'video' || videoExtensions.indexOf(getExtension(attrMediapath)) !== -1;
-    };
-
-    var updateWindowProps = function updateWindowProps() {
-      pv.windowProps = {
-        scrollTop: window.scrollY || document.documentElement.scrollTop,
-        windowHeight: window.innerHeight,
-        windowMidHeight: window.innerHeight / 2
-      };
-    };
-
-    module.exports = {
-      pp: pp,
-      isStringOfIntegers: isStringOfIntegers,
-      offsetTop: offsetTop,
-      isInViewport: isInViewport,
-      getExtension: getExtension,
-      isVideo: isVideo,
-      updateWindowProps: updateWindowProps
-    };
-  }, { "./constants": 1 }], 3: [function (require, module, exports) {
-    var _require2 = require('./initContainer'),
-        setContainerHeight = _require2.setContainerHeight;
-
-    var _require3 = require('./initBlock'),
-        setBlockSpeed = _require3.setBlockSpeed,
-        setBlockMediatype = _require3.setBlockMediatype,
-        setBlockMediapath = _require3.setBlockMediapath,
-        setBlockVisual = _require3.setBlockVisual,
-        setBlockAttributes = _require3.setBlockAttributes;
-
-    var _require4 = require('./constants'),
-        defaultSettings = _require4.defaultSettings;
-
-    var _require5 = require('./help-functions'),
-        updateWindowProps = _require5.updateWindowProps,
-        offsetTop = _require5.offsetTop,
-        pp = _require5.pp;
+    var _require3 = require('./constants'),
+        defaultSettings = _require3.defaultSettings;
 
     module.exports = function (settings) {
       pv.containerArr = [];
@@ -150,7 +95,6 @@
 
         pv.containerArr.push(container);
       } // loop container
-      // pp('pv.containerArr', pv.containerArr)
     };
 
     var initSettings = function initSettings(settings, defaultSettings) {
@@ -171,10 +115,16 @@
       }
       return settings;
     };
-  }, { "./constants": 1, "./help-functions": 2, "./initBlock": 4, "./initContainer": 5 }], 4: [function (require, module, exports) {
-    var _require6 = require('./help-functions'),
-        updateWindowProps = _require6.updateWindowProps,
-        isVideo = _require6.isVideo;
+
+    // Calculates the top offset from an element to the window's || document's top, Link: https://plainjs.com/javascript/styles/get-the-position-of-an-element-relative-to-the-document-24/
+    var offsetTop = function offsetTop(el) {
+      var rectTop = el.getBoundingClientRect().top,
+          scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      return rectTop + scrollTop;
+    };
+  }, { "./constants": 1, "./initBlock": 4, "./initContainer": 5 }], 4: [function (require, module, exports) {
+    var _require4 = require('./constants'),
+        videoExtensions = _require4.videoExtensions;
 
     var setBlockSpeed = function setBlockSpeed(block, settings) {
       var attrSpeed = block.el.getAttribute('pv-speed');
@@ -296,11 +246,26 @@
       setBlockMediapath: setBlockMediapath,
       setBlockVisual: setBlockVisual,
       setBlockAttributes: setBlockAttributes
-    };
-  }, { "./help-functions": 2 }], 5: [function (require, module, exports) {
-    var _require7 = require('./help-functions'),
-        isStringOfIntegers = _require7.isStringOfIntegers;
 
+      // Returns the extension of a media path
+    };var getExtension = function getExtension(attrMediapath) {
+      var extension = attrMediapath.substr(attrMediapath.lastIndexOf('.') + 1, attrMediapath.length).toLowerCase();
+      return extension === -1 ? console.error('Invalid extension for media with media path: ' + attrMediapath) : extension;
+    };
+
+    // returns {true} if media is a video
+    var isVideo = function isVideo(attrMediatype, attrMediapath) {
+      return attrMediatype === 'video' || videoExtensions.indexOf(getExtension(attrMediapath)) !== -1;
+    };
+
+    var updateWindowProps = function updateWindowProps() {
+      pv.windowProps = {
+        scrollTop: window.scrollY || document.documentElement.scrollTop,
+        windowHeight: window.innerHeight,
+        windowMidHeight: window.innerHeight / 2
+      };
+    };
+  }, { "./constants": 1 }], 5: [function (require, module, exports) {
     var setContainerHeight = function setContainerHeight(container, settings) {
       var attrHeight = container.el.getAttribute('pv-height');
 
@@ -317,10 +282,16 @@
       throw new Error('Invalid height suffix, expected "px" or "vh" but got: ' + suffix);
     };
 
-    module.exports = { setContainerHeight: setContainerHeight };
-  }, { "./help-functions": 2 }], 6: [function (require, module, exports) {
+    module.exports = { setContainerHeight: setContainerHeight
+
+      // Checks if String argument consists exclusively of numbers
+    };var isStringOfIntegers = function isStringOfIntegers(arg) {
+      return (/^[0-9]+$/.test(arg)
+      );
+    };
+  }, {}], 6: [function (require, module, exports) {
     arguments[4][4][0].apply(exports, arguments);
-  }, { "./help-functions": 2, "dup": 4 }], 7: [function (require, module, exports) {
+  }, { "./constants": 1, "dup": 4 }], 7: [function (require, module, exports) {
     ;(function (window) {
       var defineParallaxVanilla = function defineParallaxVanilla() {
         var pv = {};
@@ -358,8 +329,8 @@
       }
     })(window);
   }, { "./init": 3, "./resize": 8, "./translate": 9 }], 8: [function (require, module, exports) {
-    var _require8 = require('./initblock'),
-        setBlockAttributes = _require8.setBlockAttributes;
+    var _require5 = require('./initblock'),
+        setBlockAttributes = _require5.setBlockAttributes;
 
     module.exports = function () {
       for (var i = 0; i < pv.containerArr.length; i++) {
@@ -372,21 +343,7 @@
       }
     };
   }, { "./initblock": 6 }], 9: [function (require, module, exports) {
-    var _require9 = require('./help-functions'),
-        isInViewport = _require9.isInViewport;
-
-    //Transform prefixes for CSS
-
-
-    var transform = function transform(element, style) {
-      element.style.webkitTransform = style;
-      element.style.MozTransform = style;
-      element.style.msTransform = style;
-      element.style.OTransform = style;
-      element.style.transform = style;
-    };
-
-    module.exports = function () {
+    var translate = function translate() {
       // Update selected attributes in windowProps on window raf event
       pv.windowProps.scrollTop = window.scrollY || document.documentElement.scrollTop;
       // translate the parallax blocks, creating the parallax effect
@@ -424,5 +381,21 @@
         }
       }
     };
-  }, { "./help-functions": 2 }] }, {}, [1, 2, 3, 4, 5, 7, 8, 9]);
+
+    module.exports = { translate: translate
+
+      //Transform prefixes for CSS
+    };var transform = function transform(element, style) {
+      element.style.webkitTransform = style;
+      element.style.MozTransform = style;
+      element.style.msTransform = style;
+      element.style.OTransform = style;
+      element.style.transform = style;
+    };
+
+    // checks if the parallax image is in viewport.
+    var isInViewport = function isInViewport(offset, height) {
+      return pv.windowProps.scrollTop + pv.windowProps.windowHeight - offset > 0 && pv.windowProps.scrollTop < offset + height;
+    };
+  }, {}] }, {}, [1, 2, 3, 4, 5, 7, 8, 9]);
 //# sourceMappingURL=parallax-vanilla.js.map

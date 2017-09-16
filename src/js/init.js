@@ -7,7 +7,6 @@ const {
   setBlockAttributes,
 } = require('./initBlock')
 const { defaultSettings } = require('./constants')
-const { updateWindowProps, offsetTop, pp } = require('./help-functions')
 
 module.exports = settings => {
   pv.containerArr = []
@@ -44,7 +43,6 @@ module.exports = settings => {
 
     pv.containerArr.push(container)
   } // loop container
-  // pp('pv.containerArr', pv.containerArr)
 }
 
 const initSettings = (settings, defaultSettings) => {
@@ -64,4 +62,11 @@ const initSettings = (settings, defaultSettings) => {
     if (!settings.block.mediapath) settings.block.mediapath = defaultSettings.block.mediapath
   }
   return settings
+}
+
+// Calculates the top offset from an element to the window's || document's top, Link: https://plainjs.com/javascript/styles/get-the-position-of-an-element-relative-to-the-document-24/
+const offsetTop = el => {
+  let rectTop = el.getBoundingClientRect().top,
+    scrollTop = window.pageYOffset || document.documentElement.scrollTop
+  return rectTop + scrollTop
 }

@@ -1,4 +1,4 @@
-const { updateWindowProps, isVideo } = require('./help-functions')
+const { videoExtensions } = require('./constants')
 
 const setBlockSpeed = (block, settings) => {
   const attrSpeed = block.el.getAttribute('pv-speed')
@@ -117,4 +117,27 @@ module.exports = {
   setBlockMediapath,
   setBlockVisual,
   setBlockAttributes,
+}
+
+// Returns the extension of a media path
+const getExtension = attrMediapath => {
+  const extension = attrMediapath
+    .substr(attrMediapath.lastIndexOf('.') + 1, attrMediapath.length)
+    .toLowerCase()
+  return extension === -1
+    ? console.error('Invalid extension for media with media path: ' + attrMediapath)
+    : extension
+}
+
+// returns {true} if media is a video
+const isVideo = (attrMediatype, attrMediapath) => {
+  return attrMediatype === 'video' || videoExtensions.indexOf(getExtension(attrMediapath)) !== -1
+}
+
+const updateWindowProps = () => {
+  pv.windowProps = {
+    scrollTop: window.scrollY || document.documentElement.scrollTop,
+    windowHeight: window.innerHeight,
+    windowMidHeight: window.innerHeight / 2,
+  }
 }

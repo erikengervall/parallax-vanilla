@@ -1,15 +1,4 @@
-const { isInViewport } = require('./help-functions')
-
-//Transform prefixes for CSS
-const transform = (element, style) => {
-  element.style.webkitTransform = style
-  element.style.MozTransform = style
-  element.style.msTransform = style
-  element.style.OTransform = style
-  element.style.transform = style
-}
-
-module.exports = () => {
+const translate = () => {
   // Update selected attributes in windowProps on window raf event
   pv.windowProps.scrollTop = window.scrollY || document.documentElement.scrollTop
   // translate the parallax blocks, creating the parallax effect
@@ -46,4 +35,23 @@ module.exports = () => {
       }
     }
   }
+}
+
+module.exports = { translate }
+
+//Transform prefixes for CSS
+const transform = (element, style) => {
+  element.style.webkitTransform = style
+  element.style.MozTransform = style
+  element.style.msTransform = style
+  element.style.OTransform = style
+  element.style.transform = style
+}
+
+// checks if the parallax image is in viewport.
+const isInViewport = (offset, height) => {
+  return (
+    pv.windowProps.scrollTop + pv.windowProps.windowHeight - offset > 0 &&
+    pv.windowProps.scrollTop < offset + height
+  )
 }
