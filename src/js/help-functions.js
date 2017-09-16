@@ -1,17 +1,19 @@
+const { videoExtensions } = require('./constants')
+
 // pretty print
-// function pp(source, obj) {
-//   var date  = new Date(),
-//       h     = date.getHours(),
-//       m     = date.getMinutes(),
-//       s     = date.getSeconds(),
-//       now   = h+":"+m+":"+s+" <- "+source
-//   console.log("%c " + now, "color:blue;font-size:15px;");
-//   if (obj instanceof HTMLElement) {
-//   	console.log(obj);
-//   } else {
-// 	  console.log(JSON.stringify(obj, null, 2));
-//   }
-// }
+const pp = (source, obj) => {
+  var date = new Date(),
+    h = date.getHours(),
+    m = date.getMinutes(),
+    s = date.getSeconds(),
+    now = h + ':' + m + ':' + s + ' <- ' + source
+  console.log('%c ' + now, 'color:blue;font-size:15px;')
+  if (obj instanceof HTMLElement) {
+    console.log(obj)
+  } else {
+    console.log(JSON.stringify(obj, null, 2))
+  }
+}
 
 // Checks if String argument consists exclusively of numbers
 const isStringOfIntegers = arg => {
@@ -45,9 +47,23 @@ const getExtension = attrMediapath => {
 
 // returns {true} if media is a video
 const isVideo = (attrMediatype, attrMediapath) => {
-  return (
-    attrMediatype === 'video' || pv.videoExtensions.indexOf(pv.getExtension(attrMediapath)) !== -1
-  )
+  return attrMediatype === 'video' || videoExtensions.indexOf(getExtension(attrMediapath)) !== -1
 }
 
-module.exports = { isStringOfIntegers, offsetTop, isInViewport, getExtension, isVideo }
+const updateWindowProps = () => {
+  pv.windowProps = {
+    scrollTop: window.scrollY || document.documentElement.scrollTop,
+    windowHeight: window.innerHeight,
+    windowMidHeight: window.innerHeight / 2,
+  }
+}
+
+module.exports = {
+  pp,
+  isStringOfIntegers,
+  offsetTop,
+  isInViewport,
+  getExtension,
+  isVideo,
+  updateWindowProps,
+}

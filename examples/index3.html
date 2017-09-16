@@ -221,17 +221,19 @@
 
 <script type="text/javascript" src="../dist/js/parallax-vanilla.js"></script>
 <script type="text/javascript">
-pv.init({
+const demoSettings = {
   container: {
-    class: 'pv-container', // targeted container
-    height: '333px', // default height
+    class: 'pv-container',
+    height: '50px',
   },
   block: {
-    class: 'pv-block', // targeted parallax block
-    speed: -1, // default speed
-    image: 'images/ladybug.jpg', // default image
+    class: 'pv-block',
+    speed: -1,
+    mediapath: 'image',
+    mediapath: 'images/ladybug.jpg',
   },
-})
+}
+pv.init(demoSettings)
 </script>
 
 </body>

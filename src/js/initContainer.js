@@ -1,3 +1,5 @@
+const { isStringOfIntegers } = require('./help-functions')
+
 const setContainerHeight = (container, settings) => {
   let attrHeight = container.el.getAttribute('pv-height')
 
@@ -5,7 +7,7 @@ const setContainerHeight = (container, settings) => {
   if (!attrHeight) return settings.container.height
 
   // String only consists of integers, add px
-  if (pv.isStringOfIntegers(attrHeight)) return attrHeight + 'px'
+  if (isStringOfIntegers(attrHeight)) return attrHeight + 'px'
 
   // String has more than integers, assume suffix is either px or vh
   let suffix = attrHeight.substr(attrHeight.length - 2, attrHeight.length)

@@ -1,3 +1,5 @@
+const { updateWindowProps, isVideo } = require('./help-functions')
+
 const setBlockSpeed = (block, settings) => {
   const attrSpeed = block.el.getAttribute('pv-speed')
 
@@ -27,7 +29,7 @@ const setBlockMediatype = (block, settings) => {
   if (!mediatype) mediatype = settings.block.mediatype
 
   // Media type set to video
-  if (pv.isVideo(mediatype, attrMediapath)) mediatype = 'video'
+  if (isVideo(mediatype, attrMediapath)) mediatype = 'video'
 
   // Default
   return mediatype
@@ -56,7 +58,6 @@ const setBlockVideo = block => {
   videoEl.loop = true
   videoEl.defaultMuted = true
   videoEl.muted = true
-  block.isPlaying = true
   block.videoEl = videoEl
   block.el.appendChild(videoEl)
 
@@ -72,4 +73,48 @@ const setBlockVisual = block => {
   return false
 }
 
-module.exports = { setBlockSpeed, setBlockMediatype, setBlockMediapath, setBlockVisual }
+const setBlockAttributes = (container, block) => {
+  updateWindowProps()
+  // calculates the negative top property
+  // negative scroll distance
+  // plus container height / factor, because whenever we pass the element we'll always scroll the window faster then the animation (if factor < 1 it'll be increased to all is good)
+  let marginTop = 0,
+    scrollDist = 0,
+    paddingBottom = 0
+
+  // if the pv-block offset is less than the windowheight, then the scrolldist will have to be recalculated
+  if (container.offset < pv.windowProps.windowHeight) {
+    scrollDist = (container.height + container.offset) / Math.abs(block.speed)
+
+    if (block.speed > 0) {
+      marginTop = -Math.abs(container.offset)
+      paddingBottom = container.height + container.offset
+    } else {
+      paddingBottom = scrollDist + container.height
+    }
+  } else {
+    // the pv-block is below the initial windowheight
+    scrollDist = (container.height + pv.windowProps.windowHeight) / Math.abs(block.speed)
+    paddingBottom = scrollDist + container.height
+
+    if (block.speed > 0) {
+      marginTop = -scrollDist
+      paddingBottom = container.height + pv.windowProps.windowHeight / Math.abs(block.speed)
+    } else {
+      paddingBottom = scrollDist + container.height
+    }
+  }
+
+  if (Math.abs(marginTop) >= Math.abs(paddingBottom)) paddingBottom = Math.abs(marginTop) + 1
+
+  block.el.style.setProperty('padding-bottom', paddingBottom + 'px', null)
+  block.el.style.setProperty('margin-top', marginTop + 'px', null)
+}
+
+module.exports = {
+  setBlockSpeed,
+  setBlockMediatype,
+  setBlockMediapath,
+  setBlockVisual,
+  setBlockAttributes,
+}

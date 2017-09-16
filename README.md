@@ -92,16 +92,16 @@ pv.init({
 	},
 	block : {
 		class: String
-		speed: Float,
+		speed: Number || Float,
 		mediapath: String,
 		mediatype: String
 	}
 });
 ```
 
-#### Settings
+#### JavaScript Settings
 
-<table class='table table-bordered table-striped'>
+<table class='table table-bordered'>
 	<thead>
 		<tr>
 			<th>Name</th>
@@ -114,7 +114,7 @@ pv.init({
 		<tr>
 			<td><b>settings</b></td>
 			<td>Object</td>
-			<td>container, block</td>
+			<td>{container, block}</td>
 			<td>Settings object. These settings will be applied to each container and block. Can be individually overwritten by data attributes.</td>
 		</tr>
 		<tr>
@@ -124,22 +124,22 @@ pv.init({
 			<td></td>
 		</tr>
 		<tr>
-			<td><b><i>settings.container</i></b></td>
+			<td><b>settings.container</b></td>
 			<td>Object</td>
-			<td>class, height</td>
-			<td>The container object's properties helps ensure that the parallax effect is triggered at the right time and goes on for the right amount of pixels scrolled.</td>
+			<td>{class, height}</td>
+			<td>The container object.</td>
 		</tr>
 		<tr>
-			<td><i>settings.container.class</i></td>
+			<td>settings.container.class</td>
 			<td>String</td>
 			<td>'pv-container'</td>
 			<td>The class of the container element.</td>
 		</tr>
 		<tr>
-			<td><i>settings.container.height</i></td>
-			<td>String || Float || Number</td>
+			<td>settings.container.height</td>
+			<td>String || Number || Float</td>
 			<td>'250px'</td>
-			<td>container height. String argument with Number and Suffix, e.g. '100px' or '100vh'. Float or Number input will recieve 'px' suffix.</td>
+			<td>The container's height. String argument with Number and Suffix, e.g. '100px' or '100vh'. Float or Number input will recieve 'px' suffix.</td>
 		</tr>
 		<tr>
 			<td></td>
@@ -148,28 +148,34 @@ pv.init({
 			<td></td>
 		</tr>
 		<tr>
-			<td><b><i>settings.block</i></b></td>
+			<td><b>settings.block</b></td>
 			<td>Object</td>
-			<td>class, speed, image</td>
+			<td>{class, speed, mediatype, mediapath}</td>
 			<td>The block object.</td>
 		</tr>
 		<tr>
-			<td><i>settings.block.class</i></td>
+			<td>settings.block</b>.class</td>
 			<td>String</td>
 			<td>'pv-block'</td>
 			<td>The class of the block element.</td>
 		</tr>
 		<tr>
-			<td><i>settings.block.speed</i></td>
-			<td>Float || Number</td>
+			<td>settings.block</b>.speed</td>
+			<td>Number || Float</td>
 			<td>-Math.PI</td>
 			<td>The speed and direction at which the parallax animated. Negative values will animate the `block` upwards when scrolling downwards on the page. The inverse apply for positive values. All values are allowed except 0. If 0 is picked, the default value will be applied.</td>
 		</tr>
 		<tr>
-			<td><i>settings.container.image</i></td>
-			<td>Path</td>
+			<td>settings.block</b>.mediatype</td>
+			<td>String</td>
+			<td>'image'</td>
+			<td>The block's media type.</td>
+		</tr>
+		<tr>
+			<td>settings.block</b>.mediapath</td>
+			<td>String</td>
 			<td>undefined</td>
-			<td>If no path is given, it is set to undefined. It is then crucial that you include your background through data attributes, CSS or other means.</td>
+			<td>The block's media path.</td>
 		</tr>
 	</tbody>
 </table>
@@ -186,7 +192,24 @@ Data attributes allows for fine control over each individual block. Data attribu
 
 This code will produce a `pv-container` with height `100vh` containing a `pv-block` with a parallax speed of `3.14` displaying the image `image.extension`.
 
-
+<table class='table table-bordered'>
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Type</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><b>pv-height</b></td>
+			<td>Object</td>
+			<td>{container, block}</td>
+			<td>Settings object. These settings will be applied to each container and block. Can be individually overwritten by data attributes.</td>
+		</tr>
+	</tbody>
+</table>
 
 ### Notes
 
@@ -195,13 +218,20 @@ The following is the CSS included.
 ```css
 .pv-container {
   overflow: hidden;
-
-  .pv-block {
-    will-change: transform;
-	  background-repeat: no-repeat;
-	  background-position: center center;
-	  background-size: cover;
-  }
+}
+.pv-container .pv-block {
+  will-change: transform;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+.pv-container .pv-block video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 }
 ```
 

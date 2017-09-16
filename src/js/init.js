@@ -4,89 +4,64 @@ const {
   setBlockMediatype,
   setBlockMediapath,
   setBlockVisual,
+  setBlockAttributes,
 } = require('./initBlock')
+const { defaultSettings } = require('./constants')
+const { updateWindowProps, offsetTop, pp } = require('./help-functions')
 
 module.exports = settings => {
-  pv.windowProps = {
-    scrollTop: window.scrollY,
-    windowHeight: window.innerHeight,
-    windowMidHeight: window.innerHeight / 2,
-  }
+  pv.containerArr = []
+  pv.settings = initSettings(settings, defaultSettings)
 
-  const { defaultSettings } = require('./constants')
-
-  settings
-    ? (settings = Object.assign(settings, defaultSettings))
-    : (settings = Object.assign({}, defaultSettings))
-  settings.container.class.toLowerCase()
-  settings.block.class.toLowerCase()
-  settings.block.mediatype.toLowerCase()
-
-  const containers = document.getElementsByClassName(settings.container.class)
+  const containers = document.getElementsByClassName(pv.settings.container.class)
   for (let i = 0; i < containers.length; i++) {
-    let pvObj = {}
     let container = {}
 
     container.el = containers[i]
-    container.offset = pv.offsetTop(container.el)
-    container.el.style.height = setContainerHeight(container, settings)
+    container.offset = offsetTop(container.el)
+    container.el.style.height = setContainerHeight(container, pv.settings)
     container.height = container.el.clientHeight
 
-    pvObj.container = container
-    pvObj.blocks = []
+    container.blocks = []
 
-    const blocks = containers[i].getElementsByClassName(settings.block.class)
+    const blocks = containers[i].getElementsByClassName(pv.settings.block.class)
     for (let j = 0; j < blocks.length; j++) {
       let block = {}
 
       block.el = blocks[j]
-      block.speed = setBlockSpeed(block, settings)
-      block.mediapath = setBlockMediapath(block, settings)
-      block.mediatype = setBlockMediatype(block, settings)
-      if (block.mediatype === 'video') pvObj.container.hasVideoBlock = true
+      block.speed = setBlockSpeed(block, pv.settings)
+      block.mediapath = setBlockMediapath(block, pv.settings)
+      block.mediatype = setBlockMediatype(block, pv.settings)
+      if (block.mediatype === 'video') container.hasVideoBlock = true
 
       const successful = setBlockVisual(block)
       if (!successful) console.error('Did not successfully set media for block: ' + block)
 
-      // calculates the negative top property
-      // negative scroll distance
-      // plus container height / factor, because whenever we pass the element we'll always scroll the window faster then the animation (if factor < 1 it'll be increased to all is good)
-      let marginTop = 0
-      let scrollDist = 0
-      let paddingBottom = 0
+      setBlockAttributes(container, block)
 
-      // if the pv-block offset is less than the windowheight, then the scrolldist will have to be recalculated
-      if (container.offset < pv.windowProps.windowHeight) {
-        scrollDist = (container.height + container.offset) / Math.abs(block.speed)
-
-        if (block.speed > 0) {
-          marginTop = -Math.abs(container.offset)
-          paddingBottom = container.height + container.offset
-        } else {
-          paddingBottom = scrollDist + container.height
-        }
-      } else {
-        // the pv-block is below the initial windowheight
-        scrollDist = (container.height + pv.windowProps.windowHeight) / Math.abs(block.speed)
-        paddingBottom = scrollDist + container.height
-
-        if (block.speed > 0) {
-          marginTop = -scrollDist
-          paddingBottom = container.height + pv.windowProps.windowHeight / Math.abs(block.speed)
-        } else {
-          paddingBottom = scrollDist + container.height
-        }
-      }
-
-      if (Math.abs(marginTop) >= Math.abs(paddingBottom)) paddingBottom = Math.abs(marginTop) + 1
-
-      block.el.style.setProperty('padding-bottom', paddingBottom + 'px', null)
-      block.el.style.setProperty('margin-top', marginTop + 'px', null)
-
-      pvObj.blocks.push(block)
+      container.blocks.push(block)
     } // end of for blocks
 
-    pv.pvArr.push(pvObj)
+    pv.containerArr.push(container)
   } // loop container
-  // pp("pv.pvArr", pv.pvArr)
+  // pp('pv.containerArr', pv.containerArr)
+}
+
+const initSettings = (settings, defaultSettings) => {
+  if (!settings || settings === {}) return defaultSettings
+  if (!settings.container || settings.container === {}) {
+    settings.container = defaultSettings.container
+  } else {
+    if (!settings.container.class) settings.container.class = defaultSettings.container.class
+    if (!settings.container.height) settings.container.height = defaultSettings.container.height
+  }
+  if (!settings.block || settings.block === {}) {
+    settings.block = defaultSettings.block
+  } else {
+    if (!settings.block.class) settings.block.class = defaultSettings.block.class
+    if (!settings.block.speed) settings.block.speed = defaultSettings.block.speed
+    if (!settings.block.mediatype) settings.block.mediatype = defaultSettings.block.mediatype
+    if (!settings.block.mediapath) settings.block.mediapath = defaultSettings.block.mediapath
+  }
+  return settings
 }

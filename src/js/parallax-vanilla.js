@@ -1,39 +1,9 @@
 ;(window => {
   const defineParallaxVanilla = () => {
     let pv = {}
+    pv.init = require('./init') // exposes init function to user
 
-    Object.assign(pv, require('./help-functions'))
-    Object.assign(pv, require('./constants'))
-
-    /**
-		 * Primary data handler for containers and blocks.
-		 * @type {Array}
-		 * @structure
-		 * pvArr = [
-		 * 	obj : {
-		 * 		container : {
-		 * 			el : HTML-element,
-		 * 			offset : offsetTop,
-		 * 			height : clientHeight
-		 * 		},
-		 * 		blocks : [
-		 * 			block : {
-		 * 				el : HTML-element,
-		 * 				speed : getAttr('pv-speed')
-     *        mediatype: getAttr('pv-mediatype'),
-     *        mediapath: getAttr('pv-mediapath'),
-		 * 			}
-		 * 		]
-		 * 	}
-		 * ]
-		 */
-    pv.pvArr = []
-    pv.windowProps = {}
-    pv.init = require('./init')
-    pv.translate = require('./translate')
-    pv.resize = require('./resize')
-
-    window.onresize = () => pv.resize()
+    window.onresize = () => require('./resize')()
 
     // Request animation frame, also binds function to window
     window.raf = (() => {
@@ -49,7 +19,7 @@
 
     //Main loop for updating variables and performing translates
     const updateLoop = () => {
-      pv.translate()
+      require('./translate')()
       raf(updateLoop)
     }
 

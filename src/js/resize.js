@@ -1,6 +1,12 @@
+const { setBlockAttributes } = require('./initblock')
+
 module.exports = () => {
-  pv.windowProps.scrollTop = window.scrollY || document.documentElement.scrollTop
-  pv.windowProps.windowHeight = window.innerHeight
-  pv.windowProps.windowMidHeight = window.innerHeight / 2
-  pv.init()
+  for (let i = 0; i < pv.containerArr.length; i++) {
+    let container = pv.containerArr[i]
+    container.height = container.el.clientHeight
+    for (let j = 0; j < pv.containerArr[i].blocks.length; j++) {
+      let block = pv.containerArr[i].blocks[j]
+      setBlockAttributes(container, block)
+    }
+  }
 }

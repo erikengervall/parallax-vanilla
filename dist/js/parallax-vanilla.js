@@ -30,20 +30,25 @@
 
     module.exports = { videoExtensions: videoExtensions, defaultSettings: defaultSettings };
   }, {}], 2: [function (require, module, exports) {
+    var _require = require('./constants'),
+        videoExtensions = _require.videoExtensions;
+
     // pretty print
-    // function pp(source, obj) {
-    //   var date  = new Date(),
-    //       h     = date.getHours(),
-    //       m     = date.getMinutes(),
-    //       s     = date.getSeconds(),
-    //       now   = h+":"+m+":"+s+" <- "+source
-    //   console.log("%c " + now, "color:blue;font-size:15px;");
-    //   if (obj instanceof HTMLElement) {
-    //   	console.log(obj);
-    //   } else {
-    // 	  console.log(JSON.stringify(obj, null, 2));
-    //   }
-    // }
+
+
+    var pp = function pp(source, obj) {
+      var date = new Date(),
+          h = date.getHours(),
+          m = date.getMinutes(),
+          s = date.getSeconds(),
+          now = h + ':' + m + ':' + s + ' <- ' + source;
+      console.log('%c ' + now, 'color:blue;font-size:15px;');
+      if (obj instanceof HTMLElement) {
+        console.log(obj);
+      } else {
+        console.log(JSON.stringify(obj, null, 2));
+      }
+    };
 
     // Checks if String argument consists exclusively of numbers
     var isStringOfIntegers = function isStringOfIntegers(arg) {
@@ -71,104 +76,106 @@
 
     // returns {true} if media is a video
     var isVideo = function isVideo(attrMediatype, attrMediapath) {
-      return attrMediatype === 'video' || pv.videoExtensions.indexOf(pv.getExtension(attrMediapath)) !== -1;
+      return attrMediatype === 'video' || videoExtensions.indexOf(getExtension(attrMediapath)) !== -1;
     };
 
-    module.exports = { isStringOfIntegers: isStringOfIntegers, offsetTop: offsetTop, isInViewport: isInViewport, getExtension: getExtension, isVideo: isVideo };
-  }, {}], 3: [function (require, module, exports) {
-    var _require = require('./initContainer'),
-        setContainerHeight = _require.setContainerHeight;
-
-    var _require2 = require('./initBlock'),
-        setBlockSpeed = _require2.setBlockSpeed,
-        setBlockMediatype = _require2.setBlockMediatype,
-        setBlockMediapath = _require2.setBlockMediapath,
-        setBlockVisual = _require2.setBlockVisual;
-
-    module.exports = function (settings) {
+    var updateWindowProps = function updateWindowProps() {
       pv.windowProps = {
-        scrollTop: window.scrollY,
+        scrollTop: window.scrollY || document.documentElement.scrollTop,
         windowHeight: window.innerHeight,
         windowMidHeight: window.innerHeight / 2
       };
+    };
 
-      var _require3 = require('./constants'),
-          defaultSettings = _require3.defaultSettings;
+    module.exports = {
+      pp: pp,
+      isStringOfIntegers: isStringOfIntegers,
+      offsetTop: offsetTop,
+      isInViewport: isInViewport,
+      getExtension: getExtension,
+      isVideo: isVideo,
+      updateWindowProps: updateWindowProps
+    };
+  }, { "./constants": 1 }], 3: [function (require, module, exports) {
+    var _require2 = require('./initContainer'),
+        setContainerHeight = _require2.setContainerHeight;
 
-      settings ? settings = Object.assign(settings, defaultSettings) : settings = Object.assign({}, defaultSettings);
-      settings.container.class.toLowerCase();
-      settings.block.class.toLowerCase();
-      settings.block.mediatype.toLowerCase();
+    var _require3 = require('./initBlock'),
+        setBlockSpeed = _require3.setBlockSpeed,
+        setBlockMediatype = _require3.setBlockMediatype,
+        setBlockMediapath = _require3.setBlockMediapath,
+        setBlockVisual = _require3.setBlockVisual,
+        setBlockAttributes = _require3.setBlockAttributes;
 
-      var containers = document.getElementsByClassName(settings.container.class);
+    var _require4 = require('./constants'),
+        defaultSettings = _require4.defaultSettings;
+
+    var _require5 = require('./help-functions'),
+        updateWindowProps = _require5.updateWindowProps,
+        offsetTop = _require5.offsetTop,
+        pp = _require5.pp;
+
+    module.exports = function (settings) {
+      pv.containerArr = [];
+      pv.settings = initSettings(settings, defaultSettings);
+
+      var containers = document.getElementsByClassName(pv.settings.container.class);
       for (var i = 0; i < containers.length; i++) {
-        var pvObj = {};
         var container = {};
 
         container.el = containers[i];
-        container.offset = pv.offsetTop(container.el);
-        container.el.style.height = setContainerHeight(container, settings);
+        container.offset = offsetTop(container.el);
+        container.el.style.height = setContainerHeight(container, pv.settings);
         container.height = container.el.clientHeight;
 
-        pvObj.container = container;
-        pvObj.blocks = [];
+        container.blocks = [];
 
-        var blocks = containers[i].getElementsByClassName(settings.block.class);
+        var blocks = containers[i].getElementsByClassName(pv.settings.block.class);
         for (var j = 0; j < blocks.length; j++) {
           var block = {};
 
           block.el = blocks[j];
-          block.speed = setBlockSpeed(block, settings);
-          block.mediapath = setBlockMediapath(block, settings);
-          block.mediatype = setBlockMediatype(block, settings);
-          if (block.mediatype === 'video') pvObj.container.hasVideoBlock = true;
+          block.speed = setBlockSpeed(block, pv.settings);
+          block.mediapath = setBlockMediapath(block, pv.settings);
+          block.mediatype = setBlockMediatype(block, pv.settings);
+          if (block.mediatype === 'video') container.hasVideoBlock = true;
 
           var successful = setBlockVisual(block);
           if (!successful) console.error('Did not successfully set media for block: ' + block);
 
-          // calculates the negative top property
-          // negative scroll distance
-          // plus container height / factor, because whenever we pass the element we'll always scroll the window faster then the animation (if factor < 1 it'll be increased to all is good)
-          var marginTop = 0;
-          var scrollDist = 0;
-          var paddingBottom = 0;
+          setBlockAttributes(container, block);
 
-          // if the pv-block offset is less than the windowheight, then the scrolldist will have to be recalculated
-          if (container.offset < pv.windowProps.windowHeight) {
-            scrollDist = (container.height + container.offset) / Math.abs(block.speed);
-
-            if (block.speed > 0) {
-              marginTop = -Math.abs(container.offset);
-              paddingBottom = container.height + container.offset;
-            } else {
-              paddingBottom = scrollDist + container.height;
-            }
-          } else {
-            // the pv-block is below the initial windowheight
-            scrollDist = (container.height + pv.windowProps.windowHeight) / Math.abs(block.speed);
-            paddingBottom = scrollDist + container.height;
-
-            if (block.speed > 0) {
-              marginTop = -scrollDist;
-              paddingBottom = container.height + pv.windowProps.windowHeight / Math.abs(block.speed);
-            } else {
-              paddingBottom = scrollDist + container.height;
-            }
-          }
-
-          if (Math.abs(marginTop) >= Math.abs(paddingBottom)) paddingBottom = Math.abs(marginTop) + 1;
-
-          block.el.style.setProperty('padding-bottom', paddingBottom + 'px', null);
-          block.el.style.setProperty('margin-top', marginTop + 'px', null);
-
-          pvObj.blocks.push(block);
+          container.blocks.push(block);
         } // end of for blocks
 
-        pv.pvArr.push(pvObj);
+        pv.containerArr.push(container);
       } // loop container
-      // pp("pv.pvArr", pv.pvArr)
+      // pp('pv.containerArr', pv.containerArr)
     };
-  }, { "./constants": 1, "./initBlock": 4, "./initContainer": 5 }], 4: [function (require, module, exports) {
+
+    var initSettings = function initSettings(settings, defaultSettings) {
+      if (!settings || settings === {}) return defaultSettings;
+      if (!settings.container || settings.container === {}) {
+        settings.container = defaultSettings.container;
+      } else {
+        if (!settings.container.class) settings.container.class = defaultSettings.container.class;
+        if (!settings.container.height) settings.container.height = defaultSettings.container.height;
+      }
+      if (!settings.block || settings.block === {}) {
+        settings.block = defaultSettings.block;
+      } else {
+        if (!settings.block.class) settings.block.class = defaultSettings.block.class;
+        if (!settings.block.speed) settings.block.speed = defaultSettings.block.speed;
+        if (!settings.block.mediatype) settings.block.mediatype = defaultSettings.block.mediatype;
+        if (!settings.block.mediapath) settings.block.mediapath = defaultSettings.block.mediapath;
+      }
+      return settings;
+    };
+  }, { "./constants": 1, "./help-functions": 2, "./initBlock": 4, "./initContainer": 5 }], 4: [function (require, module, exports) {
+    var _require6 = require('./help-functions'),
+        updateWindowProps = _require6.updateWindowProps,
+        isVideo = _require6.isVideo;
+
     var setBlockSpeed = function setBlockSpeed(block, settings) {
       var attrSpeed = block.el.getAttribute('pv-speed');
 
@@ -198,7 +205,7 @@
       if (!mediatype) mediatype = settings.block.mediatype;
 
       // Media type set to video
-      if (pv.isVideo(mediatype, attrMediapath)) mediatype = 'video';
+      if (isVideo(mediatype, attrMediapath)) mediatype = 'video';
 
       // Default
       return mediatype;
@@ -229,7 +236,6 @@
       videoEl.loop = true;
       videoEl.defaultMuted = true;
       videoEl.muted = true;
-      block.isPlaying = true;
       block.videoEl = videoEl;
       block.el.appendChild(videoEl);
 
@@ -246,8 +252,55 @@
       return false;
     };
 
-    module.exports = { setBlockSpeed: setBlockSpeed, setBlockMediatype: setBlockMediatype, setBlockMediapath: setBlockMediapath, setBlockVisual: setBlockVisual };
-  }, {}], 5: [function (require, module, exports) {
+    var setBlockAttributes = function setBlockAttributes(container, block) {
+      updateWindowProps();
+      // calculates the negative top property
+      // negative scroll distance
+      // plus container height / factor, because whenever we pass the element we'll always scroll the window faster then the animation (if factor < 1 it'll be increased to all is good)
+      var marginTop = 0,
+          scrollDist = 0,
+          paddingBottom = 0;
+
+      // if the pv-block offset is less than the windowheight, then the scrolldist will have to be recalculated
+      if (container.offset < pv.windowProps.windowHeight) {
+        scrollDist = (container.height + container.offset) / Math.abs(block.speed);
+
+        if (block.speed > 0) {
+          marginTop = -Math.abs(container.offset);
+          paddingBottom = container.height + container.offset;
+        } else {
+          paddingBottom = scrollDist + container.height;
+        }
+      } else {
+        // the pv-block is below the initial windowheight
+        scrollDist = (container.height + pv.windowProps.windowHeight) / Math.abs(block.speed);
+        paddingBottom = scrollDist + container.height;
+
+        if (block.speed > 0) {
+          marginTop = -scrollDist;
+          paddingBottom = container.height + pv.windowProps.windowHeight / Math.abs(block.speed);
+        } else {
+          paddingBottom = scrollDist + container.height;
+        }
+      }
+
+      if (Math.abs(marginTop) >= Math.abs(paddingBottom)) paddingBottom = Math.abs(marginTop) + 1;
+
+      block.el.style.setProperty('padding-bottom', paddingBottom + 'px', null);
+      block.el.style.setProperty('margin-top', marginTop + 'px', null);
+    };
+
+    module.exports = {
+      setBlockSpeed: setBlockSpeed,
+      setBlockMediatype: setBlockMediatype,
+      setBlockMediapath: setBlockMediapath,
+      setBlockVisual: setBlockVisual,
+      setBlockAttributes: setBlockAttributes
+    };
+  }, { "./help-functions": 2 }], 5: [function (require, module, exports) {
+    var _require7 = require('./help-functions'),
+        isStringOfIntegers = _require7.isStringOfIntegers;
+
     var setContainerHeight = function setContainerHeight(container, settings) {
       var attrHeight = container.el.getAttribute('pv-height');
 
@@ -255,7 +308,7 @@
       if (!attrHeight) return settings.container.height;
 
       // String only consists of integers, add px
-      if (pv.isStringOfIntegers(attrHeight)) return attrHeight + 'px';
+      if (isStringOfIntegers(attrHeight)) return attrHeight + 'px';
 
       // String has more than integers, assume suffix is either px or vh
       var suffix = attrHeight.substr(attrHeight.length - 2, attrHeight.length);
@@ -265,44 +318,16 @@
     };
 
     module.exports = { setContainerHeight: setContainerHeight };
-  }, {}], 6: [function (require, module, exports) {
+  }, { "./help-functions": 2 }], 6: [function (require, module, exports) {
+    arguments[4][4][0].apply(exports, arguments);
+  }, { "./help-functions": 2, "dup": 4 }], 7: [function (require, module, exports) {
     ;(function (window) {
       var defineParallaxVanilla = function defineParallaxVanilla() {
         var pv = {};
-
-        Object.assign(pv, require('./help-functions'));
-        Object.assign(pv, require('./constants'));
-
-        /**
-        * Primary data handler for containers and blocks.
-        * @type {Array}
-        * @structure
-        * pvArr = [
-        * 	obj : {
-        * 		container : {
-        * 			el : HTML-element,
-        * 			offset : offsetTop,
-        * 			height : clientHeight
-        * 		},
-        * 		blocks : [
-        * 			block : {
-        * 				el : HTML-element,
-        * 				speed : getAttr('pv-speed')
-         *        mediatype: getAttr('pv-mediatype'),
-         *        mediapath: getAttr('pv-mediapath'),
-        * 			}
-        * 		]
-        * 	}
-        * ]
-        */
-        pv.pvArr = [];
-        pv.windowProps = {};
-        pv.init = require('./init');
-        pv.translate = require('./translate');
-        pv.resize = require('./resize');
+        pv.init = require('./init'); // exposes init function to user
 
         window.onresize = function () {
-          return pv.resize();
+          return require('./resize')();
         };
 
         // Request animation frame, also binds function to window
@@ -314,7 +339,7 @@
 
         //Main loop for updating variables and performing translates
         var updateLoop = function updateLoop() {
-          pv.translate();
+          require('./translate')();
           raf(updateLoop);
         };
 
@@ -332,15 +357,27 @@
         console.log('%c parallax-vanilla already defined.', 'color: red');
       }
     })(window);
-  }, { "./constants": 1, "./help-functions": 2, "./init": 3, "./resize": 7, "./translate": 8 }], 7: [function (require, module, exports) {
+  }, { "./init": 3, "./resize": 8, "./translate": 9 }], 8: [function (require, module, exports) {
+    var _require8 = require('./initblock'),
+        setBlockAttributes = _require8.setBlockAttributes;
+
     module.exports = function () {
-      pv.windowProps.scrollTop = window.scrollY || document.documentElement.scrollTop;
-      pv.windowProps.windowHeight = window.innerHeight;
-      pv.windowProps.windowMidHeight = window.innerHeight / 2;
-      pv.init();
+      for (var i = 0; i < pv.containerArr.length; i++) {
+        var container = pv.containerArr[i];
+        container.height = container.el.clientHeight;
+        for (var j = 0; j < pv.containerArr[i].blocks.length; j++) {
+          var block = pv.containerArr[i].blocks[j];
+          setBlockAttributes(container, block);
+        }
+      }
     };
-  }, {}], 8: [function (require, module, exports) {
+  }, { "./initblock": 6 }], 9: [function (require, module, exports) {
+    var _require9 = require('./help-functions'),
+        isInViewport = _require9.isInViewport;
+
     //Transform prefixes for CSS
+
+
     var transform = function transform(element, style) {
       element.style.webkitTransform = style;
       element.style.MozTransform = style;
@@ -352,46 +389,40 @@
     module.exports = function () {
       // Update selected attributes in windowProps on window raf event
       pv.windowProps.scrollTop = window.scrollY || document.documentElement.scrollTop;
-
       // translate the parallax blocks, creating the parallax effect
-      for (var i = 0; i < pv.pvArr.length; i++) {
-        var containerObj = pv.pvArr[i].container;
+      for (var i = 0; i < pv.containerArr.length; i++) {
+        var container = pv.containerArr[i];
         var calc = void 0;
 
         // check if parallax block is in viewport
-        if (pv.isInViewport(containerObj.offset, containerObj.height)) {
+        if (isInViewport(container.offset, container.height)) {
           // if any parallax is within the first windowheight, transform from 0 (pv.scrollTop)
-          if (containerObj.offset < pv.windowProps.windowHeight) {
+          if (container.offset < pv.windowProps.windowHeight) {
             calc = pv.windowProps.scrollTop;
 
             // if the parallax is further down on the page
             // calculate windowheight - parallax offset + scrollTop to start from 0 whereever it appears
           } else {
-            calc = pv.windowProps.windowHeight - containerObj.offset + pv.windowProps.scrollTop;
+            calc = pv.windowProps.windowHeight - container.offset + pv.windowProps.scrollTop;
           }
 
-          for (var j = 0; j < pv.pvArr[i].blocks.length; j++) {
-            var block = pv.pvArr[i].blocks[j];
-            if (block.mediatype === 'video' && !block.isPlaying) {
-              block.videoEl.play();
-              block.isPlaying = true;
-            }
+          for (var j = 0; j < pv.containerArr[i].blocks.length; j++) {
+            var block = pv.containerArr[i].blocks[j];
+            if (block.mediatype === 'video' && block.videoEl.paused) block.videoEl.play();
+
             transform(block.el, 'translate3d(0,' + Math.round(calc / block.speed) + 'px, 0)');
           }
         } else {
           // check if container even has a video block
-          if (containerObj.hasVideoBlock) {
+          if (container.hasVideoBlock) {
             // pause blocks with playing video
-            for (var _j = 0; _j < pv.pvArr[i].blocks.length; _j++) {
-              var _block = pv.pvArr[i].blocks[_j];
-              if (_block.mediatype === 'video' && _block.isPlaying) {
-                _block.videoEl.pause();
-                _block.isPlaying = false;
-              }
+            for (var _j = 0; _j < pv.containerArr[i].blocks.length; _j++) {
+              var _block = pv.containerArr[i].blocks[_j];
+              if (_block.mediatype === 'video' && !_block.videoEl.paused) _block.videoEl.pause();
             }
           }
         }
       }
     };
-  }, {}] }, {}, [1, 2, 3, 4, 5, 6, 7, 8]);
+  }, { "./help-functions": 2 }] }, {}, [1, 2, 3, 4, 5, 7, 8, 9]);
 //# sourceMappingURL=parallax-vanilla.js.map
