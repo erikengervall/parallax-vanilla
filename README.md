@@ -23,8 +23,6 @@ Vanilla Parallax maximizes your parallax effects with hardware acceleration and 
 #### Media type independance
 Animates not only images but also videos.
 
-<img src="http://animejs.com/documentation/assets/img/readme/prop-css.gif" width="332" />
-
 ### Browser support
 
 | Chrome | Safari | Firefox |
@@ -48,8 +46,8 @@ npm i --save parallax-vanilla
 Download package and include `parallax-vanilla.min.css` inside the <b>head</b> tag and `parallax-vanilla.min.js` just before closing the <b>body</b> tag.
 
 ```html
-<link href="/path/to/parallax-vanilla.min.css">
-<script src="/path/to/parallax-vanilla.min.js"></script>
+<link href='/path/to/parallax-vanilla.min.css'>
+<script src='/path/to/parallax-vanilla.min.js'></script>
 ```
 
 ## Usage
@@ -59,23 +57,23 @@ Download package and include `parallax-vanilla.min.css` inside the <b>head</b> t
 **1**. Wrap a `pv-block` with a `pv-container`.
 
 ```html
-<div class="pv-container">
- <div class="pv-block"></div>
+<div class='pv-container'>
+ <div class='pv-block'></div>
 </div>
 ```
 
 **2**. Attach a mediapath to `pv-block`
 
 ```html
-<div class="pv-container">
-	<div class="pv-block" pv-mediapath="path/to/file.extension"></div>
+<div class='pv-container'>
+	<div class='pv-block' pv-mediapath='path/to/file.extension'></div>
 </div>
 ```
 
 **3**. Initialize library.
 ```html
-<div class="pv-container">
-	<div class="pv-block" pv-mediapath="path/to/file.extension"></div>></div>
+<div class='pv-container'>
+	<div class='pv-block' pv-mediapath='path/to/file.extension'></div>></div>
 </div>
 <script>
 	pv.init();
@@ -84,13 +82,13 @@ Download package and include `parallax-vanilla.min.css` inside the <b>head</b> t
 
 ### JavaScript initialization options
 
-Multiple optional settings can be configured upon initialization.
+Optional global settings can be configured upon initialization.
 
 ```javascript
 pv.init({
 	container : {
 		class : String,
-		height : String || Float || Number,
+		height : String || Number || Float,
 	},
 	block : {
 		class: String
@@ -101,21 +99,9 @@ pv.init({
 });
 ```
 
-### Data attributes: Customize individual elements
+#### Settings
 
-Data attributes allows for fine control over each individual parallax effect. Since JavaScript settings are set for all container and block elements, the data attributes simply overwrite the settings for the affected elements.
-
-```html
-<div class="pv-container" pv-height="100vh">
-	<div class="pv-block" pv-speed=1 pv-image='path/to/image.extension'></div>
-</div>
-```
-
-This code will produce a `pv-container` with height `100vh` (viewport height) containing a `pv-block` with a parallax speed of `1` displaying the image `image.extension`.
-
-### Settings
-
-<table class="table table-bordered table-striped">
+<table class='table table-bordered table-striped'>
 	<thead>
 		<tr>
 			<th>Name</th>
@@ -187,6 +173,20 @@ This code will produce a `pv-container` with height `100vh` (viewport height) co
 		</tr>
 	</tbody>
 </table>
+
+### Data attributes: Customize individual elements
+
+Data attributes allows for fine control over each individual block. Data attributes will overwrite the global JavaScript settings.
+
+```html
+<div class='pv-container' pv-height='100vh'>
+	<div class='pv-block' pv-speed='3.14' pv-mediapath='path/to/file.extension' pv-mediatype='type'></div>
+</div>
+```
+
+This code will produce a `pv-container` with height `100vh` containing a `pv-block` with a parallax speed of `3.14` displaying the image `image.extension`.
+
+
 
 ### Notes
 
