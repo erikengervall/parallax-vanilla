@@ -14,7 +14,7 @@ module.exports = () => {
 
     // check if parallax block is in viewport
     if (isInViewport(container.offset, container.height)) {
-      pv.latestContainerInViewport = i
+      if (i > pv.mostReContainerInViewport) pv.mostReContainerInViewport = i
       // if any parallax is within the first windowheight, transform from 0 (pv.scrollTop)
       if (container.offset < pv.windowProps.windowHeight) {
         calc = pv.windowProps.scrollTop
@@ -27,7 +27,7 @@ module.exports = () => {
 
       for (let j = 0; j < pv.containerArr[i].blocks.length; j++) {
         const block = pv.containerArr[i].blocks[j]
-        if (block.mediatype === 'video' && block.videoEl.paused) block.videoEl.play()
+        if (block.mediatype === 'video') block.videoEl.play()
 
         transform(block.el, 'translate3d(0,' + Math.round(calc / block.speed) + 'px, 0)')
       }
@@ -37,15 +37,21 @@ module.exports = () => {
         // pause blocks with playing video
         for (let j = 0; j < pv.containerArr[i].blocks.length; j++) {
           let block = pv.containerArr[i].blocks[j]
-          if (block.mediatype === 'video' && !block.videoEl.paused) block.videoEl.pause()
+          if (block.mediatype === 'video' && block.videoEl) block.videoEl.pause()
         }
       }
-      const nC = pv.containerArr[i + 1]
-      if (nC && !isInViewport(nC.offset, nC.height) && pv.latestContainerInViewport < i) {
+      const nextContainer = pv.containerArr[i + 1]
+      // check if next container is in view - else break
+      if (
+        nextContainer &&
+        !isInViewport(nextContainer.offset, nextContainer.height) &&
+        pv.mostReContainerInViewport < i &&
+        !nextContainerIsSmaller(container, nextContainer)
+      ) {
         break
       } else {
-        if (nC && isInViewport(nC.offset, nC.height)) {
-          pv.latestContainerInViewport = i + 1 // @todo
+        if (nextContainer && isInViewport(nextContainer.offset, nextContainer.height)) {
+          pv.mostReContainerInViewport = i + 1
         }
       }
     }
@@ -67,4 +73,8 @@ const isInViewport = (offset, height) => {
     pv.windowProps.scrollTop + pv.windowProps.windowHeight - offset > 0 &&
     pv.windowProps.scrollTop < offset + height
   )
+}
+
+const nextContainerIsSmaller = (container, nextContainer) => {
+  return container.offset + container.height > nextContainer.offset + nextContainer.height
 }

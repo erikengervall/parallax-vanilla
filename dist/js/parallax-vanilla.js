@@ -359,7 +359,7 @@
 
         // check if parallax block is in viewport
         if (isInViewport(container.offset, container.height)) {
-          pv.latestContainerInViewport = i;
+          if (i > pv.mostReContainerInViewport) pv.mostReContainerInViewport = i;
           // if any parallax is within the first windowheight, transform from 0 (pv.scrollTop)
           if (container.offset < pv.windowProps.windowHeight) {
             calc = pv.windowProps.scrollTop;
@@ -372,7 +372,7 @@
 
           for (var j = 0; j < pv.containerArr[i].blocks.length; j++) {
             var block = pv.containerArr[i].blocks[j];
-            if (block.mediatype === 'video' && block.videoEl.paused) block.videoEl.play();
+            if (block.mediatype === 'video') block.videoEl.play();
 
             transform(block.el, 'translate3d(0,' + Math.round(calc / block.speed) + 'px, 0)');
           }
@@ -382,15 +382,16 @@
             // pause blocks with playing video
             for (var _j = 0; _j < pv.containerArr[i].blocks.length; _j++) {
               var _block = pv.containerArr[i].blocks[_j];
-              if (_block.mediatype === 'video' && !_block.videoEl.paused) _block.videoEl.pause();
+              if (_block.mediatype === 'video' && _block.videoEl) _block.videoEl.pause();
             }
           }
-          var nC = pv.containerArr[i + 1];
-          if (nC && !isInViewport(nC.offset, nC.height) && pv.latestContainerInViewport < i) {
+          var nextContainer = pv.containerArr[i + 1];
+          // check if next container is in view - else break
+          if (nextContainer && !isInViewport(nextContainer.offset, nextContainer.height) && pv.mostReContainerInViewport < i && !nextContainerIsSmaller(container, nextContainer)) {
             break;
           } else {
-            if (nC && isInViewport(nC.offset, nC.height)) {
-              pv.latestContainerInViewport = i + 1; // @todo
+            if (nextContainer && isInViewport(nextContainer.offset, nextContainer.height)) {
+              pv.mostReContainerInViewport = i + 1;
             }
           }
         }
@@ -409,6 +410,10 @@
     // Check if the container is in view
     var isInViewport = function isInViewport(offset, height) {
       return pv.windowProps.scrollTop + pv.windowProps.windowHeight - offset > 0 && pv.windowProps.scrollTop < offset + height;
+    };
+
+    var nextContainerIsSmaller = function nextContainerIsSmaller(container, nextContainer) {
+      return container.offset + container.height > nextContainer.offset + nextContainer.height;
     };
   }, {}] }, {}, [1, 2, 3, 4, 5, 7, 8, 9]);
 //# sourceMappingURL=parallax-vanilla.js.map
