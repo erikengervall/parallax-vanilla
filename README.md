@@ -57,7 +57,7 @@ Download package and include `parallax-vanilla.min.css` inside the <b>head</b> t
 
 ```html
 <div class='pv-container'>
- <div class='pv-block'></div>
+  <div class='pv-block'></div>
 </div>
 ```
 
@@ -65,17 +65,17 @@ Download package and include `parallax-vanilla.min.css` inside the <b>head</b> t
 
 ```html
 <div class='pv-container'>
-	<div class='pv-block' pv-mediapath='path/to/file.extension'></div>
+  <div class='pv-block' pv-mediapath='path/to/file.extension'></div>
 </div>
 ```
 
 **3**. Initialize library.
 ```html
 <div class='pv-container'>
-	<div class='pv-block' pv-mediapath='path/to/file.extension'></div>></div>
+  <div class='pv-block' pv-mediapath='path/to/file.extension'></div>></div>
 </div>
 <script>
-	pv.init();
+  pv.init();
 </script>
 ```
 
@@ -85,16 +85,16 @@ Optional global settings can be configured upon initialization.
 
 ```javascript
 pv.init({
-	container : {
-		class : String,
-		height : String || Number || Float,
-	},
-	block : {
-		class: String
-		speed: Number || Float,
-		mediapath: String,
-		mediatype: String
-	}
+  container : {
+    class : String,
+    height : String || Number || Float,
+  },
+  block : {
+    class: String
+    speed: Number || Float,
+    mediapath: String,
+    mediatype: String
+  }
 });
 ```
 
@@ -185,7 +185,7 @@ Data attributes allows for fine control over each individual block and will over
 
 ```html
 <div class='pv-container' pv-height='100vh'>
-	<div class='pv-block' pv-speed='3.14' pv-mediatype='type' pv-mediapath='path/to/file.extension'></div>
+  <div class='pv-block' pv-speed='3.14' pv-mediatype='type' pv-mediapath='path/to/file.extension'></div>
 </div>
 ```
 
