@@ -87,10 +87,10 @@ Optional global settings can be configured upon initialization.
 pv.init({
   container : {
     class : String,
-    height : String || Number || Float,
+    height : String || Number || Float
   },
   block : {
-    class: String
+    class: String,
     speed: Number || Float,
     mediapath: String,
     mediatype: String
@@ -106,7 +106,8 @@ pv.init({
 			<th>Name</th>
 			<th>Type</th>
 			<th>Default</th>
-			<th>Description</th>
+      <th>Description</th>
+			<th>Example values</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -115,11 +116,13 @@ pv.init({
 			<td>Object</td>
 			<td>{container, block}</td>
 			<td>Settings object. These settings will be applied to each container and block. Can be individually overwritten by data attributes.</td>
+      <td>{container: {...}, block: {...}</td>
 		</tr>
 		<tr>
 			<td></td>
 			<td></td>
 			<td></td>
+      <td></td>
 			<td></td>
 		</tr>
 		<tr>
@@ -127,23 +130,27 @@ pv.init({
 			<td>Object</td>
 			<td>{class, height}</td>
 			<td>The container object.</td>
+      <td>{...}</td>
 		</tr>
 		<tr>
 			<td>settings.container.class</td>
 			<td>String</td>
 			<td>'pv-container'</td>
 			<td>The class of the container element.</td>
+      <td>'pv-container'</td>
 		</tr>
 		<tr>
 			<td>settings.container.height</td>
 			<td>String || Number || Float</td>
 			<td>'250px'</td>
 			<td>The container's height. String argument with Number and Suffix, e.g. '100px' or '100vh'. Float or Number input will recieve 'px' suffix.</td>
+      <td>'250px', '250', 250, '50vh'</td>
 		</tr>
 		<tr>
 			<td></td>
 			<td></td>
 			<td></td>
+      <td></td>
 			<td></td>
 		</tr>
 		<tr>
@@ -151,37 +158,42 @@ pv.init({
 			<td>Object</td>
 			<td>{class, speed, mediatype, mediapath}</td>
 			<td>The block object.</td>
+      <td>{}</td>
 		</tr>
 		<tr>
-			<td>settings.block</b>.class</td>
+			<td>settings.block.class</td>
 			<td>String</td>
 			<td>'pv-block'</td>
 			<td>The class of the block element.</td>
+      <td>'pv-block'</td>
 		</tr>
 		<tr>
-			<td>settings.block</b>.speed</td>
+			<td>settings.block.speed</td>
 			<td>Number || Float</td>
 			<td>-Math.PI</td>
 			<td>The speed and direction at which the parallax animated. Negative values will animate the `block` upwards when scrolling downwards on the page. The inverse apply for positive values. All values are allowed except 0. If 0 is picked, the default value will be applied.</td>
+      <td>''</td>
 		</tr>
 		<tr>
-			<td>settings.block</b>.mediatype</td>
+			<td>settings.block.mediatype</td>
 			<td>String</td>
 			<td>'image'</td>
 			<td>The block's media type.</td>
+      <td>'image' or 'video'</td>
 		</tr>
 		<tr>
-			<td>settings.block</b>.mediapath</td>
+			<td>settings.block.mediapath</td>
 			<td>String</td>
 			<td>undefined</td>
 			<td>The block's media path.</td>
+      <td>'../path/to/file.ext'</td>
 		</tr>
 	</tbody>
 </table>
 
 ### Data attributes: Customize individual elements
 
-Data attributes allows for fine control over each individual block and will overwrite the optional global JavaScript settings.
+Data attributes allows for fine control over each individual block and will overwrite the global JavaScript settings.
 
 ```html
 <div class='pv-container' pv-height='100vh'>
@@ -189,7 +201,7 @@ Data attributes allows for fine control over each individual block and will over
 </div>
 ```
 
-This code will produce a `pv-container` with height `100vh` containing a `pv-block` with a parallax speed of `3.14` displaying the image `image.extension`.
+This code will produce a `pv-container` with height `100vh` containing a `pv-block` with a parallax speed of `3.14` displaying the media `file.extension` of type `type`.
 
 <table class='table table-bordered'>
   <tbody>
