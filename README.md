@@ -1,29 +1,28 @@
-parallax-vanilla.js
-===========
+# parallax-vanilla.js
 
 Seamless and lightweight parallax scrolling library implemented in pure JavaScript utilizing Hardware acceleration for extra performance.
 
-### Demo
+## Demo
 [Feature tests](http://engervall.com/projects/parallax-vanilla)
 
-### Main features
+## Main features
 
-#### Super lightweight without dependencies
+### Super lightweight without dependencies
 5KB pure JavaScript.
 
-#### Viewport-only animations
+### Viewport-only animations
 Parallax elements are only animated within the current viewport, thus saving enormous resources.
 
-#### Dynamic sizing
+### Dynamic sizing
 Image-elements are dynamically sized and adjusted relative to the pv-speed.
 
-#### Performance is key
+### Performance is key
 Vanilla Parallax maximizes your parallax effects with hardware acceleration and no external libraries.
 
-#### Media type independance
+### Media type independance
 Animates not only images but also videos.
 
-### Browser support
+## Browser support
 
 | Chrome | Safari | Firefox |
 | --- | --- | --- |
@@ -31,19 +30,19 @@ Animates not only images but also videos.
 
 ## Installation
 
-### bower
+### [bower](https://github.com/erikengervall/parallax-vanilla)
 ```sh
 bower i --save parallax-vanilla
 ```
 
-### npm
+### [npm](https://www.npmjs.com/package/parallax-vanilla)
 ```sh
 npm i --save parallax-vanilla
 ```
 
-### Manual
+### Include
 
-Download package and include `parallax-vanilla.min.css` inside the <b>head</b> tag and `parallax-vanilla.min.js` just before closing the <b>body</b> tag.
+Download package and include `parallax-vanilla.min.css` inside the <b>head</b> tag and `parallax-vanilla.min.js` just before the closing <b>body</b> tag.
 
 ```html
 <link href='/path/to/parallax-vanilla.min.css'>
@@ -182,38 +181,52 @@ pv.init({
 
 ### Data attributes: Customize individual elements
 
-Data attributes allows for fine control over each individual block. Data attributes will overwrite the global JavaScript settings.
+Data attributes allows for fine control over each individual block and will overwrite the optional global JavaScript settings.
 
 ```html
 <div class='pv-container' pv-height='100vh'>
-	<div class='pv-block' pv-speed='3.14' pv-mediapath='path/to/file.extension' pv-mediatype='type'></div>
+	<div class='pv-block' pv-speed='3.14' pv-mediatype='type' pv-mediapath='path/to/file.extension'></div>
 </div>
 ```
 
 This code will produce a `pv-container` with height `100vh` containing a `pv-block` with a parallax speed of `3.14` displaying the image `image.extension`.
 
 <table class='table table-bordered'>
-	<thead>
+  <tbody>
+  	<thead>
+  		<tr>
+  			<th>Data attributes for container</th>
+  		</tr>
+  	</thead>
 		<tr>
-			<th>Name</th>
-			<th>Type</th>
-			<th>Default</th>
-			<th>Description</th>
+			<td>class</td>
 		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td><b>pv-height</b></td>
-			<td>Object</td>
-			<td>{container, block}</td>
-			<td>Settings object. These settings will be applied to each container and block. Can be individually overwritten by data attributes.</td>
-		</tr>
+    <tr>
+      <td>pv-height</td>
+    </tr>
+    <thead>
+  		<tr>
+  			<th>Data attributes for block</th>
+  		</tr>
+  	</thead>
+    <tr>
+      <td>class</td>
+    </tr>
+    <tr>
+      <td>pv-speed</td>
+    </tr>
+    <tr>
+      <td>pv-mediatype</td>
+    </tr>
+    <tr>
+      <td>pv-mediapath</td>
+    </tr>
 	</tbody>
 </table>
 
-### Notes
+The descriptions and the default values are the same as the corresponding properties of the JavaScript settings object.
 
-The following is the CSS included.
+### CSS
 
 ```css
 .pv-container {
