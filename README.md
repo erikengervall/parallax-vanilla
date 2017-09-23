@@ -171,7 +171,7 @@ pv.init({
 			<td>settings.block.speed</td>
 			<td>Number || Float</td>
 			<td>-Math.PI</td>
-			<td>The speed and direction at which the parallax animated. Negative values will animate the `block` upwards when scrolling downwards on the page. The inverse apply for positive values. All values are allowed except 0. If 0 is picked, the default value will be applied.</td>
+			<td>The speed and direction at which the parallax animated. Negative values will animate the `block` upwards when scrolling downwards on the page.</td>
       <td>''</td>
 		</tr>
 		<tr>
