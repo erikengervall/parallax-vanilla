@@ -15,6 +15,10 @@
 })({ 1: [function (require, module, exports) {
     var videoExtensions = ['3g2', '3gp', 'asf', 'avi', 'flv', 'h264', 'm4v', 'mov', 'mp4', 'mpg', 'mpeg', 'rm', 'srt', 'swf', 'vow', 'vob', 'wmv'];
 
+    var IMAGE = 'image';
+    var VIDEO = 'video';
+    var NONE = 'none';
+
     var defaultSettings = {
       container: {
         class: 'pv-container',
@@ -28,7 +32,7 @@
       }
     };
 
-    module.exports = { videoExtensions: videoExtensions, defaultSettings: defaultSettings };
+    module.exports = { videoExtensions: videoExtensions, defaultSettings: defaultSettings, IMAGE: IMAGE, VIDEO: VIDEO, NONE: NONE };
   }, {}], 2: [function (require, module, exports) {
     // pretty print
     var pp = function pp(source, obj) {
@@ -45,6 +49,12 @@
       }
     };
 
+    // Checks if String argument consists exclusively of numbers
+    var isStringOfIntegers = function isStringOfIntegers(arg) {
+      return (/^[0-9]+$/.test(arg)
+      );
+    };
+
     module.exports = {};
   }, {}], 3: [function (require, module, exports) {
     var _require = require('./initContainer'),
@@ -52,13 +62,14 @@
 
     var _require2 = require('./initBlock'),
         setBlockSpeed = _require2.setBlockSpeed,
-        setBlockMediatype = _require2.setBlockMediatype,
-        setBlockMediapath = _require2.setBlockMediapath,
+        setBlockMediaProps = _require2.setBlockMediaProps,
         setBlockVisual = _require2.setBlockVisual,
         setBlockAttributes = _require2.setBlockAttributes;
 
     var _require3 = require('./constants'),
-        defaultSettings = _require3.defaultSettings;
+        defaultSettings = _require3.defaultSettings,
+        VIDEO = _require3.VIDEO,
+        NONE = _require3.NONE;
 
     module.exports = function (settings) {
       pv.containerArr = [];
@@ -81,14 +92,22 @@
 
           block.el = blocks[j];
           block.speed = setBlockSpeed(block, pv.settings);
-          block.mediapath = setBlockMediapath(block, pv.settings);
-          block.mediatype = setBlockMediatype(block, pv.settings);
-          if (block.mediatype === 'video') container.hasVideoBlock = true;
 
-          var successful = setBlockVisual(block);
-          if (!successful) console.error('Did not successfully set media for block: ' + block);
+          var _setBlockMediaProps = setBlockMediaProps(block, pv.settings),
+              mediatype = _setBlockMediaProps.mediatype,
+              mediapath = _setBlockMediaProps.mediapath;
 
-          setBlockAttributes(container, block);
+          block.mediatype = mediatype;
+          block.mediapath = mediapath;
+
+          if (block.mediatype !== NONE) {
+            if (block.mediatype === VIDEO) container.hasVideoBlock = true;
+
+            var successful = setBlockVisual(block);
+            if (!successful) console.error('Did not successfully set media for block: ' + block);
+
+            setBlockAttributes(container, block);
+          }
 
           container.blocks.push(block);
         } // end of for blocks
@@ -124,7 +143,10 @@
     };
   }, { "./constants": 1, "./initBlock": 4, "./initContainer": 5 }], 4: [function (require, module, exports) {
     var _require4 = require('./constants'),
-        videoExtensions = _require4.videoExtensions;
+        videoExtensions = _require4.videoExtensions,
+        IMAGE = _require4.IMAGE,
+        VIDEO = _require4.VIDEO,
+        NONE = _require4.NONE;
 
     var setBlockSpeed = function setBlockSpeed(block, settings) {
       var attrSpeed = block.el.getAttribute('pv-speed');
@@ -132,33 +154,39 @@
       // No data attribute defined
       if (!attrSpeed) return settings.block.speed;
 
+      // Speed is a string
+      if (typeof attrSpeed === 'string') {
+        // Speed must consist solely of integers
+        var attrSpeedNumber = Number(attrSpeed);
+        if (isNaN(attrSpeedNumber)) {
+          return console.error('Speed consist of more symbols than integers for block: ' + block.el);
+        } else {
+          attrSpeed = attrSpeedNumber;
+        }
+      }
+
       // Speed is set to 0 (fall back on block speed)
       if (attrSpeed == 0) return settings.block.speed;
 
       return attrSpeed;
     };
 
-    var setBlockMediapath = function setBlockMediapath(block, settings) {
-      var attrMediapath = block.el.getAttribute('pv-mediapath');
-
-      // No data attribute defined
-      if (!attrMediapath) return console.error('Media path not defined for block: ' + block.el);
-
-      return attrMediapath;
-    };
-
-    var setBlockMediatype = function setBlockMediatype(block, settings) {
+    var setBlockMediaProps = function setBlockMediaProps(block, settings) {
       var mediatype = block.el.getAttribute('pv-mediatype');
-      var attrMediapath = block.el.getAttribute('pv-mediapath');
+      var mediapath = block.el.getAttribute('pv-mediapath');
 
-      // Data attribute defined
-      if (!mediatype) mediatype = settings.block.mediatype;
+      if (mediatype === NONE) return { mediatype: mediatype, mediapath: mediapath
+
+        // No data attribute defined
+      };if (!mediatype) mediatype = settings.block.mediatype;
 
       // Media type set to video
-      if (isVideo(mediatype, attrMediapath)) mediatype = 'video';
+      if (mediapath && isVideo(mediatype, mediapath)) mediatype = VIDEO;
 
-      // Default
-      return mediatype;
+      // No data attribute defined
+      if (!mediapath && mediatype !== NONE) return console.error('Media path not defined for block: ' + block.el);
+
+      return { mediatype: mediatype, mediapath: mediapath };
     };
 
     var setBlockImage = function setBlockImage(block) {
@@ -196,8 +224,8 @@
       var mediatype = block.mediatype;
 
 
-      if (mediatype === 'image') return setBlockImage(block);
-      if (mediatype === 'video') return setBlockVideo(block);
+      if (mediatype === IMAGE) return setBlockImage(block);
+      if (mediatype === VIDEO) return setBlockVideo(block);
 
       return false;
     };
@@ -242,8 +270,7 @@
 
     module.exports = {
       setBlockSpeed: setBlockSpeed,
-      setBlockMediatype: setBlockMediatype,
-      setBlockMediapath: setBlockMediapath,
+      setBlockMediaProps: setBlockMediaProps,
       setBlockVisual: setBlockVisual,
       setBlockAttributes: setBlockAttributes
 
@@ -255,7 +282,7 @@
 
     // returns {true} if media is a video
     var isVideo = function isVideo(attrMediatype, attrMediapath) {
-      return attrMediatype === 'video' || videoExtensions.indexOf(getExtension(attrMediapath)) !== -1;
+      return attrMediatype === VIDEO || videoExtensions.indexOf(getExtension(attrMediapath)) !== -1;
     };
 
     var updateWindowProps = function updateWindowProps() {
@@ -273,7 +300,7 @@
       if (!attrHeight) return settings.container.height;
 
       // String only consists of integers, add px
-      if (isStringOfIntegers(attrHeight)) return attrHeight + 'px';
+      if (!isNaN(Number(attrHeight))) return attrHeight + 'px';
 
       // String has more than integers, assume suffix is either px or vh
       var suffix = attrHeight.substr(attrHeight.length - 2, attrHeight.length);
@@ -282,13 +309,7 @@
       throw new Error('Invalid height suffix, expected "px" or "vh" but got: ' + suffix);
     };
 
-    module.exports = { setContainerHeight: setContainerHeight
-
-      // Checks if String argument consists exclusively of numbers
-    };var isStringOfIntegers = function isStringOfIntegers(arg) {
-      return (/^[0-9]+$/.test(arg)
-      );
-    };
+    module.exports = { setContainerHeight: setContainerHeight };
   }, {}], 6: [function (require, module, exports) {
     arguments[4][4][0].apply(exports, arguments);
   }, { "./constants": 1, "dup": 4 }], 7: [function (require, module, exports) {
@@ -329,8 +350,11 @@
       }
     })(window);
   }, { "./init": 3, "./resize": 8, "./translate": 9 }], 8: [function (require, module, exports) {
-    var _require5 = require('./initblock'),
-        setBlockAttributes = _require5.setBlockAttributes;
+    var _require5 = require('./constants'),
+        NONE = _require5.NONE;
+
+    var _require6 = require('./initblock'),
+        setBlockAttributes = _require6.setBlockAttributes;
 
     module.exports = function () {
       for (var i = 0; i < pv.containerArr.length; i++) {
@@ -338,11 +362,11 @@
         container.height = container.el.clientHeight;
         for (var j = 0; j < pv.containerArr[i].blocks.length; j++) {
           var block = pv.containerArr[i].blocks[j];
-          setBlockAttributes(container, block);
+          if (block.mediatype !== NONE) setBlockAttributes(container, block);
         }
       }
     };
-  }, { "./initblock": 6 }], 9: [function (require, module, exports) {
+  }, { "./constants": 1, "./initblock": 6 }], 9: [function (require, module, exports) {
     module.exports = function () {
       // Update selected attributes in windowProps on window raf event
       pv.windowProps.scrollTop = window.scrollY || document.documentElement.scrollTop;

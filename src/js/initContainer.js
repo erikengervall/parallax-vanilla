@@ -5,7 +5,7 @@ const setContainerHeight = (container, settings) => {
   if (!attrHeight) return settings.container.height
 
   // String only consists of integers, add px
-  if (isStringOfIntegers(attrHeight)) return attrHeight + 'px'
+  if (!isNaN(Number(attrHeight))) return attrHeight + 'px'
 
   // String has more than integers, assume suffix is either px or vh
   let suffix = attrHeight.substr(attrHeight.length - 2, attrHeight.length)
@@ -15,8 +15,3 @@ const setContainerHeight = (container, settings) => {
 }
 
 module.exports = { setContainerHeight }
-
-// Checks if String argument consists exclusively of numbers
-const isStringOfIntegers = arg => {
-  return /^[0-9]+$/.test(arg)
-}

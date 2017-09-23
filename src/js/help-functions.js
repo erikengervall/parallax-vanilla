@@ -13,4 +13,9 @@ const pp = (source, obj) => {
   }
 }
 
+// Checks if String argument consists exclusively of numbers
+const isStringOfIntegers = arg => {
+  return /^[0-9]+$/.test(arg)
+}
+
 module.exports = {}

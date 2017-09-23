@@ -1,28 +1,28 @@
 # parallax-vanilla.js
 
-Seamless and lightweight parallax scrolling library implemented in pure JavaScript utilizing Hardware acceleration for extra performance.
+Seamless and lightweight parallax scrolling library implemented in pure JavaScript utilising Hardware acceleration for extra performance.
 
-## Demo
-[Feature tests](http://engervall.com/projects/parallax-vanilla)
+## [Demo](http://engervall.com/projects/parallax-vanilla)
 
 ## Main features
 
 ### Super lightweight without dependencies
-5KB pure JavaScript.
+7KB pure JavaScript.
 
 ### Viewport-only animations
-Parallax elements are only animated within the current viewport, thus saving enormous resources.
+Parallax elements are only animated within the current viewport, saving a lot of resources.
 
 ### Dynamic sizing
 Image-elements are dynamically sized and adjusted relative to the pv-speed.
 
 ### Performance is key
-Vanilla Parallax maximizes your parallax effects with hardware acceleration and no external libraries.
+Vanilla Parallax maximises your parallax effects with hardware acceleration and no external libraries.
 
-### Media type independance
-Animates not only images but also videos.
+### Media type independence
+Parallax effect not only applies on images but also work perfectly with videos.
 
 ## Browser support
+Tested browsers:
 
 | Chrome | Safari | Firefox |
 | --- | --- | --- |
@@ -42,7 +42,7 @@ npm i --save parallax-vanilla
 
 ### Include
 
-Download package and include `parallax-vanilla.min.css` inside the <b>head</b> tag and `parallax-vanilla.min.js` just before the closing <b>body</b> tag.
+Download package and include `parallax-vanilla.min.css` in the <b>head</b> tag and `parallax-vanilla.min.js` just before the closing <b>body</b> tag.
 
 ```html
 <link href='/path/to/parallax-vanilla.min.css'>
@@ -87,7 +87,7 @@ Optional global settings can be configured upon initialization.
 pv.init({
   container : {
     class : String,
-    height : String || Number || Float
+    height : String || Number
   },
   block : {
     class: String,
@@ -141,10 +141,10 @@ pv.init({
 		</tr>
 		<tr>
 			<td>settings.container.height</td>
-			<td>String || Number || Float</td>
+			<td>String || Number</td>
 			<td>'250px'</td>
-			<td>The container's height. String argument with Number and Suffix, e.g. '100px' or '100vh'. Float or Number input will recieve 'px' suffix.</td>
-      <td>'250px', '250', 250, '50vh'</td>
+			<td>The container's height in either pixels or viewport heights. If the string lacks a suffix, or a number is entered, it will default to pixels.</td>
+      <td>'250px', '50vh', '250'</td>
 		</tr>
 		<tr>
 			<td></td>
@@ -178,8 +178,8 @@ pv.init({
 			<td>settings.block.mediatype</td>
 			<td>String</td>
 			<td>'image'</td>
-			<td>The block's media type.</td>
-      <td>'image' or 'video'</td>
+			<td>The block's media type. Blocks with mediapaths containing a video extension will automatically be considered videos.</td>
+      <td>'image', 'video' or 'none'</td>
 		</tr>
 		<tr>
 			<td>settings.block.mediapath</td>
@@ -193,15 +193,15 @@ pv.init({
 
 ### Data attributes: Customize individual elements
 
-Data attributes allows for fine control over each individual block and will overwrite the global JavaScript settings.
+Data attributes allow fine control over each individual element and will overwrite the global JavaScript settings.
 
 ```html
 <div class='pv-container' pv-height='100vh'>
-  <div class='pv-block' pv-speed='3.14' pv-mediatype='type' pv-mediapath='path/to/file.extension'></div>
+  <div class='pv-block' pv-speed='3.14' pv-mediatype='video' pv-mediapath='path/to/epic_montage.mp4'></div>
 </div>
 ```
 
-This code will produce a `pv-container` with height `100vh` containing a `pv-block` with a parallax speed of `3.14` displaying the media `file.extension` of type `type`.
+This code will produce a container with class `pv-container` with height `100vh` containing a block with class `pv-block` with a parallax speed of `3.14` displaying the media `epic_montage.mp4` of type `video`.
 
 <table class='table table-bordered'>
   <tbody>
@@ -211,7 +211,6 @@ This code will produce a `pv-container` with height `100vh` containing a `pv-blo
   		</tr>
   	</thead>
 		<tr>
-			<td>class</td>
 		</tr>
     <tr>
       <td>pv-height</td>
@@ -222,7 +221,6 @@ This code will produce a `pv-container` with height `100vh` containing a `pv-blo
   		</tr>
   	</thead>
     <tr>
-      <td>class</td>
     </tr>
     <tr>
       <td>pv-speed</td>

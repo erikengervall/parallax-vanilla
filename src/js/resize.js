@@ -1,3 +1,4 @@
+const { NONE } = require('./constants')
 const { setBlockAttributes } = require('./initblock')
 
 module.exports = () => {
@@ -6,7 +7,7 @@ module.exports = () => {
     container.height = container.el.clientHeight
     for (let j = 0; j < pv.containerArr[i].blocks.length; j++) {
       let block = pv.containerArr[i].blocks[j]
-      setBlockAttributes(container, block)
+      if (block.mediatype !== NONE) setBlockAttributes(container, block)
     }
   }
 }

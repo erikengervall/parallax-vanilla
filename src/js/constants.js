@@ -18,6 +18,10 @@ const videoExtensions = [
   'wmv',
 ]
 
+const IMAGE = 'image'
+const VIDEO = 'video'
+const NONE = 'none'
+
 const defaultSettings = {
   container: {
     class: 'pv-container',
@@ -31,4 +35,4 @@ const defaultSettings = {
   },
 }
 
-module.exports = { videoExtensions, defaultSettings }
+module.exports = { videoExtensions, defaultSettings, IMAGE, VIDEO, NONE }

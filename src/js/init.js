@@ -1,12 +1,11 @@
 const { setContainerHeight } = require('./initContainer')
 const {
   setBlockSpeed,
-  setBlockMediatype,
-  setBlockMediapath,
+  setBlockMediaProps,
   setBlockVisual,
   setBlockAttributes,
 } = require('./initBlock')
-const { defaultSettings } = require('./constants')
+const { defaultSettings, VIDEO, NONE } = require('./constants')
 
 module.exports = settings => {
   pv.containerArr = []
@@ -29,14 +28,18 @@ module.exports = settings => {
 
       block.el = blocks[j]
       block.speed = setBlockSpeed(block, pv.settings)
-      block.mediapath = setBlockMediapath(block, pv.settings)
-      block.mediatype = setBlockMediatype(block, pv.settings)
-      if (block.mediatype === 'video') container.hasVideoBlock = true
+      const { mediatype, mediapath } = setBlockMediaProps(block, pv.settings)
+      block.mediatype = mediatype
+      block.mediapath = mediapath
 
-      const successful = setBlockVisual(block)
-      if (!successful) console.error('Did not successfully set media for block: ' + block)
+      if (block.mediatype !== NONE) {
+        if (block.mediatype === VIDEO) container.hasVideoBlock = true
 
-      setBlockAttributes(container, block)
+        const successful = setBlockVisual(block)
+        if (!successful) console.error('Did not successfully set media for block: ' + block)
+
+        setBlockAttributes(container, block)
+      }
 
       container.blocks.push(block)
     } // end of for blocks
