@@ -65,6 +65,13 @@ const setBlockVideo = block => {
   videoEl.loop = true
   videoEl.defaultMuted = true
   videoEl.muted = true
+  block.muted = true
+  videoEl.addEventListener('click', function() {
+    if (pv.unmutedVideoEl && pv.unmutedVideoEl !== videoEl) pv.unmutedVideoEl.muted = true
+    pv.unmutedVideoEl = videoEl
+    videoEl.muted = !videoEl.muted
+    block.muted = videoEl.muted
+  })
   block.videoEl = videoEl
   block.el.appendChild(videoEl)
 

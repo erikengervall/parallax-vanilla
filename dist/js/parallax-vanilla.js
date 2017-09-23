@@ -214,6 +214,13 @@
       videoEl.loop = true;
       videoEl.defaultMuted = true;
       videoEl.muted = true;
+      block.muted = true;
+      videoEl.addEventListener('click', function () {
+        if (pv.unmutedVideoEl && pv.unmutedVideoEl !== videoEl) pv.unmutedVideoEl.muted = true;
+        pv.unmutedVideoEl = videoEl;
+        videoEl.muted = !videoEl.muted;
+        block.muted = videoEl.muted;
+      });
       block.videoEl = videoEl;
       block.el.appendChild(videoEl);
 
@@ -396,7 +403,12 @@
 
           for (var j = 0; j < pv.containerArr[i].blocks.length; j++) {
             var block = pv.containerArr[i].blocks[j];
-            if (block.mediatype === 'video') block.videoEl.play();
+            if (block.videoEl) {
+              block.videoEl.play();
+              if (pv.unmutedVideoEl === block.videoEl) {
+                if (!block.muted) block.videoEl.muted = false;
+              }
+            }
 
             transform(block.el, 'translate3d(0,' + Math.round(calc / block.speed) + 'px, 0)');
           }
@@ -406,7 +418,12 @@
             // pause blocks with playing video
             for (var _j = 0; _j < pv.containerArr[i].blocks.length; _j++) {
               var _block = pv.containerArr[i].blocks[_j];
-              if (_block.mediatype === 'video' && _block.videoEl) _block.videoEl.pause();
+              if (_block.videoEl) {
+                _block.videoEl.pause();
+                if (pv.unmutedVideoEl === _block.videoEl) {
+                  _block.videoEl.muted = true;
+                }
+              }
             }
           }
           var nextContainer = pv.containerArr[i + 1];

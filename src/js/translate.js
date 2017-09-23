@@ -27,7 +27,12 @@ module.exports = () => {
 
       for (let j = 0; j < pv.containerArr[i].blocks.length; j++) {
         const block = pv.containerArr[i].blocks[j]
-        if (block.mediatype === 'video') block.videoEl.play()
+        if (block.videoEl) {
+          block.videoEl.play()
+          if (pv.unmutedVideoEl === block.videoEl) {
+            if (!block.muted) block.videoEl.muted = false
+          }
+        }
 
         transform(block.el, 'translate3d(0,' + Math.round(calc / block.speed) + 'px, 0)')
       }
@@ -37,7 +42,12 @@ module.exports = () => {
         // pause blocks with playing video
         for (let j = 0; j < pv.containerArr[i].blocks.length; j++) {
           let block = pv.containerArr[i].blocks[j]
-          if (block.mediatype === 'video' && block.videoEl) block.videoEl.pause()
+          if (block.videoEl) {
+            block.videoEl.pause()
+            if (pv.unmutedVideoEl === block.videoEl) {
+              block.videoEl.muted = true
+            }
+          }
         }
       }
       const nextContainer = pv.containerArr[i + 1]
