@@ -1,12 +1,10 @@
 /**
- * Mixins for centering text elements
- */
-/**
  * Basic body styling
  */
 body {
   background-color: #f4f4f4;
 }
+
 /**
  * Remove padding from all bootstrap columns
  */
@@ -14,12 +12,14 @@ body {
 [class*='container'] {
   padding: 0;
 }
+
 /**
  * Allow for absolute <pre> comments
  */
 .para-container {
   position: relative;
 }
+
 /**
  * Comments
  */
@@ -38,12 +38,14 @@ pre {
   background-color: rgba(245, 245, 245, 0.5);
   white-space: pre-wrap;
 }
+
 /**
  * Various filler sized
  */
 .filler {
   position: relative;
 }
+
 .filler > div {
   position: absolute;
   top: 50%;
@@ -59,6 +61,7 @@ pre {
 .pv-container {
   position: relative; /* In order for tooltips to position properly */
 }
+
 .text-block {
   position: absolute;
   top: 20px;
