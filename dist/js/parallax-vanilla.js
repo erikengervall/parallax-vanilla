@@ -203,6 +203,18 @@
       return true;
     };
 
+    var videoElClicked = function videoElClicked(videoEl, block) {
+      if (pv.unmutedBlock && pv.unmutedBlock.videoEl !== videoEl) {
+        pv.unmutedBlock.videoEl.muted = true;
+        pv.unmutedBlock.audioButton.classList.add('mute');
+      }
+      pv.unmutedBlock = block;
+      videoEl.muted = !videoEl.muted;
+      block.muted = videoEl.muted;
+
+      block.audioButton.classList.toggle('mute');
+    };
+
     var setBlockVideo = function setBlockVideo(block) {
       var mediatype = block.mediatype,
           mediapath = block.mediapath;
@@ -214,15 +226,23 @@
       videoEl.loop = true;
       videoEl.defaultMuted = true;
       videoEl.muted = true;
-      block.muted = true;
       videoEl.addEventListener('click', function () {
-        if (pv.unmutedVideoEl && pv.unmutedVideoEl !== videoEl) pv.unmutedVideoEl.muted = true;
-        pv.unmutedVideoEl = videoEl;
-        videoEl.muted = !videoEl.muted;
-        block.muted = videoEl.muted;
+        videoElClicked(videoEl, block);
       });
+      block.muted = true;
       block.videoEl = videoEl;
       block.el.appendChild(videoEl);
+
+      var audioButton = document.createElement('a');
+      audioButton.href = '#';
+      audioButton.className += 'speaker mute';
+      audioButton.appendChild(document.createElement('span'));
+      audioButton.addEventListener('click', function (e) {
+        e.preventDefault();
+        videoElClicked(videoEl, block);
+      });
+      block.audioButton = audioButton;
+      block.el.insertAdjacentElement('afterend', audioButton);
 
       return true;
     };
@@ -405,8 +425,11 @@
             var block = pv.containerArr[i].blocks[j];
             if (block.videoEl) {
               block.videoEl.play();
-              if (pv.unmutedVideoEl === block.videoEl) {
-                if (!block.muted) block.videoEl.muted = false;
+              if (block === pv.unmutedBlock) {
+                if (!block.muted) {
+                  block.videoEl.muted = block.muted;
+                  block.muted ? pv.unmutedBlock.audioButton.classList.add('mute') : pv.unmutedBlock.audioButton.classList.remove('mute');
+                }
               }
             }
 
@@ -420,7 +443,7 @@
               var _block = pv.containerArr[i].blocks[_j];
               if (_block.videoEl) {
                 _block.videoEl.pause();
-                if (pv.unmutedVideoEl === _block.videoEl) {
+                if (pv.unmutedBlock === _block) {
                   _block.videoEl.muted = true;
                 }
               }

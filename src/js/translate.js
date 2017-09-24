@@ -29,8 +29,13 @@ module.exports = () => {
         const block = pv.containerArr[i].blocks[j]
         if (block.videoEl) {
           block.videoEl.play()
-          if (pv.unmutedVideoEl === block.videoEl) {
-            if (!block.muted) block.videoEl.muted = false
+          if (block === pv.unmutedBlock) {
+            if (!block.muted) {
+              block.videoEl.muted = block.muted
+              block.muted
+                ? pv.unmutedBlock.audioButton.classList.add('mute')
+                : pv.unmutedBlock.audioButton.classList.remove('mute')
+            }
           }
         }
 
@@ -44,7 +49,7 @@ module.exports = () => {
           let block = pv.containerArr[i].blocks[j]
           if (block.videoEl) {
             block.videoEl.pause()
-            if (pv.unmutedVideoEl === block.videoEl) {
+            if (pv.unmutedBlock === block) {
               block.videoEl.muted = true
             }
           }
