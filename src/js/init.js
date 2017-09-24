@@ -2,6 +2,7 @@ const { setContainerHeight } = require('./initContainer')
 const {
   setBlockSpeed,
   setBlockMediaProps,
+  setBlockMute,
   setBlockVisual,
   setBlockAttributes,
 } = require('./initBlock')
@@ -31,6 +32,7 @@ module.exports = settings => {
       const { mediatype, mediapath } = setBlockMediaProps(block, pv.settings)
       block.mediatype = mediatype
       block.mediapath = mediapath
+      block.mute = setBlockMute(block, settings)
 
       if (block.mediatype !== NONE) {
         if (block.mediatype === VIDEO) container.hasVideoBlock = true
@@ -63,6 +65,7 @@ const initSettings = (settings, defaultSettings) => {
     if (!settings.block.speed) settings.block.speed = defaultSettings.block.speed
     if (!settings.block.mediatype) settings.block.mediatype = defaultSettings.block.mediatype
     if (!settings.block.mediapath) settings.block.mediapath = defaultSettings.block.mediapath
+    if (!settings.block.mute) settings.block.mute = defaultSettings.block.mute
   }
   return settings
 }

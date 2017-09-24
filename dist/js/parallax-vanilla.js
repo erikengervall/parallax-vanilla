@@ -28,7 +28,8 @@
         class: 'pv-block',
         speed: -Math.PI,
         mediatype: 'image',
-        mediapath: undefined
+        mediapath: undefined,
+        mute: false
       }
     };
 
@@ -63,6 +64,7 @@
     var _require2 = require('./initBlock'),
         setBlockSpeed = _require2.setBlockSpeed,
         setBlockMediaProps = _require2.setBlockMediaProps,
+        setBlockMute = _require2.setBlockMute,
         setBlockVisual = _require2.setBlockVisual,
         setBlockAttributes = _require2.setBlockAttributes;
 
@@ -99,6 +101,7 @@
 
           block.mediatype = mediatype;
           block.mediapath = mediapath;
+          block.mute = setBlockMute(block, settings);
 
           if (block.mediatype !== NONE) {
             if (block.mediatype === VIDEO) container.hasVideoBlock = true;
@@ -131,6 +134,7 @@
         if (!settings.block.speed) settings.block.speed = defaultSettings.block.speed;
         if (!settings.block.mediatype) settings.block.mediatype = defaultSettings.block.mediatype;
         if (!settings.block.mediapath) settings.block.mediapath = defaultSettings.block.mediapath;
+        if (!settings.block.mute) settings.block.mute = defaultSettings.block.mute;
       }
       return settings;
     };
@@ -187,6 +191,14 @@
       if (!mediapath && mediatype !== NONE) return console.error('Media path not defined for block: ' + block.el);
 
       return { mediatype: mediatype, mediapath: mediapath };
+    };
+
+    var setBlockMute = function setBlockMute(block, settings) {
+      var mute = block.el.getAttribute('pv-mute');
+
+      if (!mute) return settings.block.mute;
+
+      return mute == 'true';
     };
 
     var setBlockImage = function setBlockImage(block) {
@@ -298,6 +310,7 @@
     module.exports = {
       setBlockSpeed: setBlockSpeed,
       setBlockMediaProps: setBlockMediaProps,
+      setBlockMute: setBlockMute,
       setBlockVisual: setBlockVisual,
       setBlockAttributes: setBlockAttributes
 

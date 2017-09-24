@@ -11,24 +11,41 @@
 <body>
 
 <div class="pv-container" pv-height=50vh>
-  <pre>pv-height=50vh | pv-speed=-1.0 | pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/leaves.jpg</pre>
   <div class="pv-block" pv-speed=-1.0 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/leaves.jpg></div>
+	<div class="text-wrapper">
+		<div class="pv-block" pv-speed=3.14 pv-mediatype=none>
+			<h1>Super lightweight without dependencies</h1>
+			<h3>A few kilobytes of pure JavaScript.</h3>
+		</div>
+	</div>
 </div>
 
 <div class="pv-container" pv-height=50vh>
-  <pre>pv-height=50vh | pv-speed=1.0 | pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/leaves.jpg</pre>
   <div class="pv-block" pv-speed=1.0 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/leaves.jpg></div>
-	<div class="pv-block text-block" pv-speed=5 pv-mediatype=none>
-		<h1>I'm a pv-block without a mediatype!</h1>
+	<div class="text-wrapper">
+		<div class="pv-block" pv-speed=-3.14 pv-mediatype=none>
+			<h1>Dynamic sizing</h1>
+			<h3>Image-elements are dynamically sized and adjusted relative to the pv-speed.</h3>
+		</div>
+	</div>
+</div>
+
+<div class="filler" style="height: 50vh">
+	<div>
+		<h1>Media type independence</h1>
+		<h3>The parallax effect applies not only on images but on videos as well.</h3>
 	</div>
 </div>
 
 <div class="pv-container" pv-height=50vh>
-	<div class="pv-block" pv-speed=-5 pv-mediatype=video pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/earth.mov>
-	</div>
+	<div class="pv-block" pv-speed=-5 pv-mediatype=video pv-mute pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/animal.mp4></div>
 </div>
 
-<div class="filler" style="height: 100vh">
+<div class="pv-container" pv-height=50vh>
+	<div class="pv-block" pv-speed=-5 pv-mediatype=video pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/Sunrise%20-%207127.mp4></div>
+</div>
+
+<div class="filler" style="height: 50vh">
 	<div>
 		<h1>Performance is key</h1>
 		<h3>Maximize your parallax effects with hardware acceleration and <i>zero</i> external libraries.</h3>
@@ -36,106 +53,102 @@
 </div>
 
 <div class="pv-container container-fluid" pv-height=40vh>
- 	<pre>pv-height=40vh | pv-speed=[-1.0, -1.1, .., -2.1] (12 elements)</pre>
 	<div class="row">
-		<div class="col-xs-1 pv-block" pv-speed=-1.0 pv-mediapath=test/media/ladybug.jpg></div>
-		<div class="col-xs-1 pv-block" pv-speed=-1.1 pv-mediapath=test/media/ladybug.jpg></div>
-		<div class="col-xs-1 pv-block" pv-speed=-1.2 pv-mediapath=test/media/ladybug.jpg></div>
-		<div class="col-xs-1 pv-block" pv-speed=-1.3 pv-mediapath=test/media/ladybug.jpg></div>
-		<div class="col-xs-1 pv-block" pv-speed=-1.4 pv-mediapath=test/media/ladybug.jpg></div>
-		<div class="col-xs-1 pv-block" pv-speed=-1.5 pv-mediapath=test/media/ladybug.jpg></div>
-		<div class="col-xs-1 pv-block" pv-speed=-1.6 pv-mediapath=test/media/ladybug.jpg></div>
-		<div class="col-xs-1 pv-block" pv-speed=-1.7 pv-mediapath=test/media/ladybug.jpg></div>
-		<div class="col-xs-1 pv-block" pv-speed=-1.8 pv-mediapath=test/media/ladybug.jpg></div>
-		<div class="col-xs-1 pv-block" pv-speed=-1.9 pv-mediapath=test/media/ladybug.jpg></div>
-		<div class="col-xs-1 pv-block" pv-speed=-2.0 pv-mediapath=test/media/ladybug.jpg></div>
-		<div class="col-xs-1 pv-block" pv-speed=-2.1 pv-mediapath=test/media/ladybug.jpg></div>
+		<div class="col-xs-1 pv-block" pv-speed=-1.0 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+		<div class="col-xs-1 pv-block" pv-speed=-1.1 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+		<div class="col-xs-1 pv-block" pv-speed=-1.2 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+		<div class="col-xs-1 pv-block" pv-speed=-1.3 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+		<div class="col-xs-1 pv-block" pv-speed=-1.4 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+		<div class="col-xs-1 pv-block" pv-speed=-1.5 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+		<div class="col-xs-1 pv-block" pv-speed=-1.6 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+		<div class="col-xs-1 pv-block" pv-speed=-1.7 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+		<div class="col-xs-1 pv-block" pv-speed=-1.8 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+		<div class="col-xs-1 pv-block" pv-speed=-1.9 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+		<div class="col-xs-1 pv-block" pv-speed=-2.0 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+		<div class="col-xs-1 pv-block" pv-speed=-2.1 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
 	</div>
 </div>
 
 <div class="container-fluid pv-container" pv-height=10vh>
-	<pre>pv-height=10vh | pv-speed = [1.0, 1.1, .., 3.3] (24 elements)</pre>
 	<div class="row">
 		<div class="col-xs-6">
-			<div class="col-xs-1 pv-block" pv-speed=1.0 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=1.1 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=1.2 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=1.3 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=1.4 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=1.5 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=1.6 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=1.7 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=1.8 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=1.9 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=2.0 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=2.1 pv-mediapath=test/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=1.0 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=1.1 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=1.2 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=1.3 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=1.4 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=1.5 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=1.6 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=1.7 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=1.8 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=1.9 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=2.0 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=2.1 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
 		</div>
 		<div class="col-xs-6">
-			<div class="col-xs-1 pv-block" pv-speed=2.2 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=2.3 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=2.4 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=2.5 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=2.6 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=2.7 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=2.8 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=2.9 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=3.0 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=3.1 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=3.2 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=3.3 pv-mediapath=test/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=2.2 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=2.3 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=2.4 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=2.5 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=2.6 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=2.7 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=2.8 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=2.9 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=3.0 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=3.1 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=3.2 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=3.3 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
 		</div>
 	</div>
 </div>
 
 <div class="pv-container container-fluid" pv-height=10vh>
-	<pre>pv-height=10vh | pv-speed=[-1.0, -1.1, .., -3.3] (24 elements)</pre>
 	<div class="row">
 		<div class="col-xs-6">
-			<div class="col-xs-1 pv-block" pv-speed=-1.0 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=-1.1 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=-1.2 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=-1.3 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=-1.4 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=-1.5 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=-1.6 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=-1.7 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=-1.8 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=-1.9 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=-2.0 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=-2.1 pv-mediapath=test/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=-1.0 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=-1.1 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=-1.2 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=-1.3 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=-1.4 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=-1.5 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=-1.6 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=-1.7 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=-1.8 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=-1.9 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=-2.0 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=-2.1 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
 		</div>
 		<div class="col-xs-6">
-			<div class="col-xs-1 pv-block" pv-speed=-2.2 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=-2.3 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=-2.4 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=-2.5 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=-2.6 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=-2.7 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=-2.8 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=-2.9 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=-3.0 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=-3.1 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=-3.2 pv-mediapath=test/media/ladybug.jpg></div>
-			<div class="col-xs-1 pv-block" pv-speed=-3.3 pv-mediapath=test/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=-2.2 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=-2.3 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=-2.4 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=-2.5 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=-2.6 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=-2.7 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=-2.8 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=-2.9 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=-3.0 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=-3.1 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=-3.2 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+			<div class="col-xs-1 pv-block" pv-speed=-3.3 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
 		</div>
 	</div>
 </div>
 
 <div class="pv-container container-fluid" pv-height=40vh>
-  <pre>pv-height=40vh | pv-speed=[1.0, 1.1, .., 2.1] (12 elements) | pv-mediapath=test/media/ladybug.jpg</pre>
 	<div class="row">
-		<div class="col-xs-1 pv-block" pv-speed=1.0 pv-mediapath=test/media/ladybug.jpg></div>
-		<div class="col-xs-1 pv-block" pv-speed=1.1 pv-mediapath=test/media/ladybug.jpg></div>
-		<div class="col-xs-1 pv-block" pv-speed=1.2 pv-mediapath=test/media/ladybug.jpg></div>
-		<div class="col-xs-1 pv-block" pv-speed=1.3 pv-mediapath=test/media/ladybug.jpg></div>
-		<div class="col-xs-1 pv-block" pv-speed=1.4 pv-mediapath=test/media/ladybug.jpg></div>
-		<div class="col-xs-1 pv-block" pv-speed=1.5 pv-mediapath=test/media/ladybug.jpg></div>
-		<div class="col-xs-1 pv-block" pv-speed=1.6 pv-mediapath=test/media/ladybug.jpg></div>
-		<div class="col-xs-1 pv-block" pv-speed=1.7 pv-mediapath=test/media/ladybug.jpg></div>
-		<div class="col-xs-1 pv-block" pv-speed=1.8 pv-mediapath=test/media/ladybug.jpg></div>
-		<div class="col-xs-1 pv-block" pv-speed=1.9 pv-mediapath=test/media/ladybug.jpg></div>
-		<div class="col-xs-1 pv-block" pv-speed=2.0 pv-mediapath=test/media/ladybug.jpg></div>
-		<div class="col-xs-1 pv-block" pv-speed=2.1 pv-mediapath=test/media/ladybug.jpg></div>
+		<div class="col-xs-1 pv-block" pv-speed=1.0 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+		<div class="col-xs-1 pv-block" pv-speed=1.1 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+		<div class="col-xs-1 pv-block" pv-speed=1.2 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+		<div class="col-xs-1 pv-block" pv-speed=1.3 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+		<div class="col-xs-1 pv-block" pv-speed=1.4 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+		<div class="col-xs-1 pv-block" pv-speed=1.5 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+		<div class="col-xs-1 pv-block" pv-speed=1.6 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+		<div class="col-xs-1 pv-block" pv-speed=1.7 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+		<div class="col-xs-1 pv-block" pv-speed=1.8 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+		<div class="col-xs-1 pv-block" pv-speed=1.9 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+		<div class="col-xs-1 pv-block" pv-speed=2.0 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
+		<div class="col-xs-1 pv-block" pv-speed=2.1 pv-mediapath=http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg></div>
 	</div>
 </div>
 
@@ -147,7 +160,6 @@
 </div>
 
 <div class="pv-container" pv-height=22vh>
-  <pre>pv-height=22vh | pv-speed=-1 | pv-mediapath=test/media/water.mp4</pre>
   <div class="pv-block" pv-speed=-1 pv-mediatype=video pv-mediapath=test/media/water.mp4></div>
 </div>
 
@@ -159,7 +171,6 @@
 </div>
 
 <div class="pv-container" pv-height=100vh>
-	<pre>pv-speed=3.14 | pv-height=100vh | pv-mediapath=test/media/reflection.jpg</pre>
 	<div class="pv-block" pv-speed=3.14 pv-mediapath=test/media/reflection.jpg></div>
 </div>
 
@@ -174,7 +185,7 @@ const demoSettings = {
     class: 'pv-block',
     speed: -1,
     mediatype: 'image',
-    mediapath: './test/media/ladybug.jpg',
+    mediapath: 'http://engervall.com/projects/parallax-vanilla/media/ladybug.jpg',
   },
 }
 pv.init(demoSettings)

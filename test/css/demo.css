@@ -62,11 +62,14 @@ pre {
   position: relative; /* In order for tooltips to position properly */
 }
 
-.text-block {
+.text-wrapper {
   position: absolute;
-  top: 20px;
-  left: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
   width: 100%;
   text-align: center;
   color: white;
+  z-index: 9;
+  text-shadow: 1px 1px 1px black;
 }

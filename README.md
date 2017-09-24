@@ -1,13 +1,13 @@
 # parallax-vanilla.js
 
-Seamless and lightweight parallax scrolling library implemented in pure JavaScript utilising Hardware acceleration for extra performance.
+Seamless and lightweight parallax scrolling library implemented in pure JavaScript utilizing Hardware acceleration for extra performance.
 
 ## [Demo](https://erikengervall.github.io/parallax-vanilla/)
 
 ## Main features
 
 ### Super lightweight without dependencies
-7KB pure JavaScript.
+A few kilobytes of pure JavaScript.
 
 ### Viewport-only animations
 Parallax elements are only animated within the current viewport, saving a lot of resources.
@@ -16,10 +16,10 @@ Parallax elements are only animated within the current viewport, saving a lot of
 Image-elements are dynamically sized and adjusted relative to the pv-speed.
 
 ### Performance is key
-Vanilla Parallax maximises your parallax effects with hardware acceleration and no external libraries.
+Vanilla Parallax maximizes your parallax effects with hardware acceleration and zero external libraries.
 
 ### Media type independence
-Parallax effect not only applies on images but also work perfectly with videos.
+The parallax effect applies not only on images but on videos as well. Videos' audio will play if the videos are clicked and remain within the viewport.
 
 ## Browser support
 Tested browsers:
@@ -42,7 +42,7 @@ npm i --save parallax-vanilla
 
 ### Include
 
-Download package and include `parallax-vanilla.min.css` in the <b>head</b> tag and `parallax-vanilla.min.js` just before the closing <b>body</b> tag.
+Download package and include `parallax-vanilla.min.css` in the <b>head</b> tag and `parallax-vanilla.min.js` just before the closing <b>body</b> tag. Don't forget to put the source map `parallax-vanilla.js.map` next to `parallax-vanilla.min.js` within your directory.
 
 ```html
 <link href='/path/to/parallax-vanilla.min.css'>
@@ -65,17 +65,17 @@ Download package and include `parallax-vanilla.min.css` in the <b>head</b> tag a
 
 ```html
 <div class='pv-container'>
-  <div class='pv-block' pv-mediapath='path/to/file.extension'></div>
+  <div class='pv-block' pv-mediapath=path/to/file.extension></div>
 </div>
 ```
 
 **3**. Initialize library.
 ```html
 <div class='pv-container'>
-  <div class='pv-block' pv-mediapath='path/to/file.extension'></div>></div>
+  <div class='pv-block' pv-mediapath=path/to/file.extension></div>></div>
 </div>
 <script>
-  pv.init();
+  pv.init()
 </script>
 ```
 
@@ -85,15 +85,16 @@ Optional global settings can be configured upon initialization.
 
 ```javascript
 pv.init({
-  container : {
+  container: {
     class : String,
-    height : String || Number
+    height : String || Number,
   },
-  block : {
+  block: {
     class: String,
     speed: Number || Float,
     mediapath: String,
-    mediatype: String
+    mediatype: String,
+    mute: Boolean,
   }
 });
 ```
@@ -188,6 +189,13 @@ pv.init({
 			<td>The block's media path.</td>
       <td>'../path/to/file.ext'</td>
 		</tr>
+    <tr>
+			<td>settings.block.mute</td>
+			<td>Boolean</td>
+			<td>false</td>
+			<td>Defines whether or not all videos should be muted.</td>
+      <td>true || false</td>
+		</tr>
 	</tbody>
 </table>
 
@@ -196,12 +204,12 @@ pv.init({
 Data attributes allow fine control over each individual element and will overwrite the global JavaScript settings.
 
 ```html
-<div class='pv-container' pv-height='100vh'>
-  <div class='pv-block' pv-speed='3.14' pv-mediatype='video' pv-mediapath='path/to/epic_montage.mp4'></div>
+<div class='pv-container' pv-height=100vh>
+  <div class='pv-block' pv-speed=3.14 pv-mediatype=video pv-mediapath=path/to/epic_montage.mp4 pv-mute=false></div>
 </div>
 ```
 
-This code will produce a container with class `pv-container` with height `100vh` containing a block with class `pv-block` with a parallax speed of `3.14` displaying the media `epic_montage.mp4` of type `video`.
+This code will produce a container with class `pv-container` with height `100vh` containing a block with class `pv-block` with a parallax speed of `3.14` displaying the media `epic_montage.mp4` of type `video` with `pv-mute=false`.
 
 <table class='table table-bordered'>
   <tbody>
@@ -230,6 +238,9 @@ This code will produce a container with class `pv-container` with height `100vh`
     </tr>
     <tr>
       <td>pv-mediapath</td>
+    </tr>
+    <tr>
+      <td>pv-mute</td>
     </tr>
 	</tbody>
 </table>

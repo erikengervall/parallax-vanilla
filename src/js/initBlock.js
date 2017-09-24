@@ -42,6 +42,14 @@ const setBlockMediaProps = (block, settings) => {
   return { mediatype, mediapath }
 }
 
+const setBlockMute = (block, settings) => {
+  const mute = block.el.getAttribute('pv-mute')
+
+  if (!mute) return settings.block.mute
+
+  return mute == 'true'
+}
+
 const setBlockImage = block => {
   const { mediatype, mediapath } = block
 
@@ -148,6 +156,7 @@ const setBlockAttributes = (container, block) => {
 module.exports = {
   setBlockSpeed,
   setBlockMediaProps,
+  setBlockMute,
   setBlockVisual,
   setBlockAttributes,
 }
