@@ -2,7 +2,7 @@
 
 Seamless and lightweight parallax scrolling library implemented in pure JavaScript utilising Hardware acceleration for extra performance.
 
-## [Demo](http://engervall.com/projects/parallax-vanilla)
+## [Demo](https://erikengervall.github.io/parallax-vanilla/)
 
 ## Main features
 
