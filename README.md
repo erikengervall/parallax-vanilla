@@ -137,7 +137,7 @@ pv.init({
 			<td>settings.container.class</td>
 			<td>String</td>
 			<td>'pv-container'</td>
-			<td>The class of the container element.</td>
+			<td>The class of the container element. Remember to update the CSS classes if you wish to change this.</td>
       <td>'pv-container'</td>
 		</tr>
 		<tr>
@@ -165,7 +165,7 @@ pv.init({
 			<td>settings.block.class</td>
 			<td>String</td>
 			<td>'pv-block'</td>
-			<td>The class of the block element.</td>
+			<td>The class of the block element. Remember to update the CSS classes if you wish to change this.</td>
       <td>'pv-block'</td>
 		</tr>
 		<tr>
@@ -249,24 +249,13 @@ The descriptions and the default values are the same as the corresponding proper
 
 ### CSS
 
+The CSS in `parallax-vanilla.min.css` is required in order for parallax-vanilla to function properly.
+
 ```css
-.pv-container {
-  overflow: hidden;
-}
-.pv-container .pv-block {
-  will-change: transform;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-}
-.pv-container .pv-block video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-}
+.pv-container {...}
+.pv-container .pv-block {...}
+.pv-container .pv-block video {...}
+.audio-icon {...}
 ```
 
 LICENSE

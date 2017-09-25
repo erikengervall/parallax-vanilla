@@ -15,21 +15,21 @@
   width: 100%;
   object-fit: cover;
 }
-.pv-container .speaker {
+.pv-container .audio-icon {
   height: 30px;
   width: 30px;
   position: absolute;
   top: 10px;
   left: 10px;
 }
-.pv-container .speaker span {
+.pv-container .audio-icon span {
   display: block;
   width: 8px;
   height: 8px;
   background: #fff;
   margin: 11px 0 0 2px;
 }
-.pv-container .speaker span:after {
+.pv-container .audio-icon span:after {
   content: '';
   position: absolute;
   width: 0;
@@ -40,7 +40,7 @@
   left: -13px;
   top: 5px;
 }
-.pv-container .speaker span:before {
+.pv-container .audio-icon span:before {
   transform: rotate(45deg);
   border-radius: 0 50px 0 0;
   content: '';
@@ -54,10 +54,10 @@
   top: 9px;
   transition: all 0.2s ease-out;
 }
-.pv-container .speaker:hover span:before {
+.pv-container .audio-icon:hover span:before {
   transform: scale(0.8) translate(-3px, 0) rotate(42deg);
 }
-.pv-container .speaker.mute span:before {
+.pv-container .audio-icon.mute span:before {
   transform: scale(0.5) translate(-15px, 0) rotate(36deg);
   opacity: 0;
 }

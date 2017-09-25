@@ -95,7 +95,7 @@ const setBlockVideo = block => {
     })
     let audioButton = document.createElement('a')
     audioButton.href = '#'
-    audioButton.className += 'speaker mute'
+    audioButton.className += 'audio-icon mute'
     audioButton.appendChild(document.createElement('span'))
     audioButton.addEventListener('click', function(e) {
       e.preventDefault()
