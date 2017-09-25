@@ -85,23 +85,25 @@ const setBlockVideo = block => {
   videoEl.loop = true
   videoEl.defaultMuted = true
   videoEl.muted = true
-  videoEl.addEventListener('click', function() {
-    videoElClicked(videoEl, block)
-  })
   block.muted = true
   block.videoEl = videoEl
   block.el.appendChild(videoEl)
 
-  let audioButton = document.createElement('a')
-  audioButton.href = '#'
-  audioButton.className += 'speaker mute'
-  audioButton.appendChild(document.createElement('span'))
-  audioButton.addEventListener('click', function(e) {
-    e.preventDefault()
-    videoElClicked(videoEl, block)
-  })
-  block.audioButton = audioButton
-  block.el.insertAdjacentElement('afterend', audioButton)
+  if (!block.mute) {
+    videoEl.addEventListener('click', function() {
+      videoElClicked(videoEl, block)
+    })
+    let audioButton = document.createElement('a')
+    audioButton.href = '#'
+    audioButton.className += 'speaker mute'
+    audioButton.appendChild(document.createElement('span'))
+    audioButton.addEventListener('click', function(e) {
+      e.preventDefault()
+      videoElClicked(videoEl, block)
+    })
+    block.audioButton = audioButton
+    block.el.insertAdjacentElement('afterend', audioButton)
+  }
 
   return true
 }
