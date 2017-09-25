@@ -101,7 +101,7 @@
 
           block.mediatype = mediatype;
           block.mediapath = mediapath;
-          block.mute = setBlockMute(block, settings);
+          block.mute = setBlockMute(block, pv.settings);
 
           if (block.mediatype !== NONE) {
             if (block.mediatype === VIDEO) container.hasVideoBlock = true;
