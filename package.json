@@ -29,13 +29,7 @@
     "start": "grunt default",
     "test": "jest ./test/parallax-vanilla.spec.js --notify"
   },
-  "keywords": [
-    "vanilla",
-    "javascript",
-    "parallax",
-    "animation",
-    "library"
-  ],
+  "keywords": ["vanilla", "javascript", "parallax", "animation", "library"],
   "author": "Erik Engervall erik.engervall@gmail.com http://engervall.com/",
   "license": "MIT",
   "homepage": "http://engervall.com/projects/parallax-vanilla/",

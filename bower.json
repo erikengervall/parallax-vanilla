@@ -1,21 +1,10 @@
 {
   "name": "parallax-vanilla",
   "description": "Simple parallax in pure JavaScript designed for performance and dynamic sizing.",
-  "main": [
-    "dist/js/vanilla-parallax.js",
-    "dist/css/vanilla-parallax.css"
-  ],
-  "authors": [
-    "Erik Engervall"
-  ],
+  "main": ["dist/js/vanilla-parallax.js", "dist/css/vanilla-parallax.css"],
+  "authors": ["Erik Engervall"],
   "license": "MIT",
-  "keywords": [
-    "parallax",
-    "javascript",
-    "library",
-    "vanilla",
-    "animation"
-  ],
+  "keywords": ["vanilla", "javascript", "parallax", "animation", "library"],
   "homepage": "https://github.com/erikengervall/parallax-vanilla",
   "ignore": [
     "**/.*",
@@ -31,5 +20,5 @@
     ".npmignore",
     "npm-debug.log"
   ],
-  "version": "1.0.5"
+  "version": "1.1.2"
 }
