@@ -45,8 +45,8 @@ npm i --save parallax-vanilla
 Download package and include `parallax-vanilla.min.css` in the <b>head</b> tag and `parallax-vanilla.min.js` just before the closing <b>body</b> tag. Don't forget to put the source map `parallax-vanilla.js.map` next to `parallax-vanilla.min.js` within your directory.
 
 ```html
-<link href='/path/to/parallax-vanilla.min.css'>
-<script src='/path/to/parallax-vanilla.min.js'></script>
+<link href='path/to/parallax-vanilla.min.css'>
+<script src='path/to/parallax-vanilla.min.js'></script>
 ```
 
 ## Usage
@@ -136,16 +136,16 @@ pv.init({
 		<tr>
 			<td>settings.container.class</td>
 			<td>String</td>
-			<td>'pv-container'</td>
+			<td>pv-container</td>
 			<td>The class of the container element. Remember to update the CSS classes if you wish to change this.</td>
-      <td>'pv-container'</td>
+      <td>pv-container</td>
 		</tr>
 		<tr>
 			<td>settings.container.height</td>
 			<td>String || Number</td>
-			<td>'250px'</td>
+			<td>250px</td>
 			<td>The container's height in either pixels or viewport heights. If the string lacks a suffix, or a number is entered, it will default to pixels.</td>
-      <td>'250px', '50vh', '250'</td>
+      <td>250px, 50vh, 250</td>
 		</tr>
 		<tr>
 			<td></td>
@@ -159,42 +159,42 @@ pv.init({
 			<td>Object</td>
 			<td>{class, speed, mediatype, mediapath}</td>
 			<td>The block object.</td>
-      <td>{}</td>
+      <td>{...}</td>
 		</tr>
 		<tr>
 			<td>settings.block.class</td>
 			<td>String</td>
-			<td>'pv-block'</td>
+			<td>pv-block</td>
 			<td>The class of the block element. Remember to update the CSS classes if you wish to change this.</td>
-      <td>'pv-block'</td>
+      <td>pv-block</td>
 		</tr>
 		<tr>
 			<td>settings.block.speed</td>
 			<td>Number || Float</td>
 			<td>-Math.PI</td>
 			<td>The speed and direction at which the parallax animated. Negative values will animate the `block` upwards when scrolling downwards on the page.</td>
-      <td>''</td>
+      <td>1, 1.5, -1, -1.5</td>
 		</tr>
 		<tr>
 			<td>settings.block.mediatype</td>
 			<td>String</td>
-			<td>'image'</td>
+			<td>image</td>
 			<td>The block's media type. Blocks with mediapaths containing a video extension will automatically be considered videos.</td>
-      <td>'image', 'video' or 'none'</td>
+      <td>image, video or none</td>
 		</tr>
 		<tr>
 			<td>settings.block.mediapath</td>
 			<td>String</td>
 			<td>undefined</td>
 			<td>The block's media path.</td>
-      <td>'../path/to/file.ext'</td>
+      <td>../path/to/file.ext</td>
 		</tr>
     <tr>
 			<td>settings.block.mute</td>
 			<td>Boolean</td>
 			<td>false</td>
 			<td>Defines whether or not all videos should be muted.</td>
-      <td>true || false</td>
+      <td>true or false</td>
 		</tr>
 	</tbody>
 </table>
