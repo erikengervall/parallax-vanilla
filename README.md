@@ -218,8 +218,6 @@ This code will produce a container with class `pv-container` with height `100vh`
   			<th>Data attributes for container</th>
   		</tr>
   	</thead>
-		<tr>
-		</tr>
     <tr>
       <td>pv-height</td>
     </tr>
@@ -228,8 +226,6 @@ This code will produce a container with class `pv-container` with height `100vh`
   			<th>Data attributes for block</th>
   		</tr>
   	</thead>
-    <tr>
-    </tr>
     <tr>
       <td>pv-speed</td>
     </tr>
