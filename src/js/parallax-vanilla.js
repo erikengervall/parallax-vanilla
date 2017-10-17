@@ -3,7 +3,7 @@
     let pv = {}
     pv.init = require('./init') // exposes init function to user
 
-    window.onresize = () => require('./resize')()
+    if (typeof window.orientation === 'undefined') window.onresize = () => require('./resize')()
 
     // Request animation frame, also binds function to window
     window.raf = (() => {

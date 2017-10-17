@@ -242,20 +242,22 @@
       block.videoEl = videoEl;
       block.el.appendChild(videoEl);
 
-      if (!block.mute) {
-        videoEl.addEventListener('click', function () {
-          videoElClicked(videoEl, block);
-        });
-        var audioButton = document.createElement('a');
-        audioButton.href = '#';
-        audioButton.className += 'audio-icon mute';
-        audioButton.appendChild(document.createElement('span'));
-        audioButton.addEventListener('click', function (e) {
-          e.preventDefault();
-          videoElClicked(videoEl, block);
-        });
-        block.audioButton = audioButton;
-        block.el.insertAdjacentElement('afterend', audioButton);
+      if (typeof window.orientation === 'undefined') {
+        if (!block.mute) {
+          videoEl.addEventListener('click', function () {
+            videoElClicked(videoEl, block);
+          });
+          var audioButton = document.createElement('a');
+          audioButton.href = '#';
+          audioButton.className += 'audio-icon mute';
+          audioButton.appendChild(document.createElement('span'));
+          audioButton.addEventListener('click', function (e) {
+            e.preventDefault();
+            videoElClicked(videoEl, block);
+          });
+          block.audioButton = audioButton;
+          block.el.insertAdjacentElement('afterend', audioButton);
+        }
       }
 
       return true;
@@ -360,7 +362,7 @@
         var pv = {};
         pv.init = require('./init'); // exposes init function to user
 
-        window.onresize = function () {
+        if (typeof window.orientation === 'undefined') window.onresize = function () {
           return require('./resize')();
         };
 
