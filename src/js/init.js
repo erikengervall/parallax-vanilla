@@ -14,7 +14,7 @@ module.exports = settings => {
 
   const containerElements = [...document.getElementsByClassName(pv.settings.container.class)]
   containerElements.forEach(containerElement => {
-    let container = {}
+    const container = {}
 
     container.el = containerElement
     container.offset = offsetTop(container.el)
@@ -25,7 +25,7 @@ module.exports = settings => {
 
     const blockElements = [...containerElement.getElementsByClassName(pv.settings.block.class)]
     blockElements.forEach(blockElement => {
-      let block = {}
+      const block = {}
 
       block.el = blockElement
       block.speed = setBlockSpeed(block, pv.settings)
@@ -67,12 +67,6 @@ const initSettings = (userSettings = {}, defaultSettings) => {
         throw new Error(`Expected ${setting} to match available settings`)
       }
 
-      console.log(
-        'Modified defaultSettings with;',
-        elementSettings,
-        setting,
-        userSettings[elementSettings][setting]
-      )
       defaultSettings[elementSettings][setting] = userSettings[elementSettings][setting]
     })
   })

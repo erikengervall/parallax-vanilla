@@ -150,7 +150,6 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
             throw new Error("Expected " + setting + " to match available settings");
           }
 
-          console.log('Modified defaultSettings with;', elementSettings, setting, userSettings[elementSettings][setting]);
           defaultSettings[elementSettings][setting] = userSettings[elementSettings][setting];
         });
       });
@@ -181,7 +180,8 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         // Speed must consist solely of integers
         var attrSpeedNumber = Number(attrSpeed);
         if (isNaN(attrSpeedNumber)) {
-          return console.error('Speed consist of more symbols than integers for block: ' + block.el);
+          console.error('Invalid type for attribute speed for block: ' + block.el);
+          throw new Error('Invalid type for attribute speed');
         } else {
           attrSpeed = attrSpeedNumber;
         }
@@ -342,7 +342,12 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       // Returns the extension of a media path
     };var getExtension = function getExtension(attrMediapath) {
       var extension = attrMediapath.substr(attrMediapath.lastIndexOf('.') + 1, attrMediapath.length).toLowerCase();
-      return extension === -1 ? console.error('Invalid extension for media with media path: ' + attrMediapath) : extension;
+      if (extension === -1) {
+        console.error('Invalid extension for media with media path: ' + attrMediapath);
+        throw new Error('Invalid extension for media');
+      } else {
+        return extension;
+      }
     };
 
     // returns {true} if media is a video

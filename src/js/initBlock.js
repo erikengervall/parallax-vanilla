@@ -11,7 +11,8 @@ const setBlockSpeed = (block, settings) => {
     // Speed must consist solely of integers
     const attrSpeedNumber = Number(attrSpeed)
     if (isNaN(attrSpeedNumber)) {
-      return console.error('Speed consist of more symbols than integers for block: ' + block.el)
+      console.error('Invalid type for attribute speed for block: ' + block.el)
+      throw new Error('Invalid type for attribute speed')
     } else {
       attrSpeed = attrSpeedNumber
     }
@@ -172,9 +173,12 @@ const getExtension = attrMediapath => {
   const extension = attrMediapath
     .substr(attrMediapath.lastIndexOf('.') + 1, attrMediapath.length)
     .toLowerCase()
-  return extension === -1
-    ? console.error('Invalid extension for media with media path: ' + attrMediapath)
-    : extension
+  if (extension === -1) {
+    console.error('Invalid extension for media with media path: ' + attrMediapath)
+    throw new Error('Invalid extension for media')
+  } else {
+    return extension
+  }
 }
 
 // returns {true} if media is a video
