@@ -1,3 +1,4 @@
+const { defaultSettings, MEDIA_TYPES } = require('./constants')
 const { setContainerHeight } = require('./initContainer')
 const {
   setBlockSpeed,
@@ -6,73 +7,82 @@ const {
   setBlockVisual,
   setBlockAttributes,
 } = require('./initBlock')
-const { defaultSettings, VIDEO, NONE } = require('./constants')
 
 module.exports = settings => {
   pv.containerArr = []
   pv.settings = initSettings(settings, defaultSettings)
 
-  const containers = document.getElementsByClassName(pv.settings.container.class)
-  for (let i = 0; i < containers.length; i++) {
+  const containerElements = [...document.getElementsByClassName(pv.settings.container.class)]
+  containerElements.forEach(containerElement => {
     let container = {}
 
-    container.el = containers[i]
+    container.el = containerElement
     container.offset = offsetTop(container.el)
     container.el.style.height = setContainerHeight(container, pv.settings)
     container.height = container.el.clientHeight
 
     container.blocks = []
 
-    const blocks = containers[i].getElementsByClassName(pv.settings.block.class)
-    for (let j = 0; j < blocks.length; j++) {
+    const blockElements = [...containerElement.getElementsByClassName(pv.settings.block.class)]
+    blockElements.forEach(blockElement => {
       let block = {}
 
-      block.el = blocks[j]
+      block.el = blockElement
       block.speed = setBlockSpeed(block, pv.settings)
       const { mediatype, mediapath } = setBlockMediaProps(block, pv.settings)
       block.mediatype = mediatype
       block.mediapath = mediapath
       block.mute = setBlockMute(block, pv.settings)
 
-      if (block.mediatype !== NONE) {
-        if (block.mediatype === VIDEO) container.hasVideoBlock = true
+      if (block.mediatype !== MEDIA_TYPES.NONE) {
+        if (block.mediatype === MEDIA_TYPES.VIDEO) container.hasVideoBlock = true
 
         const successful = setBlockVisual(block)
-        if (!successful) console.error('Did not successfully set media for block: ' + block)
+        if (!successful) {
+          console.error('Did not successfully set media for block:', block)
+          throw new Error('Did not successfully set media')
+        }
 
         setBlockAttributes(container, block)
       }
 
       container.blocks.push(block)
-    } // end of for blocks
+    })
 
     pv.containerArr.push(container)
-  } // loop container
+  })
 }
 
-const initSettings = (settings, defaultSettings) => {
-  if (!settings || settings === {}) return defaultSettings
-  if (!settings.container || settings.container === {}) {
-    settings.container = defaultSettings.container
-  } else {
-    if (!settings.container.class) settings.container.class = defaultSettings.container.class
-    if (!settings.container.height) settings.container.height = defaultSettings.container.height
-  }
-  if (!settings.block || settings.block === {}) {
-    settings.block = defaultSettings.block
-  } else {
-    if (!settings.block.class) settings.block.class = defaultSettings.block.class
-    if (!settings.block.speed) settings.block.speed = defaultSettings.block.speed
-    if (!settings.block.mediatype) settings.block.mediatype = defaultSettings.block.mediatype
-    if (!settings.block.mediapath) settings.block.mediapath = defaultSettings.block.mediapath
-    if (!settings.block.mute) settings.block.mute = defaultSettings.block.mute
-  }
-  return settings
+const initSettings = (userSettings = {}, defaultSettings) => {
+  Object.keys(userSettings).forEach(elementSettings => {
+    if (!userSettings[elementSettings] instanceof Object) {
+      throw new Error(`Expected ${elementSettings} to be of instance Object`)
+    }
+
+    Object.keys(userSettings[elementSettings]).forEach(setting => {
+      if (userSettings[elementSettings][setting] instanceof Object) {
+        throw new Error(`Expected ${elementSettings} to be primitive value`)
+      }
+      if (!defaultSettings[elementSettings].hasOwnProperty(setting)) {
+        throw new Error(`Expected ${setting} to match available settings`)
+      }
+
+      console.log(
+        'Modified defaultSettings with;',
+        elementSettings,
+        setting,
+        userSettings[elementSettings][setting]
+      )
+      defaultSettings[elementSettings][setting] = userSettings[elementSettings][setting]
+    })
+  })
+
+  return defaultSettings
 }
 
 // Calculates the top offset from an element to the window's || document's top, Link: https://plainjs.com/javascript/styles/get-the-position-of-an-element-relative-to-the-document-24/
 const offsetTop = el => {
-  let rectTop = el.getBoundingClientRect().top,
-    scrollTop = window.pageYOffset || document.documentElement.scrollTop
+  const rectTop = el.getBoundingClientRect().top
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop
   return rectTop + scrollTop
 }

@@ -6,12 +6,17 @@
   "dependencies": {},
   "devDependencies": {
     "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.3",
     "babel-jest": "^21.0.2",
     "babel-preset-env": "^1.6.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-es2016": "^6.24.1",
     "babel-preset-es2017": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
+    "concurrently": "^3.5.1",
+    "eslint": "^4.19.1",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-prettier": "^2.6.0",
     "express": "^4.16.2",
     "grunt": "^1.0.1",
     "grunt-babel": "^7.0.0",
@@ -24,14 +29,21 @@
     "jest": "^21.1.0",
     "load-grunt-tasks": "^3.5.2",
     "nodemon": "^1.12.1",
+    "prettier-eslint": "^8.8.1",
     "regenerator-runtime": "^0.11.0"
   },
   "scripts": {
     "start": "grunt default",
-    "start:dev": "nodemon index.js",
+    "dev": "concurrently 'nodemon index.js' 'npm start'",
     "test": "jest ./test/parallax-vanilla.spec.js --notify"
   },
-  "keywords": ["vanilla", "javascript", "parallax", "animation", "library"],
+  "keywords": [
+    "vanilla",
+    "javascript",
+    "parallax",
+    "animation",
+    "library"
+  ],
   "author": "Erik Engervall erik.engervall@gmail.com http://engervall.com/",
   "license": "MIT",
   "homepage": "http://engervall.com/projects/parallax-vanilla/",

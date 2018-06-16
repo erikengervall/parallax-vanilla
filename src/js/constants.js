@@ -18,9 +18,19 @@ const videoExtensions = [
   'wmv',
 ]
 
-const IMAGE = 'image'
-const VIDEO = 'video'
-const NONE = 'none'
+const MEDIA_TYPES = {
+  IMAGE: 'image',
+  VIDEO: 'video',
+  NONE: 'none',
+}
+
+const ELEMENT_DATA_KEYS = {
+  MEDIAPATH: 'pv-mediapath',
+  MEDIATYPE: 'pv-mediatype',
+  MUTE: 'pv-mute',
+  HEIGHT: 'pv-height',
+  SPEED: 'pv-speed',
+}
 
 const defaultSettings = {
   container: {
@@ -30,10 +40,10 @@ const defaultSettings = {
   block: {
     class: 'pv-block',
     speed: -Math.PI,
-    mediatype: 'image',
-    mediapath: undefined,
-    mute: false,
+    mediatype: MEDIA_TYPES.IMAGE,
+    mediapath: null,
+    mute: 'false',
   },
 }
 
-module.exports = { videoExtensions, defaultSettings, IMAGE, VIDEO, NONE }
+module.exports = { videoExtensions, defaultSettings, ELEMENT_DATA_KEYS, MEDIA_TYPES }

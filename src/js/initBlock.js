@@ -1,7 +1,7 @@
-const { videoExtensions, IMAGE, VIDEO, NONE } = require('./constants')
+const { videoExtensions, ELEMENT_DATA_KEYS, MEDIA_TYPES } = require('./constants')
 
 const setBlockSpeed = (block, settings) => {
-  let attrSpeed = block.el.getAttribute('pv-speed')
+  let attrSpeed = block.el.getAttribute(ELEMENT_DATA_KEYS.SPEED)
 
   // No data attribute defined
   if (!attrSpeed) return settings.block.speed
@@ -24,26 +24,28 @@ const setBlockSpeed = (block, settings) => {
 }
 
 const setBlockMediaProps = (block, settings) => {
-  let mediatype = block.el.getAttribute('pv-mediatype')
-  const mediapath = block.el.getAttribute('pv-mediapath')
+  let mediatype = block.el.getAttribute(ELEMENT_DATA_KEYS.MEDIATYPE)
+  const mediapath = block.el.getAttribute(ELEMENT_DATA_KEYS.MEDIAPATH)
 
-  if (mediatype === NONE) return { mediatype, mediapath }
+  if (mediatype === MEDIA_TYPES.NONE) return { mediatype, mediapath }
 
   // No data attribute defined
   if (!mediatype) mediatype = settings.block.mediatype
 
   // Media type set to video
-  if (mediapath && isVideo(mediatype, mediapath)) mediatype = VIDEO
+  if (mediapath && isVideo(mediatype, mediapath)) mediatype = MEDIA_TYPES.VIDEO
 
   // No data attribute defined
-  if (!mediapath && mediatype !== NONE)
-    return console.error('Media path not defined for block: ' + block.el)
+  if (!mediapath && mediatype !== MEDIA_TYPES.NONE) {
+    console.error('Media path not defined for block: ' + block.el)
+    throw new Error('Media path not defined')
+  }
 
   return { mediatype, mediapath }
 }
 
 const setBlockMute = (block, settings) => {
-  const mute = block.el.getAttribute('pv-mute')
+  const mute = block.el.getAttribute(ELEMENT_DATA_KEYS.MUTE)
 
   if (!mute) return settings.block.mute
 
@@ -113,8 +115,8 @@ const setBlockVideo = block => {
 const setBlockVisual = block => {
   const { mediatype } = block
 
-  if (mediatype === IMAGE) return setBlockImage(block)
-  if (mediatype === VIDEO) return setBlockVideo(block)
+  if (mediatype === MEDIA_TYPES.IMAGE) return setBlockImage(block)
+  if (mediatype === MEDIA_TYPES.VIDEO) return setBlockVideo(block)
 
   return false
 }
@@ -177,7 +179,10 @@ const getExtension = attrMediapath => {
 
 // returns {true} if media is a video
 const isVideo = (attrMediatype, attrMediapath) => {
-  return attrMediatype === VIDEO || videoExtensions.indexOf(getExtension(attrMediapath)) !== -1
+  return (
+    attrMediatype === MEDIA_TYPES.VIDEO ||
+    videoExtensions.indexOf(getExtension(attrMediapath)) !== -1
+  )
 }
 
 const updateWindowProps = () => {

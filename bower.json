@@ -1,6 +1,7 @@
 {
   "name": "parallax-vanilla",
-  "description": "Simple parallax in pure JavaScript designed for performance and dynamic sizing.",
+  "description":
+    "Simple parallax in pure JavaScript designed for performance and dynamic sizing.",
   "main": ["dist/js/vanilla-parallax.js", "dist/css/vanilla-parallax.css"],
   "authors": ["Erik Engervall"],
   "license": "MIT",

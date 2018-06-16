@@ -1,5 +1,7 @@
 "use strict";
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 (function e(t, n, r) {
   function s(o, u) {
     if (!n[o]) {
@@ -15,9 +17,19 @@
 })({ 1: [function (require, module, exports) {
     var videoExtensions = ['3g2', '3gp', 'asf', 'avi', 'flv', 'h264', 'm4v', 'mov', 'mp4', 'mpg', 'mpeg', 'rm', 'srt', 'swf', 'vow', 'vob', 'wmv'];
 
-    var IMAGE = 'image';
-    var VIDEO = 'video';
-    var NONE = 'none';
+    var MEDIA_TYPES = {
+      IMAGE: 'image',
+      VIDEO: 'video',
+      NONE: 'none'
+    };
+
+    var ELEMENT_DATA_KEYS = {
+      MEDIAPATH: 'pv-mediapath',
+      MEDIATYPE: 'pv-mediatype',
+      MUTE: 'pv-mute',
+      HEIGHT: 'pv-height',
+      SPEED: 'pv-speed'
+    };
 
     var defaultSettings = {
       container: {
@@ -27,13 +39,13 @@
       block: {
         class: 'pv-block',
         speed: -Math.PI,
-        mediatype: 'image',
-        mediapath: undefined,
-        mute: false
+        mediatype: MEDIA_TYPES.IMAGE,
+        mediapath: null,
+        mute: 'false'
       }
     };
 
-    module.exports = { videoExtensions: videoExtensions, defaultSettings: defaultSettings, IMAGE: IMAGE, VIDEO: VIDEO, NONE: NONE };
+    module.exports = { videoExtensions: videoExtensions, defaultSettings: defaultSettings, ELEMENT_DATA_KEYS: ELEMENT_DATA_KEYS, MEDIA_TYPES: MEDIA_TYPES };
   }, {}], 2: [function (require, module, exports) {
     // pretty print
     var pp = function pp(source, obj) {
@@ -58,41 +70,40 @@
 
     module.exports = {};
   }, {}], 3: [function (require, module, exports) {
-    var _require = require('./initContainer'),
-        setContainerHeight = _require.setContainerHeight;
+    var _require = require('./constants'),
+        defaultSettings = _require.defaultSettings,
+        MEDIA_TYPES = _require.MEDIA_TYPES;
 
-    var _require2 = require('./initBlock'),
-        setBlockSpeed = _require2.setBlockSpeed,
-        setBlockMediaProps = _require2.setBlockMediaProps,
-        setBlockMute = _require2.setBlockMute,
-        setBlockVisual = _require2.setBlockVisual,
-        setBlockAttributes = _require2.setBlockAttributes;
+    var _require2 = require('./initContainer'),
+        setContainerHeight = _require2.setContainerHeight;
 
-    var _require3 = require('./constants'),
-        defaultSettings = _require3.defaultSettings,
-        VIDEO = _require3.VIDEO,
-        NONE = _require3.NONE;
+    var _require3 = require('./initBlock'),
+        setBlockSpeed = _require3.setBlockSpeed,
+        setBlockMediaProps = _require3.setBlockMediaProps,
+        setBlockMute = _require3.setBlockMute,
+        setBlockVisual = _require3.setBlockVisual,
+        setBlockAttributes = _require3.setBlockAttributes;
 
     module.exports = function (settings) {
       pv.containerArr = [];
       pv.settings = initSettings(settings, defaultSettings);
 
-      var containers = document.getElementsByClassName(pv.settings.container.class);
-      for (var i = 0; i < containers.length; i++) {
+      var containerElements = [].concat(_toConsumableArray(document.getElementsByClassName(pv.settings.container.class)));
+      containerElements.forEach(function (containerElement) {
         var container = {};
 
-        container.el = containers[i];
+        container.el = containerElement;
         container.offset = offsetTop(container.el);
         container.el.style.height = setContainerHeight(container, pv.settings);
         container.height = container.el.clientHeight;
 
         container.blocks = [];
 
-        var blocks = containers[i].getElementsByClassName(pv.settings.block.class);
-        for (var j = 0; j < blocks.length; j++) {
+        var blockElements = [].concat(_toConsumableArray(containerElement.getElementsByClassName(pv.settings.block.class)));
+        blockElements.forEach(function (blockElement) {
           var block = {};
 
-          block.el = blocks[j];
+          block.el = blockElement;
           block.speed = setBlockSpeed(block, pv.settings);
 
           var _setBlockMediaProps = setBlockMediaProps(block, pv.settings),
@@ -103,57 +114,64 @@
           block.mediapath = mediapath;
           block.mute = setBlockMute(block, pv.settings);
 
-          if (block.mediatype !== NONE) {
-            if (block.mediatype === VIDEO) container.hasVideoBlock = true;
+          if (block.mediatype !== MEDIA_TYPES.NONE) {
+            if (block.mediatype === MEDIA_TYPES.VIDEO) container.hasVideoBlock = true;
 
             var successful = setBlockVisual(block);
-            if (!successful) console.error('Did not successfully set media for block: ' + block);
+            if (!successful) {
+              console.error('Did not successfully set media for block:', block);
+              throw new Error('Did not successfully set media');
+            }
 
             setBlockAttributes(container, block);
           }
 
           container.blocks.push(block);
-        } // end of for blocks
+        });
 
         pv.containerArr.push(container);
-      } // loop container
+      });
     };
 
-    var initSettings = function initSettings(settings, defaultSettings) {
-      if (!settings || settings === {}) return defaultSettings;
-      if (!settings.container || settings.container === {}) {
-        settings.container = defaultSettings.container;
-      } else {
-        if (!settings.container.class) settings.container.class = defaultSettings.container.class;
-        if (!settings.container.height) settings.container.height = defaultSettings.container.height;
-      }
-      if (!settings.block || settings.block === {}) {
-        settings.block = defaultSettings.block;
-      } else {
-        if (!settings.block.class) settings.block.class = defaultSettings.block.class;
-        if (!settings.block.speed) settings.block.speed = defaultSettings.block.speed;
-        if (!settings.block.mediatype) settings.block.mediatype = defaultSettings.block.mediatype;
-        if (!settings.block.mediapath) settings.block.mediapath = defaultSettings.block.mediapath;
-        if (!settings.block.mute) settings.block.mute = defaultSettings.block.mute;
-      }
-      return settings;
+    var initSettings = function initSettings() {
+      var userSettings = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var defaultSettings = arguments[1];
+
+      Object.keys(userSettings).forEach(function (elementSettings) {
+        if (!userSettings[elementSettings] instanceof Object) {
+          throw new Error("Expected " + elementSettings + " to be of instance Object");
+        }
+
+        Object.keys(userSettings[elementSettings]).forEach(function (setting) {
+          if (userSettings[elementSettings][setting] instanceof Object) {
+            throw new Error("Expected " + elementSettings + " to be primitive value");
+          }
+          if (!defaultSettings[elementSettings].hasOwnProperty(setting)) {
+            throw new Error("Expected " + setting + " to match available settings");
+          }
+
+          console.log('Modified defaultSettings with;', elementSettings, setting, userSettings[elementSettings][setting]);
+          defaultSettings[elementSettings][setting] = userSettings[elementSettings][setting];
+        });
+      });
+
+      return defaultSettings;
     };
 
     // Calculates the top offset from an element to the window's || document's top, Link: https://plainjs.com/javascript/styles/get-the-position-of-an-element-relative-to-the-document-24/
     var offsetTop = function offsetTop(el) {
-      var rectTop = el.getBoundingClientRect().top,
-          scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      var rectTop = el.getBoundingClientRect().top;
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
       return rectTop + scrollTop;
     };
   }, { "./constants": 1, "./initBlock": 4, "./initContainer": 5 }], 4: [function (require, module, exports) {
     var _require4 = require('./constants'),
         videoExtensions = _require4.videoExtensions,
-        IMAGE = _require4.IMAGE,
-        VIDEO = _require4.VIDEO,
-        NONE = _require4.NONE;
+        ELEMENT_DATA_KEYS = _require4.ELEMENT_DATA_KEYS,
+        MEDIA_TYPES = _require4.MEDIA_TYPES;
 
     var setBlockSpeed = function setBlockSpeed(block, settings) {
-      var attrSpeed = block.el.getAttribute('pv-speed');
+      var attrSpeed = block.el.getAttribute(ELEMENT_DATA_KEYS.SPEED);
 
       // No data attribute defined
       if (!attrSpeed) return settings.block.speed;
@@ -176,25 +194,28 @@
     };
 
     var setBlockMediaProps = function setBlockMediaProps(block, settings) {
-      var mediatype = block.el.getAttribute('pv-mediatype');
-      var mediapath = block.el.getAttribute('pv-mediapath');
+      var mediatype = block.el.getAttribute(ELEMENT_DATA_KEYS.MEDIATYPE);
+      var mediapath = block.el.getAttribute(ELEMENT_DATA_KEYS.MEDIAPATH);
 
-      if (mediatype === NONE) return { mediatype: mediatype, mediapath: mediapath
+      if (mediatype === MEDIA_TYPES.NONE) return { mediatype: mediatype, mediapath: mediapath
 
         // No data attribute defined
       };if (!mediatype) mediatype = settings.block.mediatype;
 
       // Media type set to video
-      if (mediapath && isVideo(mediatype, mediapath)) mediatype = VIDEO;
+      if (mediapath && isVideo(mediatype, mediapath)) mediatype = MEDIA_TYPES.VIDEO;
 
       // No data attribute defined
-      if (!mediapath && mediatype !== NONE) return console.error('Media path not defined for block: ' + block.el);
+      if (!mediapath && mediatype !== MEDIA_TYPES.NONE) {
+        console.error('Media path not defined for block: ' + block.el);
+        throw new Error('Media path not defined');
+      }
 
       return { mediatype: mediatype, mediapath: mediapath };
     };
 
     var setBlockMute = function setBlockMute(block, settings) {
-      var mute = block.el.getAttribute('pv-mute');
+      var mute = block.el.getAttribute(ELEMENT_DATA_KEYS.MUTE);
 
       if (!mute) return settings.block.mute;
 
@@ -267,8 +288,8 @@
       var mediatype = block.mediatype;
 
 
-      if (mediatype === IMAGE) return setBlockImage(block);
-      if (mediatype === VIDEO) return setBlockVideo(block);
+      if (mediatype === MEDIA_TYPES.IMAGE) return setBlockImage(block);
+      if (mediatype === MEDIA_TYPES.VIDEO) return setBlockVideo(block);
 
       return false;
     };
@@ -326,7 +347,7 @@
 
     // returns {true} if media is a video
     var isVideo = function isVideo(attrMediatype, attrMediapath) {
-      return attrMediatype === VIDEO || videoExtensions.indexOf(getExtension(attrMediapath)) !== -1;
+      return attrMediatype === MEDIA_TYPES.VIDEO || videoExtensions.indexOf(getExtension(attrMediapath)) !== -1;
     };
 
     var updateWindowProps = function updateWindowProps() {
@@ -337,8 +358,11 @@
       };
     };
   }, { "./constants": 1 }], 5: [function (require, module, exports) {
+    var _require5 = require('./constants'),
+        ELEMENT_DATA_KEYS = _require5.ELEMENT_DATA_KEYS;
+
     var setContainerHeight = function setContainerHeight(container, settings) {
-      var attrHeight = container.el.getAttribute('pv-height');
+      var attrHeight = container.el.getAttribute(ELEMENT_DATA_KEYS.HEIGHT);
 
       // No data attribute
       if (!attrHeight) return settings.container.height;
@@ -348,13 +372,13 @@
 
       // String has more than integers, assume suffix is either px or vh
       var suffix = attrHeight.substr(attrHeight.length - 2, attrHeight.length);
-      if (suffix == 'px' || suffix == 'vh') return attrHeight;
+      if (suffix === 'px' || suffix === 'vh') return attrHeight;
 
       throw new Error('Invalid height suffix, expected "px" or "vh" but got: ' + suffix);
     };
 
     module.exports = { setContainerHeight: setContainerHeight };
-  }, {}], 6: [function (require, module, exports) {
+  }, { "./constants": 1 }], 6: [function (require, module, exports) {
     arguments[4][4][0].apply(exports, arguments);
   }, { "./constants": 1, "dup": 4 }], 7: [function (require, module, exports) {
     ;(function (window) {
@@ -373,7 +397,7 @@
           };
         }();
 
-        //Main loop for updating variables and performing translates
+        // Main loop for updating variables and performing translates
         var updateLoop = function updateLoop() {
           require('./translate')();
           raf(updateLoop);
@@ -394,21 +418,19 @@
       }
     })(window);
   }, { "./init": 3, "./resize": 8, "./translate": 9 }], 8: [function (require, module, exports) {
-    var _require5 = require('./constants'),
-        NONE = _require5.NONE;
+    var _require6 = require('./constants'),
+        MEDIA_TYPES = _require6.MEDIA_TYPES;
 
-    var _require6 = require('./initblock'),
-        setBlockAttributes = _require6.setBlockAttributes;
+    var _require7 = require('./initblock'),
+        setBlockAttributes = _require7.setBlockAttributes;
 
     module.exports = function () {
-      for (var i = 0; i < pv.containerArr.length; i++) {
-        var container = pv.containerArr[i];
+      pv.containerArr.forEach(function (container) {
         container.height = container.el.clientHeight;
-        for (var j = 0; j < pv.containerArr[i].blocks.length; j++) {
-          var block = pv.containerArr[i].blocks[j];
-          if (block.mediatype !== NONE) setBlockAttributes(container, block);
-        }
-      }
+        container.blocks.forEach(function (block) {
+          if (block.mediatype !== MEDIA_TYPES.NONE) setBlockAttributes(container, block);
+        });
+      });
     };
   }, { "./constants": 1, "./initblock": 6 }], 9: [function (require, module, exports) {
     module.exports = function () {

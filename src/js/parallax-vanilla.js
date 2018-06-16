@@ -1,6 +1,6 @@
 ;(window => {
   const defineParallaxVanilla = () => {
-    let pv = {}
+    const pv = {}
     pv.init = require('./init') // exposes init function to user
 
     if (typeof window.orientation === 'undefined') window.onresize = () => require('./resize')()
@@ -17,7 +17,7 @@
       )
     })()
 
-    //Main loop for updating variables and performing translates
+    // Main loop for updating variables and performing translates
     const updateLoop = () => {
       require('./translate')()
       raf(updateLoop)
