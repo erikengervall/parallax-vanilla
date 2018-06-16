@@ -1,4 +1,4 @@
-let pv = require('../src/js/parallax-vanilla')
+const pv = require('../src/js/parallax-vanilla')
 
 const mockInit = jest.fn()
 jest.mock('../src/js/init', () => mockInit)

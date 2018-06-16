@@ -58,7 +58,7 @@ const setBlockImage = block => {
 
   block.el.style.backgroundImage = "url('" + mediapath + "')"
 
-  // Check if the background image did not get set
+  // Check if the background image wasn't set
   const backgroundImageFromDOM = window
     .getComputedStyle(block.el)
     .getPropertyValue('background-image')
@@ -82,7 +82,7 @@ const videoElClicked = (videoEl, block) => {
 const setBlockVideo = block => {
   const { mediatype, mediapath } = block
 
-  let videoEl = document.createElement('video')
+  const videoEl = document.createElement('video')
   videoEl.src = mediapath
   videoEl.autoplay = true
   videoEl.loop = true
@@ -97,7 +97,7 @@ const setBlockVideo = block => {
       videoEl.addEventListener('click', function() {
         videoElClicked(videoEl, block)
       })
-      let audioButton = document.createElement('a')
+      const audioButton = document.createElement('a')
       audioButton.href = '#'
       audioButton.className += 'audio-icon mute'
       audioButton.appendChild(document.createElement('span'))
@@ -127,9 +127,9 @@ const setBlockAttributes = (container, block) => {
   // calculates the negative top property
   // negative scroll distance
   // plus container height / factor, because whenever we pass the element we'll always scroll the window faster then the animation (if factor < 1 it'll be increased to all is good)
-  let marginTop = 0,
-    scrollDist = 0,
-    paddingBottom = 0
+  let marginTop = 0
+  let scrollDist = 0
+  let paddingBottom = 0
 
   // if the pv-block offset is less than the windowheight, then the scrolldist will have to be recalculated
   if (container.offset < pv.windowProps.windowHeight) {
@@ -160,14 +160,6 @@ const setBlockAttributes = (container, block) => {
   block.el.style.setProperty('margin-top', marginTop + 'px', null)
 }
 
-module.exports = {
-  setBlockSpeed,
-  setBlockMediaProps,
-  setBlockMute,
-  setBlockVisual,
-  setBlockAttributes,
-}
-
 // Returns the extension of a media path
 const getExtension = attrMediapath => {
   const extension = attrMediapath
@@ -182,12 +174,8 @@ const getExtension = attrMediapath => {
 }
 
 // returns {true} if media is a video
-const isVideo = (attrMediatype, attrMediapath) => {
-  return (
-    attrMediatype === MEDIA_TYPES.VIDEO ||
-    videoExtensions.indexOf(getExtension(attrMediapath)) !== -1
-  )
-}
+const isVideo = (attrMediatype, attrMediapath) =>
+  attrMediatype === MEDIA_TYPES.VIDEO || videoExtensions.indexOf(getExtension(attrMediapath)) !== -1
 
 const updateWindowProps = () => {
   pv.windowProps = {
@@ -195,4 +183,12 @@ const updateWindowProps = () => {
     windowHeight: window.innerHeight,
     windowMidHeight: window.innerHeight / 2,
   }
+}
+
+module.exports = {
+  setBlockSpeed,
+  setBlockMediaProps,
+  setBlockMute,
+  setBlockVisual,
+  setBlockAttributes,
 }

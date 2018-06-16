@@ -41,7 +41,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         speed: -Math.PI,
         mediatype: MEDIA_TYPES.IMAGE,
         mediapath: null,
-        mute: 'false'
+        mute: false
       }
     };
 
@@ -84,16 +84,16 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         setBlockVisual = _require3.setBlockVisual,
         setBlockAttributes = _require3.setBlockAttributes;
 
-    module.exports = function (settings) {
+    module.exports = function (userSettings) {
       pv.containerArr = [];
-      pv.settings = initSettings(settings, defaultSettings);
+      pv.settings = mergeSettings(userSettings, defaultSettings);
 
       var containerElements = [].concat(_toConsumableArray(document.getElementsByClassName(pv.settings.container.class)));
       containerElements.forEach(function (containerElement) {
         var container = {};
 
         container.el = containerElement;
-        container.offset = offsetTop(container.el);
+        container.offset = calculateOffsetTop(container.el);
         container.el.style.height = setContainerHeight(container, pv.settings);
         container.height = container.el.clientHeight;
 
@@ -133,7 +133,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       });
     };
 
-    var initSettings = function initSettings() {
+    var mergeSettings = function mergeSettings() {
       var userSettings = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       var defaultSettings = arguments[1];
 
@@ -158,7 +158,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     };
 
     // Calculates the top offset from an element to the window's || document's top, Link: https://plainjs.com/javascript/styles/get-the-position-of-an-element-relative-to-the-document-24/
-    var offsetTop = function offsetTop(el) {
+    var calculateOffsetTop = function calculateOffsetTop(el) {
       var rectTop = el.getBoundingClientRect().top;
       var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
       return rectTop + scrollTop;
@@ -229,7 +229,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
       block.el.style.backgroundImage = "url('" + mediapath + "')";
 
-      // Check if the background image did not get set
+      // Check if the background image wasn't set
       var backgroundImageFromDOM = window.getComputedStyle(block.el).getPropertyValue('background-image');
       if (backgroundImageFromDOM == 'none') return false;
 
@@ -299,9 +299,9 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       // calculates the negative top property
       // negative scroll distance
       // plus container height / factor, because whenever we pass the element we'll always scroll the window faster then the animation (if factor < 1 it'll be increased to all is good)
-      var marginTop = 0,
-          scrollDist = 0,
-          paddingBottom = 0;
+      var marginTop = 0;
+      var scrollDist = 0;
+      var paddingBottom = 0;
 
       // if the pv-block offset is less than the windowheight, then the scrolldist will have to be recalculated
       if (container.offset < pv.windowProps.windowHeight) {
@@ -332,15 +332,8 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       block.el.style.setProperty('margin-top', marginTop + 'px', null);
     };
 
-    module.exports = {
-      setBlockSpeed: setBlockSpeed,
-      setBlockMediaProps: setBlockMediaProps,
-      setBlockMute: setBlockMute,
-      setBlockVisual: setBlockVisual,
-      setBlockAttributes: setBlockAttributes
-
-      // Returns the extension of a media path
-    };var getExtension = function getExtension(attrMediapath) {
+    // Returns the extension of a media path
+    var getExtension = function getExtension(attrMediapath) {
       var extension = attrMediapath.substr(attrMediapath.lastIndexOf('.') + 1, attrMediapath.length).toLowerCase();
       if (extension === -1) {
         console.error('Invalid extension for media with media path: ' + attrMediapath);
@@ -361,6 +354,14 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         windowHeight: window.innerHeight,
         windowMidHeight: window.innerHeight / 2
       };
+    };
+
+    module.exports = {
+      setBlockSpeed: setBlockSpeed,
+      setBlockMediaProps: setBlockMediaProps,
+      setBlockMute: setBlockMute,
+      setBlockVisual: setBlockVisual,
+      setBlockAttributes: setBlockAttributes
     };
   }, { "./constants": 1 }], 5: [function (require, module, exports) {
     var _require5 = require('./constants'),
@@ -403,13 +404,13 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         }();
 
         // Main loop for updating variables and performing translates
-        var updateLoop = function updateLoop() {
+        var mainLoop = function mainLoop() {
           require('./translate')();
-          raf(updateLoop);
+          raf(mainLoop);
         };
 
         // Initialize main loop
-        raf(updateLoop);
+        raf(mainLoop);
 
         return pv;
       };
@@ -442,15 +443,15 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       // Update selected attributes in windowProps on window raf event
       pv.windowProps.scrollTop = window.scrollY || document.documentElement.scrollTop;
       if (pv.windowProps.scrollTop === pv.prevScrollTop) {
+        // No scrolling has occured
         return;
       } else {
         pv.prevScrollTop = pv.windowProps.scrollTop;
       }
 
       // translate the parallax blocks, creating the parallax effect
-      for (var i = 0; i < pv.containerArr.length; i++) {
-        var container = pv.containerArr[i];
-        var calc = void 0;
+      pv.containerArr.forEach(function (container, i) {
+        var calc = 0;
 
         // check if parallax block is in viewport
         if (isInViewport(container.offset, container.height)) {
@@ -465,8 +466,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
             calc = pv.windowProps.windowHeight - container.offset + pv.windowProps.scrollTop;
           }
 
-          for (var j = 0; j < pv.containerArr[i].blocks.length; j++) {
-            var block = pv.containerArr[i].blocks[j];
+          container.blocks.forEach(function (block) {
             if (block.videoEl) {
               block.videoEl.play();
               if (block === pv.unmutedBlock) {
@@ -478,32 +478,31 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
             }
 
             transform(block.el, 'translate3d(0,' + Math.round(calc / block.speed) + 'px, 0)');
-          }
+          });
         } else {
-          // check if container even has a video block
+          // check if container has at least one video block
           if (container.hasVideoBlock) {
-            // pause blocks with playing video
-            for (var _j = 0; _j < pv.containerArr[i].blocks.length; _j++) {
-              var _block = pv.containerArr[i].blocks[_j];
-              if (_block.videoEl) {
-                _block.videoEl.pause();
-                if (pv.unmutedBlock === _block) {
-                  _block.videoEl.muted = true;
+            // pause blocks with playing videos
+            container.blocks.forEach(function (block) {
+              if (block.videoEl) {
+                block.videoEl.pause();
+                if (pv.unmutedBlock === block) {
+                  block.videoEl.muted = true;
                 }
               }
-            }
+            });
           }
           var nextContainer = pv.containerArr[i + 1];
           // check if next container is in view - else break
           if (nextContainer && !isInViewport(nextContainer.offset, nextContainer.height) && pv.mostReContainerInViewport < i && !nextContainerIsSmaller(container, nextContainer)) {
-            break;
+            return;
           } else {
             if (nextContainer && isInViewport(nextContainer.offset, nextContainer.height)) {
               pv.mostReContainerInViewport = i + 1;
             }
           }
         }
-      }
+      });
     };
 
     //Transform prefixes for CSS

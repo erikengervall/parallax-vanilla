@@ -8,16 +8,16 @@ const {
   setBlockAttributes,
 } = require('./initBlock')
 
-module.exports = settings => {
+module.exports = userSettings => {
   pv.containerArr = []
-  pv.settings = initSettings(settings, defaultSettings)
+  pv.settings = mergeSettings(userSettings, defaultSettings)
 
   const containerElements = [...document.getElementsByClassName(pv.settings.container.class)]
   containerElements.forEach(containerElement => {
     const container = {}
 
     container.el = containerElement
-    container.offset = offsetTop(container.el)
+    container.offset = calculateOffsetTop(container.el)
     container.el.style.height = setContainerHeight(container, pv.settings)
     container.height = container.el.clientHeight
 
@@ -53,7 +53,7 @@ module.exports = settings => {
   })
 }
 
-const initSettings = (userSettings = {}, defaultSettings) => {
+const mergeSettings = (userSettings = {}, defaultSettings) => {
   Object.keys(userSettings).forEach(elementSettings => {
     if (!userSettings[elementSettings] instanceof Object) {
       throw new Error(`Expected ${elementSettings} to be of instance Object`)
@@ -75,7 +75,7 @@ const initSettings = (userSettings = {}, defaultSettings) => {
 }
 
 // Calculates the top offset from an element to the window's || document's top, Link: https://plainjs.com/javascript/styles/get-the-position-of-an-element-relative-to-the-document-24/
-const offsetTop = el => {
+const calculateOffsetTop = el => {
   const rectTop = el.getBoundingClientRect().top
   const scrollTop = window.pageYOffset || document.documentElement.scrollTop
   return rectTop + scrollTop

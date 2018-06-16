@@ -42,7 +42,7 @@ const defaultSettings = {
     speed: -Math.PI,
     mediatype: MEDIA_TYPES.IMAGE,
     mediapath: null,
-    mute: 'false',
+    mute: false,
   },
 }
 

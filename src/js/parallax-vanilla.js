@@ -18,13 +18,13 @@
     })()
 
     // Main loop for updating variables and performing translates
-    const updateLoop = () => {
+    const mainLoop = () => {
       require('./translate')()
-      raf(updateLoop)
+      raf(mainLoop)
     }
 
     // Initialize main loop
-    raf(updateLoop)
+    raf(mainLoop)
 
     return pv
   }
