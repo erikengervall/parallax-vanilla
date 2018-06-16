@@ -2,3 +2,4 @@ node_modules
 _loc
 npm-debug.log
 .DS_Store
+config.cson
