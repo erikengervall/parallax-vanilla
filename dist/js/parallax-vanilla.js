@@ -1,7 +1,5 @@
 "use strict";
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
 (function e(t, n, r) {
   function s(o, u) {
     if (!n[o]) {
@@ -88,22 +86,22 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       pv.containerArr = [];
       pv.settings = mergeSettings(userSettings, defaultSettings);
 
-      var containerElements = [].concat(_toConsumableArray(document.getElementsByClassName(pv.settings.container.class)));
-      containerElements.forEach(function (containerElement) {
+      var containerElements = document.getElementsByClassName(pv.settings.container.class);
+      for (var i = 0; i < containerElements.length; i++) {
         var container = {};
 
-        container.el = containerElement;
+        container.el = containerElements[i];
         container.offset = calculateOffsetTop(container.el);
         container.el.style.height = setContainerHeight(container, pv.settings);
         container.height = container.el.clientHeight;
 
         container.blocks = [];
 
-        var blockElements = [].concat(_toConsumableArray(containerElement.getElementsByClassName(pv.settings.block.class)));
-        blockElements.forEach(function (blockElement) {
+        var blockElements = containerElements[i].getElementsByClassName(pv.settings.block.class);
+        for (var j = 0; j < blockElements.length; j++) {
           var block = {};
 
-          block.el = blockElement;
+          block.el = blockElements[j];
           block.speed = setBlockSpeed(block, pv.settings);
 
           var _setBlockMediaProps = setBlockMediaProps(block, pv.settings),
@@ -127,10 +125,10 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
           }
 
           container.blocks.push(block);
-        });
+        }
 
         pv.containerArr.push(container);
-      });
+      }
     };
 
     var mergeSettings = function mergeSettings() {

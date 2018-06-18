@@ -12,22 +12,22 @@ module.exports = userSettings => {
   pv.containerArr = []
   pv.settings = mergeSettings(userSettings, defaultSettings)
 
-  const containerElements = [...document.getElementsByClassName(pv.settings.container.class)]
-  containerElements.forEach(containerElement => {
+  const containerElements = document.getElementsByClassName(pv.settings.container.class)
+  for (let i = 0; i < containerElements.length; i++) {
     const container = {}
 
-    container.el = containerElement
+    container.el = containerElements[i]
     container.offset = calculateOffsetTop(container.el)
     container.el.style.height = setContainerHeight(container, pv.settings)
     container.height = container.el.clientHeight
 
     container.blocks = []
 
-    const blockElements = [...containerElement.getElementsByClassName(pv.settings.block.class)]
-    blockElements.forEach(blockElement => {
+    const blockElements = containerElements[i].getElementsByClassName(pv.settings.block.class)
+    for (let j = 0; j < blockElements.length; j++) {
       const block = {}
 
-      block.el = blockElement
+      block.el = blockElements[j]
       block.speed = setBlockSpeed(block, pv.settings)
       const { mediatype, mediapath } = setBlockMediaProps(block, pv.settings)
       block.mediatype = mediatype
@@ -47,10 +47,10 @@ module.exports = userSettings => {
       }
 
       container.blocks.push(block)
-    })
+    }
 
     pv.containerArr.push(container)
-  })
+  }
 }
 
 const mergeSettings = (userSettings = {}, defaultSettings) => {
