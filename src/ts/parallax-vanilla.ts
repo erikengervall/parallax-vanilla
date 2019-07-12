@@ -1,3 +1,4 @@
+import '../less/parallax-vanilla.less'
 import init from './init'
 import translate from './translate'
 import resize from './resize'
