@@ -1,5 +1,6 @@
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 
 module.exports = {
   mode: 'development',
@@ -18,10 +19,10 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.ts'],
   },
   output: {
-    filename: 'bundle.js',
+    filename: 'parallax-vanilla.js',
     path: path.resolve(__dirname, 'dist/'),
   },
   plugins: [
@@ -31,4 +32,8 @@ module.exports = {
     }),
   ],
   devtool: 'source-map',
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin()],
+  },
 }
