@@ -7,46 +7,55 @@ Seamless and lightweight parallax scrolling library implemented in pure JavaScri
 ## Main features
 
 ### Super lightweight without dependencies
+
 A few kilobytes of pure JavaScript.
 
 ### Viewport-only animations
+
 Parallax elements are only animated within the current viewport, saving a lot of resources.
 
 ### Dynamic sizing
+
 Image-elements are dynamically sized and adjusted relative to the pv-speed.
 
 ### Performance is key
+
 Vanilla Parallax maximizes your parallax effects with hardware acceleration and zero external libraries.
 
 ### Media type independence
+
 The parallax effect applies not only on images but on videos as well. Videos' audio will play if the videos are clicked and remain within the viewport.
 
 ## Browser support
+
 Tested browsers:
 
 | Chrome | Safari | Firefox |
-| --- | --- | --- |
-| 60+ | 10+ | 44+ |
+| ------ | ------ | ------- |
+| 60+    | 10+    | 44+     |
 
 ## Installation
 
 ### [bower](https://github.com/erikengervall/parallax-vanilla)
+
 ```sh
 bower i --save parallax-vanilla
 ```
 
 ### [npm](https://www.npmjs.com/package/parallax-vanilla)
+
 ```sh
 npm i --save parallax-vanilla
 ```
 
 ### Include
 
-Download package and include `parallax-vanilla.min.css` in the <b>head</b> tag and `parallax-vanilla.min.js` just before the closing <b>body</b> tag. Don't forget to put the source map `parallax-vanilla.js.map` next to `parallax-vanilla.min.js` within your directory.
+- Include `parallax-vanilla.css` in `<head>`
+- Include `parallax-vanilla.js` just before `<body>`
 
 ```html
-<link href='path/to/parallax-vanilla.min.css'>
-<script src='path/to/parallax-vanilla.min.js'></script>
+<link href="path/to/parallax-vanilla.css" />
+<script src="path/to/parallax-vanilla.js"></script>
 ```
 
 ## Usage
@@ -56,8 +65,8 @@ Download package and include `parallax-vanilla.min.css` in the <b>head</b> tag a
 **1**. Wrap a `pv-block` with a `pv-container`.
 
 ```html
-<div class='pv-container'>
-  <div class='pv-block'></div>
+<div class="pv-container">
+  <div class="pv-block"></div>
 </div>
 ```
 
@@ -70,6 +79,7 @@ Download package and include `parallax-vanilla.min.css` in the <b>head</b> tag a
 ```
 
 **3**. Initialize library.
+
 ```html
 <div class='pv-container'>
   <div class='pv-block' pv-mediapath=path/to/file.extension></div>></div>
@@ -86,8 +96,8 @@ Optional global settings can be configured upon initialization.
 ```javascript
 pv.init({
   container: {
-    class : String,
-    height : String || Number,
+    class: String,
+    height: String || Number,
   },
   block: {
     class: String,
@@ -95,8 +105,8 @@ pv.init({
     mediapath: String,
     mediatype: String,
     mute: Boolean,
-  }
-});
+  },
+})
 ```
 
 #### JavaScript Settings
@@ -245,16 +255,23 @@ The descriptions and the default values are the same as the corresponding proper
 
 ### CSS
 
-The CSS in `parallax-vanilla.min.css` is required in order for parallax-vanilla to function properly.
+The CSS in `parallax-vanilla.css` is required in order for parallax-vanilla to function properly.
 
 ```css
-.pv-container {...}
-.pv-container .pv-block {...}
-.pv-container .pv-block video {...}
-.audio-icon {...}
+.pv-container {
+  ...;
+}
+.pv-container .pv-block {
+  ...;
+}
+.pv-container .pv-block video {
+  ...;
+}
+.audio-icon {
+  ...;
+}
 ```
 
-LICENSE
-=======
+# LICENSE
 
 MIT

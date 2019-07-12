@@ -1,8 +1,8 @@
 module.exports = {
-  extends: ['prettier'],
+  extends: ['plugin:prettier/recommended'],
   env: {
     es6: true,
-    node: true,
+    node: false,
   },
   parserOptions: {
     sourceType: 'module',

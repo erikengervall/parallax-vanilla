@@ -1,9 +1,27 @@
-;(window => {
-  const defineParallaxVanilla = () => {
-    const pv = {}
-    pv.init = require('./init') // exposes init function to user
+import '../less/parallax-vanilla.less'
+import init from './init'
+import translate from './translate'
+import resize from './resize'
 
-    if (typeof window.orientation === 'undefined') window.onresize = () => require('./resize')()
+interface Window {
+  raf?: any
+  pv?: any
+  orientation: any
+  requestAnimationFrame?: (..._: any) => any
+  webkitRequestAnimationFrame?: (..._: any) => any
+  mozRequestAnimationFrame?: (..._: any) => any
+  setTimeout: (..._: any) => any
+  onresize: any
+}
+
+;((window: Window) => {
+  const defineParallaxVanilla = () => {
+    const pv: any = { init }
+    window.pv = pv // exposes init function to user
+
+    if (typeof window.orientation === 'undefined') {
+      window.onresize = () => resize()
+    }
 
     // Request animation frame, also binds function to window
     window.raf = (() => {
@@ -19,18 +37,18 @@
 
     // Main loop for updating variables and performing translates
     const mainLoop = () => {
-      require('./translate')()
-      raf(mainLoop)
+      translate()
+      window.raf(mainLoop)
     }
 
     // Initialize main loop
-    raf(mainLoop)
+    window.raf(mainLoop)
 
     return pv
   }
 
   // Define pv
-  if (typeof pv === 'undefined') {
+  if (typeof window.pv === 'undefined') {
     window.pv = defineParallaxVanilla()
     console.log('%c parallax-vanilla defined.', 'color: green')
   } else {

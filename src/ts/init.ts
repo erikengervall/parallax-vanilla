@@ -1,20 +1,21 @@
-const { defaultSettings, MEDIA_TYPES } = require('./constants')
-const { setContainerHeight } = require('./initContainer')
-const {
+import { defaultSettings, MEDIA_TYPES } from './constants'
+import { setContainerHeight } from './initContainer'
+import {
   setBlockSpeed,
   setBlockMediaProps,
   setBlockMute,
   setBlockVisual,
   setBlockAttributes,
-} = require('./initBlock')
+} from './initBlock'
 
-module.exports = userSettings => {
+export default (userSettings: any) => {
+  const pv = (<any>window).pv
   pv.containerArr = []
   pv.settings = mergeSettings(userSettings, defaultSettings)
 
   const containerElements = document.getElementsByClassName(pv.settings.container.class)
   for (let i = 0; i < containerElements.length; i++) {
-    const container = {}
+    const container: any = {}
 
     container.el = containerElements[i]
     container.offset = calculateOffsetTop(container.el)
@@ -25,7 +26,7 @@ module.exports = userSettings => {
 
     const blockElements = containerElements[i].getElementsByClassName(pv.settings.block.class)
     for (let j = 0; j < blockElements.length; j++) {
-      const block = {}
+      const block: any = {}
 
       block.el = blockElements[j]
       block.speed = setBlockSpeed(block, pv.settings)
@@ -53,9 +54,9 @@ module.exports = userSettings => {
   }
 }
 
-const mergeSettings = (userSettings = {}, defaultSettings) => {
+const mergeSettings = (userSettings: any = {}, defaultSettings: any) => {
   Object.keys(userSettings).forEach(elementSettings => {
-    if (!userSettings[elementSettings] instanceof Object) {
+    if (!(userSettings[elementSettings] instanceof Object)) {
       throw new Error(`Expected ${elementSettings} to be of instance Object`)
     }
 
@@ -75,7 +76,7 @@ const mergeSettings = (userSettings = {}, defaultSettings) => {
 }
 
 // Calculates the top offset from an element to the window's || document's top, Link: https://plainjs.com/javascript/styles/get-the-position-of-an-element-relative-to-the-document-24/
-const calculateOffsetTop = el => {
+const calculateOffsetTop = (el: any) => {
   const rectTop = el.getBoundingClientRect().top
   const scrollTop = window.pageYOffset || document.documentElement.scrollTop
   return rectTop + scrollTop
