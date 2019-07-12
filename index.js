@@ -7,10 +7,11 @@ app.use('/test', express.static(__dirname + '/test'))
 
 app.set('view engine', 'html')
 
-app.get('/', function(req, res) {
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname + '/index.html'))
 })
 
-app.listen(3000, function() {
-  console.log('Local dev server on port 3000')
+const PORT = process.env.PORT || 3000
+app.listen(PORT, () => {
+  console.log(`Express server running on http://localhost:${PORT}`)
 })

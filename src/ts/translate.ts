@@ -1,4 +1,6 @@
-module.exports = () => {
+export default () => {
+  const pv = (<any>window).pv
+
   // Update selected attributes in windowProps on window raf event
   pv.windowProps.scrollTop = window.scrollY || document.documentElement.scrollTop
   if (pv.windowProps.scrollTop === pv.prevScrollTop) {
@@ -9,12 +11,12 @@ module.exports = () => {
   }
 
   // translate the parallax blocks, creating the parallax effect
-  pv.containerArr.forEach((container, i) => {
+  pv.containerArr.forEach((container: any, index: number) => {
     let calc = 0
 
     // check if parallax block is in viewport
     if (isInViewport(container.offset, container.height)) {
-      if (i > pv.mostReContainerInViewport) pv.mostReContainerInViewport = i
+      if (index > pv.mostReContainerInViewport) pv.mostReContainerInViewport = index
       // if any parallax is within the first windowheight, transform from 0 (pv.scrollTop)
       if (container.offset < pv.windowProps.windowHeight) {
         calc = pv.windowProps.scrollTop
@@ -25,7 +27,7 @@ module.exports = () => {
         calc = pv.windowProps.windowHeight - container.offset + pv.windowProps.scrollTop
       }
 
-      container.blocks.forEach(block => {
+      container.blocks.forEach((block: any) => {
         if (block.videoEl) {
           block.videoEl.play()
           if (block === pv.unmutedBlock) {
@@ -44,7 +46,7 @@ module.exports = () => {
       // check if container has at least one video block
       if (container.hasVideoBlock) {
         // pause blocks with playing videos
-        container.blocks.forEach(block => {
+        container.blocks.forEach((block: any) => {
           if (block.videoEl) {
             block.videoEl.pause()
             if (pv.unmutedBlock === block) {
@@ -53,18 +55,18 @@ module.exports = () => {
           }
         })
       }
-      const nextContainer = pv.containerArr[i + 1]
+      const nextContainer = pv.containerArr[index + 1]
       // check if next container is in view - else break
       if (
         nextContainer &&
         !isInViewport(nextContainer.offset, nextContainer.height) &&
-        pv.mostReContainerInViewport < i &&
+        pv.mostReContainerInViewport < index &&
         !nextContainerIsSmaller(container, nextContainer)
       ) {
         return
       } else {
         if (nextContainer && isInViewport(nextContainer.offset, nextContainer.height)) {
-          pv.mostReContainerInViewport = i + 1
+          pv.mostReContainerInViewport = index + 1
         }
       }
     }
@@ -72,7 +74,7 @@ module.exports = () => {
 }
 
 //Transform prefixes for CSS
-const transform = (element, style) => {
+const transform = (element: any, style: string) => {
   element.style.webkitTransform = style
   element.style.MozTransform = style
   element.style.msTransform = style
@@ -81,9 +83,14 @@ const transform = (element, style) => {
 }
 
 // Check if the container is in view
-const isInViewport = (offset, height) =>
-  pv.windowProps.scrollTop + pv.windowProps.windowHeight - offset > 0 &&
-  pv.windowProps.scrollTop < offset + height
+const isInViewport = (offset: number, height: number) => {
+  const pv = (<any>window).pv
 
-const nextContainerIsSmaller = (container, nextContainer) =>
+  return (
+    pv.windowProps.scrollTop + pv.windowProps.windowHeight - offset > 0 &&
+    pv.windowProps.scrollTop < offset + height
+  )
+}
+
+const nextContainerIsSmaller = (container: any, nextContainer: any) =>
   container.offset + container.height > nextContainer.offset + nextContainer.height

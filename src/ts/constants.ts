@@ -1,4 +1,4 @@
-const videoExtensions = [
+export const VIDEO_EXTENSIONS = [
   '3g2',
   '3gp',
   'asf',
@@ -18,13 +18,13 @@ const videoExtensions = [
   'wmv',
 ]
 
-const MEDIA_TYPES = {
+export const MEDIA_TYPES = {
   IMAGE: 'image',
   VIDEO: 'video',
   NONE: 'none',
 }
 
-const ELEMENT_DATA_KEYS = {
+export const ELEMENT_DATA_KEYS = {
   MEDIAPATH: 'pv-mediapath',
   MEDIATYPE: 'pv-mediatype',
   MUTE: 'pv-mute',
@@ -32,7 +32,7 @@ const ELEMENT_DATA_KEYS = {
   SPEED: 'pv-speed',
 }
 
-const defaultSettings = {
+export const defaultSettings = {
   container: {
     class: 'pv-container',
     height: '250px',
@@ -45,5 +45,3 @@ const defaultSettings = {
     mute: false,
   },
 }
-
-module.exports = { videoExtensions, defaultSettings, ELEMENT_DATA_KEYS, MEDIA_TYPES }

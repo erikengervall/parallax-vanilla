@@ -1,6 +1,6 @@
-const { videoExtensions, ELEMENT_DATA_KEYS, MEDIA_TYPES } = require('./constants')
+import { VIDEO_EXTENSIONS, ELEMENT_DATA_KEYS, MEDIA_TYPES } from './constants'
 
-const setBlockSpeed = (block, settings) => {
+export const setBlockSpeed = (block: any, settings: any) => {
   let attrSpeed = block.el.getAttribute(ELEMENT_DATA_KEYS.SPEED)
 
   // No data attribute defined
@@ -24,7 +24,7 @@ const setBlockSpeed = (block, settings) => {
   return attrSpeed
 }
 
-const setBlockMediaProps = (block, settings) => {
+export const setBlockMediaProps = (block: any, settings: any) => {
   let mediatype = block.el.getAttribute(ELEMENT_DATA_KEYS.MEDIATYPE)
   const mediapath = block.el.getAttribute(ELEMENT_DATA_KEYS.MEDIAPATH)
 
@@ -45,7 +45,7 @@ const setBlockMediaProps = (block, settings) => {
   return { mediatype, mediapath }
 }
 
-const setBlockMute = (block, settings) => {
+export const setBlockMute = (block: any, settings: any) => {
   const mute = block.el.getAttribute(ELEMENT_DATA_KEYS.MUTE)
 
   if (!mute) return settings.block.mute
@@ -53,8 +53,8 @@ const setBlockMute = (block, settings) => {
   return mute == 'true'
 }
 
-const setBlockImage = block => {
-  const { mediatype, mediapath } = block
+const setBlockImage = (block: any) => {
+  const { mediapath } = block
 
   block.el.style.backgroundImage = "url('" + mediapath + "')"
 
@@ -67,11 +67,14 @@ const setBlockImage = block => {
   return true
 }
 
-const videoElClicked = (videoEl, block) => {
+const videoElClicked = (videoEl: any, block: any) => {
+  const pv = (<any>window).pv
+
   if (pv.unmutedBlock && pv.unmutedBlock.videoEl !== videoEl) {
     pv.unmutedBlock.videoEl.muted = true
     pv.unmutedBlock.audioButton.classList.add('mute')
   }
+
   pv.unmutedBlock = block
   videoEl.muted = !videoEl.muted
   block.muted = videoEl.muted
@@ -79,8 +82,8 @@ const videoElClicked = (videoEl, block) => {
   block.audioButton.classList.toggle('mute')
 }
 
-const setBlockVideo = block => {
-  const { mediatype, mediapath } = block
+const setBlockVideo = (block: any) => {
+  const { mediapath } = block
 
   const videoEl = document.createElement('video')
   videoEl.src = mediapath
@@ -113,7 +116,7 @@ const setBlockVideo = block => {
   return true
 }
 
-const setBlockVisual = block => {
+export const setBlockVisual = (block: any) => {
   const { mediatype } = block
 
   if (mediatype === MEDIA_TYPES.IMAGE) return setBlockImage(block)
@@ -122,7 +125,9 @@ const setBlockVisual = block => {
   return false
 }
 
-const setBlockAttributes = (container, block) => {
+export const setBlockAttributes = (container: any, block: any) => {
+  const pv = (<any>window).pv
+
   updateWindowProps()
   // calculates the negative top property
   // negative scroll distance
@@ -161,7 +166,7 @@ const setBlockAttributes = (container, block) => {
 }
 
 // Returns the extension of a media path
-const getExtension = attrMediapath => {
+const getExtension = (attrMediapath: any) => {
   const extension = attrMediapath
     .substr(attrMediapath.lastIndexOf('.') + 1, attrMediapath.length)
     .toLowerCase()
@@ -174,21 +179,16 @@ const getExtension = attrMediapath => {
 }
 
 // returns {true} if media is a video
-const isVideo = (attrMediatype, attrMediapath) =>
-  attrMediatype === MEDIA_TYPES.VIDEO || videoExtensions.indexOf(getExtension(attrMediapath)) !== -1
+const isVideo = (attrMediatype: any, attrMediapath: any) =>
+  attrMediatype === MEDIA_TYPES.VIDEO ||
+  VIDEO_EXTENSIONS.indexOf(getExtension(attrMediapath)) !== -1
 
 const updateWindowProps = () => {
+  const pv = (<any>window).pv
+
   pv.windowProps = {
     scrollTop: window.scrollY || document.documentElement.scrollTop,
     windowHeight: window.innerHeight,
     windowMidHeight: window.innerHeight / 2,
   }
-}
-
-module.exports = {
-  setBlockSpeed,
-  setBlockMediaProps,
-  setBlockMute,
-  setBlockVisual,
-  setBlockAttributes,
 }

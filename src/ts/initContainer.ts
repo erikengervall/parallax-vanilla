@@ -1,6 +1,6 @@
-const { ELEMENT_DATA_KEYS } = require('./constants')
+import { ELEMENT_DATA_KEYS } from './constants'
 
-const setContainerHeight = (container, settings) => {
+const setContainerHeight = (container: any, settings: any) => {
   const attrHeight = container.el.getAttribute(ELEMENT_DATA_KEYS.HEIGHT)
 
   // No data attribute
@@ -16,4 +16,4 @@ const setContainerHeight = (container, settings) => {
   throw new Error('Invalid height suffix, expected "px" or "vh" but got: ' + suffix)
 }
 
-module.exports = { setContainerHeight }
+export { setContainerHeight }
