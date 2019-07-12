@@ -1,8 +1,8 @@
 {
   "name": "parallax-vanilla",
-  "version": "1.1.3",
+  "version": "1.2.0",
   "description": "Simple parallax in pure JavaScript designed for performance and dynamic sizing.",
-  "main": "dist/js/parallax-vanilla.js",
+  "main": "dist/parallax-vanilla.js",
   "dependencies": {},
   "devDependencies": {
     "concurrently": "^4.1.1",
@@ -18,6 +18,7 @@
     "nodemon": "^1.12.1",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "prettier-eslint": "^9.0.0",
+    "rimraf": "^2.6.3",
     "style-loader": "^0.23.1",
     "terser-webpack-plugin": "^1.3.0",
     "ts-loader": "^6.0.4",
@@ -27,7 +28,7 @@
   },
   "scripts": {
     "server": "nodemon index.js",
-    "build": "webpack",
+    "build": "rimraf ./dist && webpack",
     "build:watch": "yarn build --watch",
     "dev": "concurrently 'yarn server' 'yarn build:watch'",
     "test": "jest ./test/parallax-vanilla.spec.js"
