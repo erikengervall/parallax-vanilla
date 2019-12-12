@@ -3,7 +3,9 @@
   "version": "1.2.1",
   "description": "Simple parallax in pure JavaScript designed for performance and dynamic sizing.",
   "main": "dist/parallax-vanilla.js",
-  "dependencies": {},
+  "dependencies": {
+    "snyk": "^1.258.2"
+  },
   "devDependencies": {
     "concurrently": "^4.1.2",
     "css-loader": "^3.2.0",
@@ -31,7 +33,9 @@
     "build": "rimraf ./dist && webpack",
     "build:watch": "yarn build --watch",
     "dev": "concurrently 'yarn server' 'yarn build:watch'",
-    "test": "jest ./test/parallax-vanilla.spec.js"
+    "test": "jest ./test/parallax-vanilla.spec.js",
+    "snyk-protect": "snyk protect",
+    "prepare": "yarn run snyk-protect"
   },
   "keywords": [
     "vanilla",
@@ -46,5 +50,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/erikengervall/parallax-vanilla"
-  }
+  },
+  "snyk": true
 }
