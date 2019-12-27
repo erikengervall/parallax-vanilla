@@ -5,7 +5,6 @@
   "main": "dist/parallax-vanilla.js",
   "author": "Erik Engervall erik.engervall@gmail.com https://github.com/erikengervall",
   "license": "MIT",
-  "homepage": "http://engervall.com/projects/parallax-vanilla/",
   "repository": {
     "type": "git",
     "url": "https://github.com/erikengervall/parallax-vanilla"
