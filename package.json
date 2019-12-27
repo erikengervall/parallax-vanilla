@@ -3,6 +3,9 @@
   "version": "1.2.2",
   "description": "Simple parallax in pure JavaScript designed for performance and dynamic sizing.",
   "main": "dist/parallax-vanilla.js",
+  "files": [
+    "dist/**/*"
+  ],
   "author": "Erik Engervall erik.engervall@gmail.com https://github.com/erikengervall",
   "license": "MIT",
   "repository": {
