@@ -3,7 +3,7 @@
   "version": "1.2.1",
   "description": "Simple parallax in pure JavaScript designed for performance and dynamic sizing.",
   "main": "dist/parallax-vanilla.js",
-  "author": "Erik Engervall erik.engervall@gmail.com http://engervall.com/",
+  "author": "Erik Engervall erik.engervall@gmail.com https://github.com/erikengervall",
   "license": "MIT",
   "homepage": "http://engervall.com/projects/parallax-vanilla/",
   "repository": {
