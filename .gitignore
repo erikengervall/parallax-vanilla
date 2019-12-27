@@ -3,3 +3,4 @@ _loc
 npm-debug.log
 .DS_Store
 config.cson
+yarn-error.log

@@ -3,6 +3,27 @@
   "version": "1.2.1",
   "description": "Simple parallax in pure JavaScript designed for performance and dynamic sizing.",
   "main": "dist/parallax-vanilla.js",
+  "author": "Erik Engervall erik.engervall@gmail.com http://engervall.com/",
+  "license": "MIT",
+  "homepage": "http://engervall.com/projects/parallax-vanilla/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/erikengervall/parallax-vanilla"
+  },
+  "keywords": [
+    "vanilla",
+    "javascript",
+    "parallax",
+    "animation",
+    "library"
+  ],
+  "scripts": {
+    "server": "nodemon index.js",
+    "build": "rimraf ./dist && webpack",
+    "build:watch": "yarn build --watch",
+    "dev": "concurrently 'yarn server' 'yarn build:watch'",
+    "test": "jest ./test/parallax-vanilla.spec.js"
+  },
   "dependencies": {},
   "devDependencies": {
     "concurrently": "^4.1.2",
@@ -25,26 +46,5 @@
     "typescript": "^3.6.2",
     "webpack": "^4.39.3",
     "webpack-cli": "^3.3.7"
-  },
-  "scripts": {
-    "server": "nodemon index.js",
-    "build": "rimraf ./dist && webpack",
-    "build:watch": "yarn build --watch",
-    "dev": "concurrently 'yarn server' 'yarn build:watch'",
-    "test": "jest ./test/parallax-vanilla.spec.js"
-  },
-  "keywords": [
-    "vanilla",
-    "javascript",
-    "parallax",
-    "animation",
-    "library"
-  ],
-  "author": "Erik Engervall erik.engervall@gmail.com http://engervall.com/",
-  "license": "MIT",
-  "homepage": "http://engervall.com/projects/parallax-vanilla/",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/erikengervall/parallax-vanilla"
   }
 }
