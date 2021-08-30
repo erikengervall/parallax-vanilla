@@ -14,6 +14,7 @@ interface Window {
   onresize: any
 }
 
+// eslint-disable-next-line @typescript-eslint/no-extra-semi
 ;((window: Window) => {
   const defineParallaxVanilla = () => {
     const pv: any = { init }

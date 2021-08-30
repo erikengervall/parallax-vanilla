@@ -1,7 +1,7 @@
 import { ELEMENT_DATA_KEYS } from './constants'
 
-const setContainerHeight = (container: any, settings: any) => {
-  const attrHeight = container.el.getAttribute(ELEMENT_DATA_KEYS.HEIGHT)
+export const setContainerHeight = (containerEl: any, settings: any) => {
+  const attrHeight = containerEl.getAttribute(ELEMENT_DATA_KEYS.HEIGHT)
 
   // No data attribute
   if (!attrHeight) return settings.container.height
@@ -15,5 +15,3 @@ const setContainerHeight = (container: any, settings: any) => {
 
   throw new Error('Invalid height suffix, expected "px" or "vh" but got: ' + suffix)
 }
-
-export { setContainerHeight }

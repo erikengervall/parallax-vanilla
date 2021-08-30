@@ -1,3 +1,5 @@
+import { Block, Container } from './types'
+
 export default () => {
   const pv = (<any>window).pv
 
@@ -11,7 +13,7 @@ export default () => {
   }
 
   // translate the parallax blocks, creating the parallax effect
-  pv.containerArr.forEach((container: any, index: number) => {
+  pv.containerArr.forEach((container: Container, index: number) => {
     let calc = 0
 
     // check if parallax block is in viewport
@@ -27,7 +29,7 @@ export default () => {
         calc = pv.windowProps.windowHeight - container.offset + pv.windowProps.scrollTop
       }
 
-      container.blocks.forEach((block: any) => {
+      container.blocks.forEach((block: Block) => {
         if (block.videoEl) {
           block.videoEl.play()
           if (block === pv.unmutedBlock) {
@@ -40,7 +42,7 @@ export default () => {
           }
         }
 
-        transform(block.el, 'translate3d(0,' + Math.round(calc / block.speed) + 'px, 0)')
+        transform(block.blockEl, 'translate3d(0,' + Math.round(calc / block.speed) + 'px, 0)')
       })
     } else {
       // check if container has at least one video block
