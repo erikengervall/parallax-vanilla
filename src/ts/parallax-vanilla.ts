@@ -10,14 +10,16 @@ interface Window {
   requestAnimationFrame?: (..._: any) => any
   webkitRequestAnimationFrame?: (..._: any) => any
   mozRequestAnimationFrame?: (..._: any) => any
-  setTimeout: (..._: any) => any
-  onresize: any
+  setTimeout: (fn: () => void, timeout: number) => any
+  onresize: () => void
 }
 
 // eslint-disable-next-line @typescript-eslint/no-extra-semi
 ;((window: Window) => {
   const defineParallaxVanilla = () => {
-    const pv: any = { init }
+    const pv: any = {
+      init,
+    }
     window.pv = pv // exposes init function to user
 
     if (typeof window.orientation === 'undefined') {
@@ -55,4 +57,6 @@ interface Window {
   } else {
     console.log('%c parallax-vanilla already defined.', 'color: red')
   }
+
+  // @ts-expect-error eslint-disable-line @typescript-eslint/ban-ts-comment
 })(window)

@@ -43,6 +43,7 @@ export default (userSettings: Partial<Settings>) => {
         mediatype,
         mediapath,
         mute: setBlockMute(blockEl, pv.settings),
+        muted: false,
       }
 
       if (block.mediatype !== MEDIA_TYPES.none) {

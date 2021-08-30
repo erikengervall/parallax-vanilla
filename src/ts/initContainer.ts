@@ -1,6 +1,7 @@
 import { ELEMENT_DATA_KEYS } from './constants'
+import { Container, Settings } from './types'
 
-export const setContainerHeight = (containerEl: any, settings: any) => {
+export const setContainerHeight = (containerEl: Container['containerEl'], settings: Settings) => {
   const attrHeight = containerEl.getAttribute(ELEMENT_DATA_KEYS.HEIGHT)
 
   // No data attribute

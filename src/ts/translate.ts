@@ -48,7 +48,7 @@ export default () => {
       // check if container has at least one video block
       if (container.hasVideoBlock) {
         // pause blocks with playing videos
-        container.blocks.forEach((block: any) => {
+        container.blocks.forEach((block: Block) => {
           if (block.videoEl) {
             block.videoEl.pause()
             if (pv.unmutedBlock === block) {
@@ -75,11 +75,14 @@ export default () => {
   })
 }
 
-//Transform prefixes for CSS
-const transform = (element: any, style: string) => {
+// Transform prefixes for CSS
+const transform = (element: HTMLElement, style: string) => {
   element.style.webkitTransform = style
+  // @ts-expect-error eslint-disable-line @typescript-eslint/ban-ts-comment
   element.style.MozTransform = style
+  // @ts-expect-error eslint-disable-line @typescript-eslint/ban-ts-comment
   element.style.msTransform = style
+  // @ts-expect-error eslint-disable-line @typescript-eslint/ban-ts-comment
   element.style.OTransform = style
   element.style.transform = style
 }
@@ -94,5 +97,5 @@ const isInViewport = (offset: number, height: number) => {
   )
 }
 
-const nextContainerIsSmaller = (container: any, nextContainer: any) =>
+const nextContainerIsSmaller = (container: Container, nextContainer: Container) =>
   container.offset + container.height > nextContainer.offset + nextContainer.height
