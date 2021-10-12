@@ -7,10 +7,10 @@ import {
   setBlockVisual,
   setBlockAttributes,
 } from './initBlock'
-import { Block, Container, Settings } from './types'
+import { Block, Container, Settings, Window } from './types'
 
-export default (userSettings: Partial<Settings>) => {
-  const pv = (<any>window).pv
+export const init = (userSettings: Partial<Settings>) => {
+  const { pv } = (window as unknown) as Window
   pv.containerArr = []
   pv.settings = mergeSettings(userSettings, defaultSettings)
 

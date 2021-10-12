@@ -1,4 +1,5 @@
 import { MEDIA_TYPES } from './constants'
+import { init } from './init'
 
 export interface Settings {
   container: {
@@ -31,4 +32,29 @@ export interface Container {
   height: number
   blocks: Block[]
   hasVideoBlock?: boolean
+}
+
+export interface PV {
+  containerArr: Container[]
+  settings: Settings
+  prevScrollTop: number
+  mostReContainerInViewport: number
+  unmutedBlock?: Block
+  windowProps: {
+    scrollTop: number
+    windowHeight: number
+    windowMidHeight: number
+  }
+  init: typeof init
+}
+
+export interface Window {
+  raf: typeof window.requestAnimationFrame
+  pv: PV
+  orientation: typeof window.orientation
+  requestAnimationFrame: typeof window.requestAnimationFrame
+  webkitRequestAnimationFrame: typeof window.requestAnimationFrame
+  mozRequestAnimationFrame: typeof window.requestAnimationFrame
+  setTimeout: typeof window.setTimeout
+  onresize: () => void
 }

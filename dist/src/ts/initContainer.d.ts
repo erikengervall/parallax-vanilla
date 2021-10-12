@@ -1,1 +1,2 @@
-export declare const setContainerHeight: (containerEl: any, settings: any) => any;
+import { Settings } from './types';
+export declare const setContainerHeight: (containerEl: HTMLElement, settings: Settings) => string;

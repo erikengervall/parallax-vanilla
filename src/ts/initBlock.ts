@@ -1,5 +1,5 @@
 import { VIDEO_EXTENSIONS, ELEMENT_DATA_KEYS, MEDIA_TYPES } from './constants'
-import { Block, Container, Settings } from './types'
+import { Block, Container, Settings, Window } from './types'
 
 export const setBlockSpeed = (blockEl: Block['blockEl'], settings: Settings) => {
   const attrSpeed = blockEl.getAttribute(ELEMENT_DATA_KEYS.SPEED)
@@ -77,11 +77,16 @@ const setBlockImage = (block: Block) => {
 }
 
 const videoElClicked = (videoEl: HTMLVideoElement, block: Block) => {
-  const pv = (<any>window).pv
+  const { pv } = (window as unknown) as Window
 
   if (pv.unmutedBlock && pv.unmutedBlock.videoEl !== videoEl) {
-    pv.unmutedBlock.videoEl.muted = true
-    pv.unmutedBlock.audioButton.classList.add('mute')
+    if (pv.unmutedBlock.videoEl) {
+      pv.unmutedBlock.videoEl.muted = true
+    }
+
+    if (pv.unmutedBlock.audioButton) {
+      pv.unmutedBlock.audioButton.classList.add('mute')
+    }
   }
 
   pv.unmutedBlock = block
@@ -144,7 +149,7 @@ export const setBlockVisual = (block: Block) => {
 }
 
 export const setBlockAttributes = (container: Container, block: Block) => {
-  const pv = (<any>window).pv
+  const { pv } = (window as unknown) as Window
 
   updateWindowProps()
   // calculates the negative top property
@@ -203,7 +208,7 @@ const isVideo = (attrMediatype: keyof typeof MEDIA_TYPES, attrMediapath: string)
   VIDEO_EXTENSIONS.indexOf(getExtension(attrMediapath)) !== -1
 
 const updateWindowProps = () => {
-  const pv = (<any>window).pv
+  const { pv } = (window as unknown) as Window
 
   pv.windowProps = {
     scrollTop: window.scrollY || document.documentElement.scrollTop,

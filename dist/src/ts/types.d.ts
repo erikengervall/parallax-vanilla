@@ -15,9 +15,12 @@ export interface Settings {
 export interface Block {
     blockEl: HTMLElement;
     speed: number;
-    mediatype: string;
-    mediapath: string;
+    mediatype: string | null;
+    mediapath: string | null;
     mute: boolean;
+    muted: boolean;
+    videoEl?: HTMLVideoElement;
+    audioButton?: HTMLAnchorElement;
 }
 export interface Container {
     containerEl: HTMLElement;
@@ -25,4 +28,15 @@ export interface Container {
     height: number;
     blocks: Block[];
     hasVideoBlock?: boolean;
+}
+export declare type PV = any;
+export interface Window {
+    raf: typeof window.requestAnimationFrame;
+    pv?: PV;
+    orientation: typeof window.orientation;
+    requestAnimationFrame: typeof window.requestAnimationFrame;
+    webkitRequestAnimationFrame: typeof window.requestAnimationFrame;
+    mozRequestAnimationFrame: typeof window.requestAnimationFrame;
+    setTimeout: typeof window.setTimeout;
+    onresize: () => void;
 }

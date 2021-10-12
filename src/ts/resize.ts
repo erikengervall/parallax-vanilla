@@ -1,9 +1,9 @@
 import { MEDIA_TYPES } from './constants'
 import { setBlockAttributes } from './initBlock'
-import { Block, Container } from './types'
+import { Block, Container, Window } from './types'
 
-export default () => {
-  const pv = (<any>window).pv
+export const resize = () => {
+  const { pv } = (window as unknown) as Window
 
   pv.containerArr.forEach((container: Container) => {
     container.height = container.containerEl.clientHeight

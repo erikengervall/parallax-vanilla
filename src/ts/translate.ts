@@ -1,7 +1,7 @@
-import { Block, Container } from './types'
+import { Block, Container, Window } from './types'
 
-export default () => {
-  const pv = (<any>window).pv
+export const translate = () => {
+  const { pv } = (window as unknown) as Window
 
   // Update selected attributes in windowProps on window raf event
   pv.windowProps.scrollTop = window.scrollY || document.documentElement.scrollTop
@@ -32,9 +32,11 @@ export default () => {
       container.blocks.forEach((block: Block) => {
         if (block.videoEl) {
           block.videoEl.play()
-          if (block === pv.unmutedBlock) {
-            if (!block.muted) {
-              block.videoEl.muted = block.muted
+
+          if (pv.unmutedBlock === block && !block.muted) {
+            block.videoEl.muted = block.muted
+
+            if (pv.unmutedBlock.audioButton) {
               block.muted
                 ? pv.unmutedBlock.audioButton.classList.add('mute')
                 : pv.unmutedBlock.audioButton.classList.remove('mute')
@@ -78,18 +80,21 @@ export default () => {
 // Transform prefixes for CSS
 const transform = (element: HTMLElement, style: string) => {
   element.style.webkitTransform = style
-  // @ts-expect-error eslint-disable-line @typescript-eslint/ban-ts-comment
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   element.style.MozTransform = style
-  // @ts-expect-error eslint-disable-line @typescript-eslint/ban-ts-comment
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   element.style.msTransform = style
-  // @ts-expect-error eslint-disable-line @typescript-eslint/ban-ts-comment
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   element.style.OTransform = style
   element.style.transform = style
 }
 
 // Check if the container is in view
 const isInViewport = (offset: number, height: number) => {
-  const pv = (<any>window).pv
+  const { pv } = (window as unknown) as Window
 
   return (
     pv.windowProps.scrollTop + pv.windowProps.windowHeight - offset > 0 &&
