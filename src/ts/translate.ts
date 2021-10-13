@@ -1,5 +1,7 @@
-export default () => {
-  const pv = (<any>window).pv
+import { Block, Container, Window } from './types'
+
+export const translate = () => {
+  const { pv } = (window as unknown) as Window
 
   // Update selected attributes in windowProps on window raf event
   pv.windowProps.scrollTop = window.scrollY || document.documentElement.scrollTop
@@ -11,7 +13,7 @@ export default () => {
   }
 
   // translate the parallax blocks, creating the parallax effect
-  pv.containerArr.forEach((container: any, index: number) => {
+  pv.containerArr.forEach((container: Container, index: number) => {
     let calc = 0
 
     // check if parallax block is in viewport
@@ -27,12 +29,14 @@ export default () => {
         calc = pv.windowProps.windowHeight - container.offset + pv.windowProps.scrollTop
       }
 
-      container.blocks.forEach((block: any) => {
+      container.blocks.forEach((block: Block) => {
         if (block.videoEl) {
           block.videoEl.play()
-          if (block === pv.unmutedBlock) {
-            if (!block.muted) {
-              block.videoEl.muted = block.muted
+
+          if (pv.unmutedBlock === block && !block.muted) {
+            block.videoEl.muted = block.muted
+
+            if (pv.unmutedBlock.audioButton) {
               block.muted
                 ? pv.unmutedBlock.audioButton.classList.add('mute')
                 : pv.unmutedBlock.audioButton.classList.remove('mute')
@@ -40,13 +44,13 @@ export default () => {
           }
         }
 
-        transform(block.el, 'translate3d(0,' + Math.round(calc / block.speed) + 'px, 0)')
+        transform(block.blockEl, 'translate3d(0,' + Math.round(calc / block.speed) + 'px, 0)')
       })
     } else {
       // check if container has at least one video block
       if (container.hasVideoBlock) {
         // pause blocks with playing videos
-        container.blocks.forEach((block: any) => {
+        container.blocks.forEach((block: Block) => {
           if (block.videoEl) {
             block.videoEl.pause()
             if (pv.unmutedBlock === block) {
@@ -73,18 +77,24 @@ export default () => {
   })
 }
 
-//Transform prefixes for CSS
-const transform = (element: any, style: string) => {
+// Transform prefixes for CSS
+const transform = (element: HTMLElement, style: string) => {
   element.style.webkitTransform = style
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   element.style.MozTransform = style
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   element.style.msTransform = style
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   element.style.OTransform = style
   element.style.transform = style
 }
 
 // Check if the container is in view
 const isInViewport = (offset: number, height: number) => {
-  const pv = (<any>window).pv
+  const { pv } = (window as unknown) as Window
 
   return (
     pv.windowProps.scrollTop + pv.windowProps.windowHeight - offset > 0 &&
@@ -92,5 +102,5 @@ const isInViewport = (offset: number, height: number) => {
   )
 }
 
-const nextContainerIsSmaller = (container: any, nextContainer: any) =>
+const nextContainerIsSmaller = (container: Container, nextContainer: Container) =>
   container.offset + container.height > nextContainer.offset + nextContainer.height

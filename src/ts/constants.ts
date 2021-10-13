@@ -1,3 +1,5 @@
+import { Settings } from './types'
+
 export const VIDEO_EXTENSIONS = [
   '3g2',
   '3gp',
@@ -18,10 +20,14 @@ export const VIDEO_EXTENSIONS = [
   'wmv',
 ]
 
-export const MEDIA_TYPES = {
-  IMAGE: 'image',
-  VIDEO: 'video',
-  NONE: 'none',
+export const MEDIA_TYPES: {
+  image: 'image'
+  video: 'video'
+  none: 'none'
+} = {
+  image: 'image',
+  video: 'video',
+  none: 'none',
 }
 
 export const ELEMENT_DATA_KEYS = {
@@ -32,7 +38,7 @@ export const ELEMENT_DATA_KEYS = {
   SPEED: 'pv-speed',
 }
 
-export const defaultSettings = {
+export const defaultSettings: Settings = {
   container: {
     class: 'pv-container',
     height: '250px',
@@ -40,7 +46,7 @@ export const defaultSettings = {
   block: {
     class: 'pv-block',
     speed: -Math.PI,
-    mediatype: MEDIA_TYPES.IMAGE,
+    mediatype: MEDIA_TYPES.image,
     mediapath: null,
     mute: false,
   },

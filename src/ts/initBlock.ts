@@ -1,99 +1,115 @@
 import { VIDEO_EXTENSIONS, ELEMENT_DATA_KEYS, MEDIA_TYPES } from './constants'
+import { Block, Container, Settings, Window } from './types'
 
-export const setBlockSpeed = (block: any, settings: any) => {
-  let attrSpeed = block.el.getAttribute(ELEMENT_DATA_KEYS.SPEED)
+export const setBlockSpeed = (blockEl: Block['blockEl'], settings: Settings) => {
+  const attrSpeed = blockEl.getAttribute(ELEMENT_DATA_KEYS.SPEED)
 
   // No data attribute defined
-  if (!attrSpeed) return settings.block.speed
+  if (!attrSpeed) {
+    return settings.block.speed
+  }
 
-  // Speed is a string
-  if (typeof attrSpeed === 'string') {
-    // Speed must consist solely of integers
-    const attrSpeedNumber = Number(attrSpeed)
-    if (isNaN(attrSpeedNumber)) {
-      console.error('Invalid type for attribute speed for block: ' + block.el)
-      throw new Error('Invalid type for attribute speed')
-    } else {
-      attrSpeed = attrSpeedNumber
+  const attrSpeedAsNumber = parseInt(attrSpeed, 10)
+  if (isNaN(attrSpeedAsNumber)) {
+    console.error('Invalid type for attribute speed for block: ' + blockEl)
+    throw new Error('Invalid type for attribute speed for block')
+  }
+
+  return attrSpeedAsNumber === 0 ? settings.block.speed : attrSpeedAsNumber
+}
+
+export const setBlockMediaProps = (blockEl: Block['blockEl'], settings: Settings) => {
+  let mediatype = blockEl.getAttribute(ELEMENT_DATA_KEYS.MEDIATYPE) as
+    | keyof typeof MEDIA_TYPES
+    | null
+  const mediapath = blockEl.getAttribute(ELEMENT_DATA_KEYS.MEDIAPATH)
+
+  if (mediatype === MEDIA_TYPES.none) {
+    return {
+      mediatype,
+      mediapath,
     }
   }
 
-  // Speed is set to 0 (fall back on block speed)
-  if (attrSpeed == 0) return settings.block.speed
-
-  return attrSpeed
-}
-
-export const setBlockMediaProps = (block: any, settings: any) => {
-  let mediatype = block.el.getAttribute(ELEMENT_DATA_KEYS.MEDIATYPE)
-  const mediapath = block.el.getAttribute(ELEMENT_DATA_KEYS.MEDIAPATH)
-
-  if (mediatype === MEDIA_TYPES.NONE) return { mediatype, mediapath }
-
   // No data attribute defined
-  if (!mediatype) mediatype = settings.block.mediatype
+  if (!mediatype) {
+    mediatype = settings.block.mediatype
+  }
 
   // Media type set to video
-  if (mediapath && isVideo(mediatype, mediapath)) mediatype = MEDIA_TYPES.VIDEO
+  if (mediapath && isVideo(mediatype, mediapath)) {
+    mediatype = MEDIA_TYPES.video
+  }
 
   // No data attribute defined
-  if (!mediapath && mediatype !== MEDIA_TYPES.NONE) {
-    console.error('Media path not defined for block: ' + block.el)
+  if (!mediapath && mediatype !== MEDIA_TYPES.none) {
+    console.error('Media path not defined for block: ' + blockEl)
     throw new Error('Media path not defined')
   }
 
-  return { mediatype, mediapath }
+  return {
+    mediatype,
+    mediapath,
+  }
 }
 
-export const setBlockMute = (block: any, settings: any) => {
-  const mute = block.el.getAttribute(ELEMENT_DATA_KEYS.MUTE)
+export const setBlockMute = (blockEl: Block['blockEl'], settings: Settings) => {
+  const attrMute = blockEl.getAttribute(ELEMENT_DATA_KEYS.MUTE)
 
-  if (!mute) return settings.block.mute
+  if (attrMute !== undefined && attrMute !== null) {
+    return attrMute === 'true'
+  }
 
-  return mute == 'true'
+  return settings.block.mute
 }
 
-const setBlockImage = (block: any) => {
+const setBlockImage = (block: Block) => {
   const { mediapath } = block
 
-  block.el.style.backgroundImage = "url('" + mediapath + "')"
+  block.blockEl.style.backgroundImage = "url('" + mediapath + "')"
 
   // Check if the background image wasn't set
   const backgroundImageFromDOM = window
-    .getComputedStyle(block.el)
+    .getComputedStyle(block.blockEl)
     .getPropertyValue('background-image')
-  if (backgroundImageFromDOM == 'none') return false
 
-  return true
+  return backgroundImageFromDOM !== 'none'
 }
 
-const videoElClicked = (videoEl: any, block: any) => {
-  const pv = (<any>window).pv
+const videoElClicked = (videoEl: HTMLVideoElement, block: Block) => {
+  const { pv } = (window as unknown) as Window
 
   if (pv.unmutedBlock && pv.unmutedBlock.videoEl !== videoEl) {
-    pv.unmutedBlock.videoEl.muted = true
-    pv.unmutedBlock.audioButton.classList.add('mute')
+    if (pv.unmutedBlock.videoEl) {
+      pv.unmutedBlock.videoEl.muted = true
+    }
+
+    if (pv.unmutedBlock.audioButton) {
+      pv.unmutedBlock.audioButton.classList.add('mute')
+    }
   }
 
   pv.unmutedBlock = block
   videoEl.muted = !videoEl.muted
   block.muted = videoEl.muted
 
-  block.audioButton.classList.toggle('mute')
+  if (block.audioButton) {
+    block.audioButton.classList.toggle('mute')
+  }
 }
 
-const setBlockVideo = (block: any) => {
+const setBlockVideo = (block: Block) => {
   const { mediapath } = block
 
   const videoEl = document.createElement('video')
-  videoEl.src = mediapath
+  videoEl.src = mediapath as string
   videoEl.autoplay = true
   videoEl.loop = true
   videoEl.defaultMuted = true
   videoEl.muted = true
   block.muted = true
   block.videoEl = videoEl
-  block.el.appendChild(videoEl)
+  block.blockEl.appendChild(videoEl)
 
   if (typeof window.orientation === 'undefined') {
     if (!block.mute) {
@@ -109,24 +125,31 @@ const setBlockVideo = (block: any) => {
         videoElClicked(videoEl, block)
       })
       block.audioButton = audioButton
-      block.el.insertAdjacentElement('afterend', audioButton)
+      block.blockEl.insertAdjacentElement('afterend', audioButton)
     }
   }
 
   return true
 }
 
-export const setBlockVisual = (block: any) => {
+export const setBlockVisual = (block: Block) => {
   const { mediatype } = block
 
-  if (mediatype === MEDIA_TYPES.IMAGE) return setBlockImage(block)
-  if (mediatype === MEDIA_TYPES.VIDEO) return setBlockVideo(block)
+  if (mediatype === MEDIA_TYPES.image) {
+    setBlockImage(block)
+    return
+  }
+  if (mediatype === MEDIA_TYPES.video) {
+    setBlockVideo(block)
+    return
+  }
 
-  return false
+  console.error('Failed to set media for block:', block)
+  throw new Error('Failed to set media')
 }
 
-export const setBlockAttributes = (container: any, block: any) => {
-  const pv = (<any>window).pv
+export const setBlockAttributes = (container: Container, block: Block) => {
+  const { pv } = (window as unknown) as Window
 
   updateWindowProps()
   // calculates the negative top property
@@ -161,30 +184,31 @@ export const setBlockAttributes = (container: any, block: any) => {
 
   if (Math.abs(marginTop) >= Math.abs(paddingBottom)) paddingBottom = Math.abs(marginTop) + 1
 
-  block.el.style.setProperty('padding-bottom', paddingBottom + 'px', null)
-  block.el.style.setProperty('margin-top', marginTop + 'px', null)
+  block.blockEl.style.setProperty('padding-bottom', paddingBottom + 'px')
+  block.blockEl.style.setProperty('margin-top', marginTop + 'px')
 }
 
 // Returns the extension of a media path
-const getExtension = (attrMediapath: any) => {
+const getExtension = (attrMediapath: string) => {
   const extension = attrMediapath
     .substr(attrMediapath.lastIndexOf('.') + 1, attrMediapath.length)
     .toLowerCase()
-  if (extension === -1) {
+
+  if (extension.length === 0) {
     console.error('Invalid extension for media with media path: ' + attrMediapath)
     throw new Error('Invalid extension for media')
-  } else {
-    return extension
   }
+
+  return extension
 }
 
-// returns {true} if media is a video
-const isVideo = (attrMediatype: any, attrMediapath: any) =>
-  attrMediatype === MEDIA_TYPES.VIDEO ||
+// returns `true` if media is a video
+const isVideo = (attrMediatype: keyof typeof MEDIA_TYPES, attrMediapath: string) =>
+  attrMediatype === MEDIA_TYPES.video ||
   VIDEO_EXTENSIONS.indexOf(getExtension(attrMediapath)) !== -1
 
 const updateWindowProps = () => {
-  const pv = (<any>window).pv
+  const { pv } = (window as unknown) as Window
 
   pv.windowProps = {
     scrollTop: window.scrollY || document.documentElement.scrollTop,

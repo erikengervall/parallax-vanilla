@@ -7,43 +7,51 @@ import {
   setBlockVisual,
   setBlockAttributes,
 } from './initBlock'
+import { Block, Container, Settings, Window } from './types'
 
-export default (userSettings: any) => {
-  const pv = (<any>window).pv
+export const init = (userSettings: Partial<Settings>) => {
+  const { pv } = (window as unknown) as Window
   pv.containerArr = []
   pv.settings = mergeSettings(userSettings, defaultSettings)
 
   const containerElements = document.getElementsByClassName(pv.settings.container.class)
+
   for (let i = 0; i < containerElements.length; i++) {
-    const container: any = {}
+    const containerEl = containerElements[i] as HTMLElement
+    const offset = calculateOffsetTop(containerEl)
+    containerEl.style.height = setContainerHeight(containerEl, pv.settings)
+    const height = containerEl.clientHeight
+    const blocks: Block[] = []
 
-    container.el = containerElements[i]
-    container.offset = calculateOffsetTop(container.el)
-    container.el.style.height = setContainerHeight(container, pv.settings)
-    container.height = container.el.clientHeight
-
-    container.blocks = []
+    const container: Container = {
+      containerEl,
+      offset,
+      height,
+      blocks,
+    }
 
     const blockElements = containerElements[i].getElementsByClassName(pv.settings.block.class)
+
     for (let j = 0; j < blockElements.length; j++) {
-      const block: any = {}
+      const blockEl = blockElements[j] as HTMLElement
+      const speed = setBlockSpeed(blockEl, pv.settings)
+      const { mediatype, mediapath } = setBlockMediaProps(blockEl, pv.settings)
 
-      block.el = blockElements[j]
-      block.speed = setBlockSpeed(block, pv.settings)
-      const { mediatype, mediapath } = setBlockMediaProps(block, pv.settings)
-      block.mediatype = mediatype
-      block.mediapath = mediapath
-      block.mute = setBlockMute(block, pv.settings)
+      const block: Block = {
+        blockEl,
+        speed,
+        mediatype,
+        mediapath,
+        mute: setBlockMute(blockEl, pv.settings),
+        muted: false,
+      }
 
-      if (block.mediatype !== MEDIA_TYPES.NONE) {
-        if (block.mediatype === MEDIA_TYPES.VIDEO) container.hasVideoBlock = true
-
-        const successful = setBlockVisual(block)
-        if (!successful) {
-          console.error('Did not successfully set media for block:', block)
-          throw new Error('Did not successfully set media')
+      if (block.mediatype !== MEDIA_TYPES.none) {
+        if (block.mediatype === MEDIA_TYPES.video) {
+          container.hasVideoBlock = true
         }
 
+        setBlockVisual(block)
         setBlockAttributes(container, block)
       }
 
@@ -54,30 +62,26 @@ export default (userSettings: any) => {
   }
 }
 
-const mergeSettings = (userSettings: any = {}, defaultSettings: any) => {
-  Object.keys(userSettings).forEach(elementSettings => {
-    if (!(userSettings[elementSettings] instanceof Object)) {
-      throw new Error(`Expected ${elementSettings} to be of instance Object`)
-    }
-
-    Object.keys(userSettings[elementSettings]).forEach(setting => {
-      if (userSettings[elementSettings][setting] instanceof Object) {
-        throw new Error(`Expected ${elementSettings} to be primitive value`)
-      }
-      if (!defaultSettings[elementSettings].hasOwnProperty(setting)) {
-        throw new Error(`Expected ${setting} to match available settings`)
-      }
-
-      defaultSettings[elementSettings][setting] = userSettings[elementSettings][setting]
-    })
-  })
-
-  return defaultSettings
+const mergeSettings = (
+  userSettings: Partial<Settings> = {},
+  defaultSettings: Settings
+): Settings => {
+  return {
+    container: {
+      ...defaultSettings.container,
+      ...userSettings.container,
+    },
+    block: {
+      ...defaultSettings.block,
+      ...userSettings.block,
+    },
+  }
 }
 
 // Calculates the top offset from an element to the window's || document's top, Link: https://plainjs.com/javascript/styles/get-the-position-of-an-element-relative-to-the-document-24/
-const calculateOffsetTop = (el: any) => {
+const calculateOffsetTop = (el: HTMLElement) => {
   const rectTop = el.getBoundingClientRect().top
   const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+
   return rectTop + scrollTop
 }

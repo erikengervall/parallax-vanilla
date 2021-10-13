@@ -1,22 +1,26 @@
 import '../less/parallax-vanilla.less'
-import init from './init'
-import translate from './translate'
-import resize from './resize'
+import { defaultSettings } from './constants'
+import { init } from './init'
+import { PV, Window } from './types'
+import { resize } from './resize'
+import { translate } from './translate'
 
-interface Window {
-  raf?: any
-  pv?: any
-  orientation: any
-  requestAnimationFrame?: (..._: any) => any
-  webkitRequestAnimationFrame?: (..._: any) => any
-  mozRequestAnimationFrame?: (..._: any) => any
-  setTimeout: (..._: any) => any
-  onresize: any
-}
-
-;((window: Window) => {
+// eslint-disable-next-line @typescript-eslint/no-extra-semi
+;(window => {
   const defineParallaxVanilla = () => {
-    const pv: any = { init }
+    const pv: PV = {
+      init,
+      containerArr: [],
+      mostReContainerInViewport: -1,
+      prevScrollTop: -1,
+      settings: defaultSettings,
+      windowProps: {
+        scrollTop: -1,
+        windowHeight: -1,
+        windowMidHeight: -1,
+      },
+    }
+
     window.pv = pv // exposes init function to user
 
     if (typeof window.orientation === 'undefined') {
@@ -54,4 +58,4 @@ interface Window {
   } else {
     console.log('%c parallax-vanilla already defined.', 'color: red')
   }
-})(window)
+})((window as unknown) as Window)

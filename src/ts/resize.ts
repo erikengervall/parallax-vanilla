@@ -1,14 +1,15 @@
 import { MEDIA_TYPES } from './constants'
 import { setBlockAttributes } from './initBlock'
+import { Block, Container, Window } from './types'
 
-export default () => {
-  const pv = (<any>window).pv
+export const resize = () => {
+  const { pv } = (window as unknown) as Window
 
-  pv.containerArr.forEach((container: any) => {
-    container.height = container.el.clientHeight
+  pv.containerArr.forEach((container: Container) => {
+    container.height = container.containerEl.clientHeight
 
-    container.blocks.forEach((block: any) => {
-      if (block.mediatype !== MEDIA_TYPES.NONE) {
+    container.blocks.forEach((block: Block) => {
+      if (block.mediatype !== MEDIA_TYPES.none) {
         setBlockAttributes(container, block)
       }
     })
