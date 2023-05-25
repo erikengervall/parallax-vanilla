@@ -24,31 +24,36 @@
     "build": "rimraf ./dist && webpack",
     "build:watch": "yarn build --watch",
     "dev": "concurrently 'yarn server' 'yarn build:watch'",
-    "test": "jest ./test/parallax-vanilla.spec.js"
+    "test": "jest ./test/parallax-vanilla.spec.js",
+    "prepare": "yarn run snyk-protect",
+    "snyk-protect": "snyk-protect"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@snyk/protect": "latest"
+  },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.29.3",
     "@typescript-eslint/parser": "^4.29.3",
-    "concurrently": "^4.1.2",
+    "concurrently": "^5.0.1",
     "css-loader": "^3.2.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^6.1.0",
     "eslint-plugin-prettier": "^3.1.0",
-    "express": "^4.16.2",
-    "jest": "^24.9.0",
+    "express": "^4.17.3",
+    "jest": "^25.0.0",
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
     "mini-css-extract-plugin": "^0.8.0",
-    "nodemon": "^1.12.1",
-    "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "nodemon": "^2.0.17",
+    "optimize-css-assets-webpack-plugin": "^5.0.5",
     "prettier-eslint": "^9.0.0",
     "rimraf": "^3.0.0",
     "style-loader": "^1.0.0",
-    "terser-webpack-plugin": "^1.4.2",
+    "terser-webpack-plugin": "^1.4.4",
     "ts-loader": "^6.0.4",
     "typescript": "^3.6.2",
     "webpack": "^4.39.3",
     "webpack-cli": "^3.3.7"
-  }
+  },
+  "snyk": true
 }
