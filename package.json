@@ -36,19 +36,19 @@
     "eslint-config-prettier": "^6.1.0",
     "eslint-plugin-prettier": "^3.1.0",
     "express": "^4.16.2",
-    "jest": "^24.9.0",
+    "jest": "^25.0.0",
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
     "mini-css-extract-plugin": "^0.8.0",
     "nodemon": "^1.12.1",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "prettier-eslint": "^9.0.0",
-    "rimraf": "^3.0.0",
+    "rimraf": "^4.0.0",
     "style-loader": "^1.0.0",
-    "terser-webpack-plugin": "^1.4.2",
+    "terser-webpack-plugin": "^5.0.0",
     "ts-loader": "^6.0.4",
     "typescript": "^3.6.2",
-    "webpack": "^4.39.3",
+    "webpack": "^5.1.1",
     "webpack-cli": "^3.3.7"
   }
 }
