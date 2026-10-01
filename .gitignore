@@ -1,7 +1,4 @@
 node_modules
-_loc
+coverage
 npm-debug.log
 .DS_Store
-config.cson
-yarn-error.log
-dist

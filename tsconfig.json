@@ -1,20 +1,17 @@
 {
   "compilerOptions": {
-    "outDir": "./dist/",
-    "module": "es6",
     "target": "es2017",
-    "allowJs": true,
-    "baseUrl": "./src",
-    // "paths": { "src": ["./*"] },
-    "esModuleInterop": true,
-    "lib": ["es2015", "es2016", "es2017", "dom"],
-    "moduleResolution": "node",
-    "noImplicitAny": true,
-    "sourceMap": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "lib": ["es2017", "dom", "dom.iterable"],
+    "types": [],
     "strict": true,
-    "noUnusedParameters": true,
     "noUnusedLocals": true,
-    "resolveJsonModule": true,
-    "declaration": true
-  }
+    "noUnusedParameters": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "skipLibCheck": true,
+    "noEmit": true
+  },
+  "include": ["src", "test/unit", "tsup.config.ts", "vitest.config.ts"]
 }

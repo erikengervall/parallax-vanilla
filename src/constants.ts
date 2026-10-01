@@ -1,5 +1,6 @@
-import { Settings } from './types'
+import type { Settings } from './types'
 
+// Extensions a browser can play in a <video> element, or that a page might still point one at
 export const VIDEO_EXTENSIONS = [
   '3g2',
   '3gp',
@@ -8,35 +9,34 @@ export const VIDEO_EXTENSIONS = [
   'flv',
   'h264',
   'm4v',
+  'mkv',
   'mov',
   'mp4',
-  'mpg',
   'mpeg',
+  'mpg',
+  'ogv',
   'rm',
-  'srt',
-  'swf',
-  'vow',
   'vob',
+  'webm',
   'wmv',
 ]
 
-export const MEDIA_TYPES: {
-  image: 'image'
-  video: 'video'
-  none: 'none'
-} = {
+export const MEDIA_TYPES = {
   image: 'image',
   video: 'video',
   none: 'none',
-}
+} as const
 
-export const ELEMENT_DATA_KEYS = {
+export const ATTRIBUTES = {
   MEDIAPATH: 'pv-mediapath',
   MEDIATYPE: 'pv-mediatype',
   MUTE: 'pv-mute',
   HEIGHT: 'pv-height',
   SPEED: 'pv-speed',
-}
+} as const
+
+export const AUDIO_BUTTON_CLASS = 'audio-icon'
+export const MUTED_CLASS = 'mute'
 
 export const defaultSettings: Settings = {
   container: {

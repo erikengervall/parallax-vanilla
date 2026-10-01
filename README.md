@@ -1,277 +1,137 @@
-# parallax-vanilla.js
+# parallax-vanilla
 
-Seamless and lightweight parallax scrolling library implemented in pure JavaScript utilizing Hardware acceleration for extra performance.
+Lightweight, dependency-free parallax scrolling for images and videos, using hardware-accelerated transforms.
 
 ## [Demo](https://erikengervall.github.io/parallax-vanilla/)
 
-## Main features
+## Features
 
-### Super lightweight without dependencies
-
-A few kilobytes of pure JavaScript.
-
-### Viewport-only animations
-
-Parallax elements are only animated within the current viewport, saving a lot of resources.
-
-### Dynamic sizing
-
-Image-elements are dynamically sized and adjusted relative to the pv-speed.
-
-### Performance is key
-
-Vanilla Parallax maximizes your parallax effects with hardware acceleration and zero external libraries.
-
-### Media type independence
-
-The parallax effect applies not only on images but on videos as well. Videos' audio will play if the videos are clicked and remain within the viewport.
-
-## Browser support
-
-Tested browsers:
-
-| Chrome | Safari | Firefox |
-| ------ | ------ | ------- |
-| 60+    | 10+    | 44+     |
+- **Tiny and dependency-free.** About 7 KB of minified JavaScript and 1.5 KB of CSS.
+- **Viewport-only work.** Only containers on screen are moved, and videos pause while they are off screen.
+- **Dynamic sizing.** Blocks are sized from their container and speed, and follow layout changes, resizes and rotations.
+- **Images and videos.** A path with a video extension becomes a looping, muted, inline video. Click the video or its sound toggle to hear it while it stays in view.
+- **Accessible by default.** Respects `prefers-reduced-motion`, and the sound toggle is a labelled button.
 
 ## Installation
 
-### [bower](https://github.com/erikengervall/parallax-vanilla)
-
 ```sh
-bower i --save parallax-vanilla
+npm install parallax-vanilla
 ```
 
-### [npm](https://www.npmjs.com/package/parallax-vanilla)
+### With a bundler
 
-```sh
-npm i --save parallax-vanilla
+```js
+import { init } from 'parallax-vanilla'
+import 'parallax-vanilla/parallax-vanilla.css'
+
+init()
 ```
 
-### Include
+The package ships ES module and CommonJS builds with TypeScript types. Importing it is safe during server-side rendering; call `init()` in the browser.
 
-- Include `parallax-vanilla.css` in `<head>`
-- Include `parallax-vanilla.js` just before `<body>`
+### With a script tag
 
 ```html
-<link href="path/to/parallax-vanilla.css" />
-<script src="path/to/parallax-vanilla.js"></script>
-```
+<link rel="stylesheet" href="https://unpkg.com/parallax-vanilla@2/dist/parallax-vanilla.css" />
 
-## Usage
-
-### Simple usage
-
-**1**. Wrap a `pv-block` with a `pv-container`.
-
-```html
-<div class="pv-container">
-  <div class="pv-block"></div>
-</div>
-```
-
-**2**. Attach a mediapath to `pv-block`
-
-```html
-<div class='pv-container'>
-  <div class='pv-block' pv-mediapath=path/to/file.extension></div>
-</div>
-```
-
-**3**. Initialize library.
-
-```html
-<div class='pv-container'>
-  <div class='pv-block' pv-mediapath=path/to/file.extension></div>></div>
-</div>
+<!-- at the end of <body> -->
+<script src="https://unpkg.com/parallax-vanilla@2/dist/parallax-vanilla.js"></script>
 <script>
   pv.init()
 </script>
 ```
 
-### JavaScript initialization options
+The script defines a global `pv` with `init`, `refresh` and `destroy`.
 
-Optional global settings can be configured upon initialization.
+## Usage
 
-```javascript
-pv.init({
+Put a `pv-block` inside a `pv-container`, give the block a media path, and call `init()` once the elements are in the page.
+
+```html
+<div class="pv-container">
+  <div class="pv-block" pv-mediapath="path/to/image.jpg"></div>
+</div>
+```
+
+A block without media still moves; set `pv-mediatype="none"` to use it for text or any other content:
+
+```html
+<div class="pv-container" pv-height="50vh">
+  <div class="pv-block" pv-mediapath="path/to/leaves.jpg"></div>
+  <div class="pv-block" pv-mediatype="none" pv-speed="3">
+    <h1>Moves at its own speed</h1>
+  </div>
+</div>
+```
+
+### API
+
+| Function          | Description                                                                                                                                                |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `init(settings?)` | Finds every container and block and starts the effect. Calling it again tears down the previous setup first, so it is safe after the page content changes. |
+| `refresh()`       | Recomputes sizes and positions. Resizes, rotations and content that pushes containers around are picked up on their own; use this for anything else.       |
+| `destroy()`       | Stops the effect, removes the videos and buttons it added and restores the elements' inline styles.                                                        |
+
+### Settings
+
+Every setting is optional. Settings apply to every container and block, and data attributes override them per element.
+
+```js
+init({
   container: {
-    class: String,
-    height: String || Number,
+    class: 'pv-container',
+    height: '250px',
   },
   block: {
-    class: String,
-    speed: Number || Float,
-    mediapath: String,
-    mediatype: String,
-    mute: Boolean,
+    class: 'pv-block',
+    speed: -Math.PI,
+    mediatype: 'image',
+    mediapath: null,
+    mute: false,
   },
 })
 ```
 
-#### JavaScript Settings
-
-<table class='table table-bordered'>
-	<thead>
-		<tr>
-			<th>Name</th>
-			<th>Type</th>
-			<th>Default</th>
-      <th>Description</th>
-			<th>Example values</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td><b>settings</b></td>
-			<td>Object</td>
-			<td>{container, block}</td>
-			<td>Settings object. These settings will be applied to each container and block. Can be individually overwritten by data attributes.</td>
-      <td>{container: {...}, block: {...}</td>
-		</tr>
-		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-      <td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><b>settings.container</b></td>
-			<td>Object</td>
-			<td>{class, height}</td>
-			<td>The container object.</td>
-      <td>{...}</td>
-		</tr>
-		<tr>
-			<td>settings.container.class</td>
-			<td>String</td>
-			<td>pv-container</td>
-			<td>The class of the container element. Remember to update the CSS classes if you wish to change this.</td>
-      <td>pv-container</td>
-		</tr>
-		<tr>
-			<td>settings.container.height</td>
-			<td>String || Number</td>
-			<td>250px</td>
-			<td>The container's height in either pixels or viewport heights. If the string lacks a suffix, or a number is entered, it will default to pixels.</td>
-      <td>250px, 50vh, 250</td>
-		</tr>
-		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-      <td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td><b>settings.block</b></td>
-			<td>Object</td>
-			<td>{class, speed, mediatype, mediapath}</td>
-			<td>The block object.</td>
-      <td>{...}</td>
-		</tr>
-		<tr>
-			<td>settings.block.class</td>
-			<td>String</td>
-			<td>pv-block</td>
-			<td>The class of the block element. Remember to update the CSS classes if you wish to change this.</td>
-      <td>pv-block</td>
-		</tr>
-		<tr>
-			<td>settings.block.speed</td>
-			<td>Number || Float</td>
-			<td>-Math.PI</td>
-			<td>The speed and direction at which the parallax animated. Negative values will animate the `block` upwards when scrolling downwards on the page.</td>
-      <td>1, 1.5, -1, -1.5</td>
-		</tr>
-		<tr>
-			<td>settings.block.mediatype</td>
-			<td>String</td>
-			<td>image</td>
-			<td>The block's media type. Blocks with mediapaths containing a video extension will automatically be considered videos.</td>
-      <td>image, video or none</td>
-		</tr>
-		<tr>
-			<td>settings.block.mediapath</td>
-			<td>String</td>
-			<td>undefined</td>
-			<td>The block's media path.</td>
-      <td>../path/to/file.ext</td>
-		</tr>
-    <tr>
-			<td>settings.block.mute</td>
-			<td>Boolean</td>
-			<td>false</td>
-			<td>Defines whether or not all videos should be muted.</td>
-      <td>true or false</td>
-		</tr>
-	</tbody>
-</table>
-
-### Data attributes: Customize individual elements
-
-Data attributes allow fine control over each individual element and will overwrite the global JavaScript settings.
+| Setting            | Attribute      | Default        | Description                                                                                                                                       |
+| ------------------ | -------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `container.class`  |                | `pv-container` | Class that marks a container. The stylesheet targets `pv-container`, so copy its rules if you change this.                                        |
+| `container.height` | `pv-height`    | `250px`        | Container height: a number of pixels, or a string in `px` or `vh` (`250`, `'250px'`, `'50vh'`).                                                   |
+| `block.class`      |                | `pv-block`     | Class that marks a block inside a container. The stylesheet targets `pv-block`, so copy its rules if you change this.                             |
+| `block.speed`      | `pv-speed`     | `-Math.PI`     | Speed and direction, any non-zero number such as `1.5` or `-2`. Larger values move less. Negative values move the block up while you scroll down. |
+| `block.mediatype`  | `pv-mediatype` | `image`        | `image`, `video` or `none`. A path with a video extension (`mp4`, `webm`, `mov` and others) is always a video.                                    |
+| `block.mediapath`  | `pv-mediapath` | `null`         | Path or URL of the image or video.                                                                                                                |
+| `block.mute`       | `pv-mute`      | `false`        | Keep videos muted and leave out the sound toggle. `pv-mute` with no value means `true`.                                                           |
 
 ```html
-<div class='pv-container' pv-height=100vh>
-  <div class='pv-block' pv-speed=3.14 pv-mediatype=video pv-mediapath=path/to/epic_montage.mp4 pv-mute=false></div>
+<div class="pv-container" pv-height="100vh">
+  <div class="pv-block" pv-speed="3.14" pv-mediapath="path/to/montage.mp4" pv-mute="false"></div>
 </div>
 ```
 
-This code will produce a container with class `pv-container` with height `100vh` containing a block with class `pv-block` with a parallax speed of `3.14` displaying the media `epic_montage.mp4` of type `video` with `pv-mute=false`.
-
-<table class='table table-bordered'>
-  <tbody>
-  	<thead>
-  		<tr>
-  			<th>Data attributes for container</th>
-  		</tr>
-  	</thead>
-    <tr>
-      <td>pv-height</td>
-    </tr>
-    <thead>
-  		<tr>
-  			<th>Data attributes for block</th>
-  		</tr>
-  	</thead>
-    <tr>
-      <td>pv-speed</td>
-    </tr>
-    <tr>
-      <td>pv-mediatype</td>
-    </tr>
-    <tr>
-      <td>pv-mediapath</td>
-    </tr>
-    <tr>
-      <td>pv-mute</td>
-    </tr>
-	</tbody>
-</table>
-
-The descriptions and the default values are the same as the corresponding properties of the JavaScript settings object.
-
 ### CSS
 
-The CSS in `parallax-vanilla.css` is required in order for parallax-vanilla to function properly.
+`parallax-vanilla.css` is required. It positions containers, sizes videos and draws the sound toggle (`.audio-icon`, with a `.mute` class while muted).
 
-```css
-.pv-container {
-  ...;
-}
-.pv-container .pv-block {
-  ...;
-}
-.pv-container .pv-block video {
-  ...;
-}
-.audio-icon {
-  ...;
-}
+## Browser support
+
+Current versions of Chrome, Edge, Firefox and Safari, and any browser released since 2020. Browsers without `ResizeObserver` still work, but call `refresh()` after layout changes.
+
+## Development
+
+Requires Node 24 (see `.nvmrc`).
+
+```sh
+npm install
+npm run dev     # rebuilds on change and serves the demo on http://localhost:3000
+npm run check   # typecheck, lint, format check, tests and build
 ```
 
-# LICENSE
+The demo page (`index.html`) loads the committed `dist/` build, and GitHub Pages serves it from `master`, so rebuild and commit `dist/` with each release.
+
+## Upgrading from 1.x
+
+See [CHANGELOG.md](CHANGELOG.md).
+
+## License
 
 MIT
