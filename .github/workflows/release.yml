@@ -1,0 +1,48 @@
+# Publishes to npm when a version tag (v2.0.1, v2.1.0, ...) is pushed.
+# Authenticates through npm trusted publishing (OIDC), so no npm token is stored,
+# and npm attaches a provenance attestation linking the release to this repo and run.
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+  id-token: write # lets the job request the OIDC token npm exchanges for a publish token
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          registry-url: 'https://registry.npmjs.org'
+          package-manager-cache: false # never cache in release builds
+
+      - name: Check the tag matches package.json
+        run: |
+          version="$(node -p "require('./package.json').version")"
+          if [ "${GITHUB_REF_NAME}" != "v${version}" ]; then
+            echo "Tag ${GITHUB_REF_NAME} does not match package.json version ${version}"
+            exit 1
+          fi
+
+      - run: npm ci
+
+      # Typecheck, lint, format check, tests and build
+      - run: npm run check
+
+      # Pre-releases (2.1.0-rc.0) go to the `next` dist-tag so `latest` keeps the stable version.
+      # --ignore-scripts: check already ran above, so prepublishOnly is skipped.
+      - name: Publish
+        run: |
+          if [[ "${GITHUB_REF_NAME}" == *-* ]]; then
+            npm publish --ignore-scripts --tag next
+          else
+            npm publish --ignore-scripts
+          fi
