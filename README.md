@@ -128,6 +128,15 @@ npm run check   # typecheck, lint, format check, tests and build
 
 The demo page (`index.html`) loads the committed `dist/` build, and GitHub Pages serves it from `master`, so rebuild and commit `dist/` with each release.
 
+### Releasing
+
+Pushing a version tag publishes to npm from GitHub Actions ([`release.yml`](.github/workflows/release.yml)), with a provenance attestation linking the release to its commit and build.
+
+```sh
+npm version patch     # or minor / major: bumps package.json and creates the tag
+git push --follow-tags
+```
+
 ## Upgrading from 1.x
 
 See [CHANGELOG.md](CHANGELOG.md).
